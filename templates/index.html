@@ -1,0 +1,11 @@
+{% extends 'original/base.html' %}
+{% load static %}
+
+{% block mid_page_content %}
+    <h1>Hello, World</h1>
+    <hr>
+    <p>Index Page...</p>
+    {% for i in nums %}
+    <p>{{ i }}</p>
+    {% endfor %}
+{% endblock %}

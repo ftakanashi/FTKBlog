@@ -1,0 +1,84 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+{#    <meta name="viewport" #}
+{#          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">#}
+{#    <meta http-equiv="X-UA-Compatible" content="ie=edge">#}
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- 下面的keywords和description主要用于给搜索引擎搜索 -->
+    <meta name="keywords" content={% block keywords %}{% endblock %}>
+    <meta name="description" content={% block description %}{% endblock %}>
+
+    <script src="{% static 'comp/jquery/jquery.min.js' %}"></script>
+    <link href="{% static 'comp/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <script src="{% static 'comp/bootstrap/js/bootstrap.min.js' %}"></script>
+    <link href="{% static 'comp/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" />
+    <script src="{% static 'ftk/base/main.js' %}"></script>
+    <link href="{% static 'ftk/base/main.css' %}" rel="stylesheet" />
+    {% block style %}{% endblock %}
+</head>
+<body style="font-size: 15px;">
+    {% block page_header %}
+    <div class="navbar navbar-inverse" role="navigation" style="border-radius:0;z-index: 999;">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-toggle-menu">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse navbar-toggle-menu">
+            <ul class="nav navbar-nav">
+                <li><a class="{% ifequal request.path '/blog/' %}active{% endifequal %}" href="{% url 'index' %}">首页</a></li>
+                <li><a class="{% ifequal request.path '/about/' %}active{% endifequal %}" href="{% url 'about' %}">关于</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endblock %}
+    {% block content %}
+    <div class="left-ground">
+    {% block left_page_content %}{% endblock %}
+    </div>
+    <div class="container mid-ground">
+    {% block mid_page_content %}{% endblock %}
+    </div>
+    <div class="right-ground">
+    {% block right_page_content %}{% endblock %}
+    </div>
+    {% endblock %}
+    {% block footer %}
+    <div class="row page-footer">
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <h5 class="footer-title">页脚标题</h5>
+            <p>我还没有想好要写什么…</p>
+        </div>
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <img src="{% static 'image/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />
+        </div>
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <h5 class="footer-title">友情链接</h5>
+            <div class="out-links">
+                <span><a href="https://www.google.com/">
+                    <img src="{% static 'image/icon/google_logo.png' %}"/>
+                </a></span>
+                <span><a href="https://www.baidu.com/">
+                    <img src="{% static 'image/icon/baidu_logo.png' %}" />
+                </a></span>
+                <span><a href="https://www.github.com">
+                    <img src="{% static 'image/icon/github_logo.png' %}" />
+                </a></span>
+            </div>
+        </div>
+    </div>
+    <div class="row footer-copyright">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <b>Copyright</b> @ 2016-2018 F.Takanashi 版权所有
+        </div>
+    </div>
+    {% endblock %}
+    {% block script %}{% endblock %}
+</body>
+</html>
