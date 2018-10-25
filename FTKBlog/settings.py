@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pure_pagination',
     'blog.apps.BlogConfig'
 ]
 
@@ -114,6 +115,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'run')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True
+}
+
+######## 一些自定义的配置 ########
 
 '''
 似乎django有个自动压缩前端所有需要比如css，js这些文件的组件

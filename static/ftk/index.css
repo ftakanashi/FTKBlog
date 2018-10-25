@@ -1,0 +1,68 @@
+span.post-info{
+    display: inline;
+    color: darkgray;
+    margin-right: 10px;
+}
+.post-wrap-title{
+    transition: margin-left .5s;
+    text-decoration: none;
+}
+.post-wrap-title:hover{
+    margin-left: 3%;
+    text-decoration: none;
+    color: white;
+}
+h3 > .post-wrap-title:hover{
+    background-color: #256abc;
+    padding: 3px;
+    border-radius: 5%;
+}
+.post-wrap-body,.post-wrap-footer{
+    margin-top: 10px;
+}
+.post-wrap-footer a{
+    text-decoration: none;
+    color: #256abc;
+}
+.post-wrap-footer a:hover{
+    background-color: #256abc;
+    color: white;
+    padding: 5px;
+    border-radius: 5%;
+}
+.post-wrap:hover{
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+}
+.post-wrap,.aside-frame > div{
+    padding: 5%;
+    background: white;
+    margin-bottom: 20px;
+    border: 1px solid #eeeeee;
+    border-radius: 1%;
+}
+.aside-frame > div:hover{
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+}
+.auto-me{
+    padding: 0;
+    text-align: center;
+}
+.me-avatar{
+    padding-top: 27%;
+}
+.me-avatar > img{
+    border: 5px solid white;
+    border-radius: 50%;
+    max-width: 150px;
+}
+.me-icon a{
+    font-size: 20px;
+    color: #c2c2c2;
+    margin: 0 10px;
+    text-decoration: none;
+    line-height: 70px;
+}
+.me-icon a:hover{
+    color: #5a5a5a;
+}
+

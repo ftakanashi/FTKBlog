@@ -1,11 +1,80 @@
 {% extends 'original/base.html' %}
 {% load static %}
 
-{% block mid_page_content %}
-    <h1>Hello, World</h1>
-    <hr>
-    <p>Index Page...</p>
-    {% for i in nums %}
-    <p>{{ i }}</p>
+{% block style %}
+    {{ super }}
+    <link href="{% static 'ftk/index.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block main_ground_aside %}
+    <div class="aside-frame">
+        <div>
+            <p>一些内容</p>
+        </div>
+        <div class="auto-me">
+            <div class="me-avatar"><img src="{% static 'image/profile.jpg' %}"></div>
+            <div class="me-name"><h4>F. Takanashi</h4></div>
+            <div class="me-declaration">竜神の剣を喰らえ！</div>
+            <div class="me-icon">
+                <a href="https://github.com/wyzypa/"><i class="fa fa-github"></i></a>
+                <a href="#"><i class="fa fa-rss-square"></i></a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block main_ground_content %}
+    {% for post in posts.object_list%}
+        <div class="post-wrap">
+            <div class="post-wrap-header">
+                <h3><a href="{% url 'detail' post.post_uuid %}" class="post-wrap-title">{{ post.title }}</a></h3>
+                {% if post.is_reprint %}
+                <span class="label label-danger"><a href="{{ post.reprint_src }}">转载</a></span>
+                {% else %}
+                    <span class="label label-primary">原创</span>
+                {% endif %}
+                <span class="post-info">更新时间：{{ post.update_time }}</span>
+                <span class="post-info">分类[{{ post.category.name }}]</span>
+                <span class="post-info">标签:
+                    {% if post.tags.length > 0 %}
+                    {% for tag in post.tags %}{{ tag.name }},{% endfor %}</span>
+                    {% else %}无
+                    {% endif %}
+            </div>
+            <div class="post-wrap-body">
+                {{ post.abstract }}...
+            </div>
+            <div class="post-wrap-footer">
+                <a href="{% url 'detail' post.post_uuid %}">阅读全文</a>
+                <span class="post-info">浏览(-1)</span>
+                <span class="post-info">评论(-1)</span>
+            </div>
+        </div>
     {% endfor %}
+    <div class="post-pagination">
+        <ul class="pagination">
+            {# 上一页 #}
+            {% if posts.has_previous %}
+                <li>
+                    <a href="?{{ posts.previous_page_number.querystring }}"><span>&laquo;</span></a>
+                </li>
+            {% endif %}
+            {% for page in posts.pages %}
+                {% if page %}
+                    {% ifequal page posts.number %}
+                        {# 当前页 #}
+                        <li class="active"><a>{{ page }}</a></li>
+                    {% else %}
+                        {# 指定页 #}
+                        <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                    {% endifequal %}
+                {% else %}
+                    <li><a href="#">...</a></li>
+                {% endif %}
+            {% endfor %}
+            {# 下一页 #}
+            {% if posts.has_next %}
+                <li><a href="?{{ posts.next_page_number.querystring }}">&raquo;</a></li>
+            {% endif %}
+        </ul>
+    </div>
 {% endblock %}

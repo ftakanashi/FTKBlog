@@ -20,7 +20,9 @@
     <link href="{% static 'ftk/base/main.css' %}" rel="stylesheet" />
     {% block style %}{% endblock %}
 </head>
-<body style="font-size: 15px;">
+<body style="font-size: 15px;background: #f4f4f4">
+
+    <!-- header -->
     {% block page_header %}
     <div class="navbar navbar-inverse" role="navigation" style="border-radius:0;z-index: 999;">
         <div class="navbar-header">
@@ -38,47 +40,80 @@
         </div>
     </div>
     {% endblock %}
+
+    <!-- content -->
     {% block content %}
-    <div class="left-ground">
-    {% block left_page_content %}{% endblock %}
-    </div>
-    <div class="container mid-ground">
-    {% block mid_page_content %}{% endblock %}
-    </div>
-    <div class="right-ground">
-    {% block right_page_content %}{% endblock %}
+    <div class="ground-row">
+        <!-- main -->
+        <div class="main-ground">
+            {% block main_ground %}
+                <div class="main">
+                    {% block main_ground_main_frame %}
+                    <div class="content">
+                    {% block main_ground_content %}{% endblock %}
+                    </div>
+                    {% endblock %}
+                </div>
+                <div class="aside">
+                {% block main_ground_aside %}
+
+                {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+
+        <!-- left -->
+        <div class="left-ground">
+        {% block left_page_content %}
+        {% endblock %}
+        </div>
+
+        <!-- right -->
+        <div class="right-ground">
+        {% block right_page_content %}
+        {% endblock %}
+        </div>
     </div>
     {% endblock %}
+
+    <!-- footer -->
     {% block footer %}
-    <div class="row page-footer">
-        <div class="col-lg-4 col-sm-12 col-xs-12">
-            <h5 class="footer-title">页脚标题</h5>
-            <p>我还没有想好要写什么…</p>
+    <div class="footer">
+        <div class="row page-footer">
+            <div class="col-lg-4 col-sm-12 col-xs-12">
+                <h5 class="footer-title">页脚标题</h5>
+                <p>我还没有想好要写什么…</p>
+            </div>
+            <div class="col-lg-4 col-sm-12 col-xs-12">
+                <img src="{% static 'image/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />
+            </div>
+            <div class="col-lg-4 col-sm-12 col-xs-12">
+                <h5 class="footer-title">友情链接</h5>
+                <div class="out-links">
+                    <span><a href="https://www.google.com/">
+                        <img src="{% static 'image/icon/google_logo.png' %}"/>
+                    </a></span>
+                    <span><a href="https://www.baidu.com/">
+                        <img src="{% static 'image/icon/baidu_logo.png' %}" />
+                    </a></span>
+                    <span><a href="https://www.github.com">
+                        <img src="{% static 'image/icon/github_logo.png' %}" />
+                    </a></span>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4 col-sm-12 col-xs-12">
-            <img src="{% static 'image/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />
-        </div>
-        <div class="col-lg-4 col-sm-12 col-xs-12">
-            <h5 class="footer-title">友情链接</h5>
-            <div class="out-links">
-                <span><a href="https://www.google.com/">
-                    <img src="{% static 'image/icon/google_logo.png' %}"/>
-                </a></span>
-                <span><a href="https://www.baidu.com/">
-                    <img src="{% static 'image/icon/baidu_logo.png' %}" />
-                </a></span>
-                <span><a href="https://www.github.com">
-                    <img src="{% static 'image/icon/github_logo.png' %}" />
-                </a></span>
+        <div class="row footer-copyright">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <b>Copyright</b> @ 2016-2018 F.Takanashi 版权所有
             </div>
         </div>
     </div>
-    <div class="row footer-copyright">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <b>Copyright</b> @ 2016-2018 F.Takanashi 版权所有
-        </div>
-    </div>
+{#    <div class="footer">#}
+{#        这里是footer#}
+{#    </div>#}
     {% endblock %}
+
+
     {% block script %}{% endblock %}
 </body>
 </html>

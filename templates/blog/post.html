@@ -1,0 +1,99 @@
+{% extends 'original/base.html' %}
+{% load static %}
+
+{% block style %}
+    <link href="{% static 'ftk/blog/post.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/editormd/css/editormd.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/malihu-custom-scrollbar/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block main_ground %}
+    <div class="post">
+        <div class="post-header">
+            <h3>{{ post.title }}</h3>
+            <p>  </p>
+            <p>&nbsp;</p>
+            <span class="post-info">创建时间:{{ post.create_time }}</span>
+            <span class="post-info">更新时间:{{ post.update_time }}</span>
+            <span class="post-info">分类[{{ post.category.name }}]</span>
+            <span class="post-info">阅读量: (-1)</span>
+            <hr>
+        </div>
+        <div id="postContent" class="post-body">
+            <textarea style="display: none;">{{ post.content }}</textarea>
+        </div>
+        <div class="post-footer">
+            <!-- 一些文章相关的信息，还有微信QQ分享之类的东西放这里 -->
+        </div>
+    </div>
+    <div class="comment">
+        <!-- 评论系统 -->
+    </div>
+{% endblock %}
+
+{% block left_page_content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Hello,World</h3>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Hello,World</h3>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Hello,World</h3>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Hello,World</h3>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Hello,World</h3>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Hello,World</h3>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Hello,World</h3>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script src="{% static 'comp/editormd/lib/marked.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/prettify.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/raphael.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/underscore.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/sequence-diagram.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/flowchart.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/jquery.flowchart.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/editormd.min.js' %}"></script>
+    <script src="{% static 'comp/mCustomScrollbar/js/minified/jquery.mCustomScrollbar.min.js' %}"></script>
+    <script>
+        $(function() {
+            var testEditor = editormd.markdownToHTML('postContent',{
+                htmlDecode: 'style,script,iframe',
+                emoji: true,
+                taskList: true,
+                tex: true,
+                flowChart: true,
+                sequenceDiagram: true,
+                codeFold: true
+            });
+            $(window).load(function(){
+               $('.left-ground').mCustomScrollbar(); 
+            });
+        });
+    </script>
+{% endblock %}
