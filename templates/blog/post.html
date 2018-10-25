@@ -4,26 +4,31 @@
 {% block style %}
     <link href="{% static 'ftk/blog/post.css' %}" rel="stylesheet" />
     <link href="{% static 'comp/editormd/css/editormd.min.css' %}" rel="stylesheet" />
-    <link href="{% static 'comp/malihu-custom-scrollbar/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/mCustomScrollbar/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block main_ground %}
-    <div class="post">
-        <div class="post-header">
-            <h3>{{ post.title }}</h3>
-            <p>  </p>
-            <p>&nbsp;</p>
-            <span class="post-info">创建时间:{{ post.create_time }}</span>
-            <span class="post-info">更新时间:{{ post.update_time }}</span>
-            <span class="post-info">分类[{{ post.category.name }}]</span>
-            <span class="post-info">阅读量: (-1)</span>
-            <hr>
-        </div>
-        <div id="postContent" class="post-body">
-            <textarea style="display: none;">{{ post.content }}</textarea>
-        </div>
-        <div class="post-footer">
-            <!-- 一些文章相关的信息，还有微信QQ分享之类的东西放这里 -->
+    <div class="main-ground">
+        <div class="post">
+            <div class="post-header">
+                <h2>{{ post.title }}</h2>
+                <div class="post-info-wrap">
+                    <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>创建时间 {{ post.create_time }}</span>
+                    <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>更新时间 {{ post.update_time }}</span>
+                </div>
+                <div class="post-info-wrap">
+                    <span class="post-info"><i class="fa fa-bookmark"></i>阅读量 (-1)</span>
+                </div>
+                <div class="post-info-wrap">
+                    <span class="post-info"><i class="fa fa-tags"></i>分类 {{ post.category.name }}</span>
+                </div>
+            </div>
+            <div id="postContent" class="post-body">
+                <textarea style="display: none;">{{ post.content }}</textarea>
+            </div>
+            <div class="post-footer">
+                <!-- 一些文章相关的信息，还有微信QQ分享之类的东西放这里 -->
+            </div>
         </div>
     </div>
     <div class="comment">
@@ -32,39 +37,36 @@
 {% endblock %}
 
 {% block left_page_content %}
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <h3>Hello,World</h3>
+    <div class="left-ground">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Hello, World</h1>
+            </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <h3>Hello,World</h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Hello, World</h1>
+            </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <h3>Hello,World</h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Hello, World</h1>
+            </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <h3>Hello,World</h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Hello, World</h1>
+            </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <h3>Hello,World</h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Hello, World</h1>
+            </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <h3>Hello,World</h3>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <h3>Hello,World</h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Hello, World</h1>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -92,7 +94,10 @@
                 codeFold: true
             });
             $(window).load(function(){
-               $('.left-ground').mCustomScrollbar(); 
+               $('.left-ground').mCustomScrollbar({
+                   axis: 'y',
+                   theme: 'dark'
+               });
             });
         });
     </script>

@@ -53,7 +53,7 @@ h3 > .post-wrap-title:hover{
 .me-avatar > img{
     border: 5px solid white;
     border-radius: 50%;
-    max-width: 150px;
+    max-width: 100%;
 }
 .me-icon a{
     font-size: 20px;

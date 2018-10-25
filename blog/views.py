@@ -14,7 +14,7 @@ class IndexView(View):
             page = int(request.GET.get('page','1'))
         except Exception,e:
             page = 1
-        posts = Post.objects.filter(status=0)
+        posts = Post.objects.filter(status=0).order_by('update_time').reverse()
         p = Paginator(posts, 2, request=request)
         paged_posts = p.page(page)
         ctx = {}

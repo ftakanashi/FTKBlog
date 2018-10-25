@@ -6,23 +6,28 @@
     <link href="{% static 'ftk/index.css' %}" rel="stylesheet" />
 {% endblock %}
 
+{% block left_ground_toggle %}{% endblock %}
+
 {% block main_ground_aside %}
-    <div class="aside-frame">
-        <div>
-            <p>一些内容</p>
-        </div>
-        <div class="auto-me">
-            <div class="me-avatar"><img src="{% static 'image/profile.jpg' %}"></div>
-            <div class="me-name"><h4>F. Takanashi</h4></div>
-            <div class="me-declaration">竜神の剣を喰らえ！</div>
-            <div class="me-icon">
-                <a href="https://github.com/wyzypa/"><i class="fa fa-github"></i></a>
-                <a href="#"><i class="fa fa-rss-square"></i></a>
+    <div class="aside">
+        <div class="aside-frame">
+            <div>
+                <p>一些内容</p>
+            </div>
+            <div class="auto-me">
+                <div class="me-avatar"><img src="{% static 'image/profile.jpg' %}"></div>
+                <div class="me-name"><h4>F. Takanashi</h4></div>
+                <div class="me-declaration">竜神の剣を喰らえ！</div>
+                <div class="me-icon">
+                    <a href="https://github.com/wyzypa/"><i class="fa fa-github"></i></a>
+                    <a href="#"><i class="fa fa-rss-square"></i></a>
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block main_ground_content %}
+    <div class="content">
     {% for post in posts.object_list%}
         <div class="post-wrap">
             <div class="post-wrap-header">
@@ -50,31 +55,32 @@
             </div>
         </div>
     {% endfor %}
-    <div class="post-pagination">
-        <ul class="pagination">
-            {# 上一页 #}
-            {% if posts.has_previous %}
-                <li>
-                    <a href="?{{ posts.previous_page_number.querystring }}"><span>&laquo;</span></a>
-                </li>
-            {% endif %}
-            {% for page in posts.pages %}
-                {% if page %}
-                    {% ifequal page posts.number %}
-                        {# 当前页 #}
-                        <li class="active"><a>{{ page }}</a></li>
-                    {% else %}
-                        {# 指定页 #}
-                        <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
-                    {% endifequal %}
-                {% else %}
-                    <li><a href="#">...</a></li>
+        <div class="post-pagination">
+            <ul class="pagination">
+                {# 上一页 #}
+                {% if posts.has_previous %}
+                    <li>
+                        <a href="?{{ posts.previous_page_number.querystring }}"><span>&laquo;</span></a>
+                    </li>
                 {% endif %}
-            {% endfor %}
-            {# 下一页 #}
-            {% if posts.has_next %}
-                <li><a href="?{{ posts.next_page_number.querystring }}">&raquo;</a></li>
-            {% endif %}
-        </ul>
+                {% for page in posts.pages %}
+                    {% if page %}
+                        {% ifequal page posts.number %}
+                            {# 当前页 #}
+                            <li class="active"><a>{{ page }}</a></li>
+                        {% else %}
+                            {# 指定页 #}
+                            <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                        {% endifequal %}
+                    {% else %}
+                        <li><a href="#">...</a></li>
+                    {% endif %}
+                {% endfor %}
+                {# 下一页 #}
+                {% if posts.has_next %}
+                    <li><a href="?{{ posts.next_page_number.querystring }}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 {% endblock %}

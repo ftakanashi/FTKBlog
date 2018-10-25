@@ -41,37 +41,65 @@
     </div>
     {% endblock %}
 
+    <!-- toolsbar -->
+    {% block toolsbar %}
+    <div class="toolbar">
+        {% block left_ground_toggle %}
+        <div class="left-ground-toggle">
+            <a href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+        </div>
+        {% endblock %}
+    </div>
+    {% endblock %}
+
     <!-- content -->
     {% block content %}
     <div class="ground-row">
         <!-- main -->
-        <div class="main-ground">
-            {% block main_ground %}
+        {% block main_ground %}
+            <div class="main-ground">
+                {% block main_ground_main_frame %}
                 <div class="main">
-                    {% block main_ground_main_frame %}
+                    {% block main_ground_content %}
                     <div class="content">
-                    {% block main_ground_content %}{% endblock %}
                     </div>
                     {% endblock %}
                 </div>
-                <div class="aside">
-                {% block main_ground_aside %}
-
                 {% endblock %}
+                {% block main_ground_aside %}
+                <div class="aside">
                 </div>
-            {% endblock %}
-        </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
 
         <!-- left -->
-        <div class="left-ground">
         {% block left_page_content %}
-        {% endblock %}
+        <div class="left-ground">
         </div>
+        {% endblock %}
 
         <!-- right -->
-        <div class="right-ground">
         {% block right_page_content %}
+        <div class="right-ground">
+        </div>
         {% endblock %}
+    </div>
+    {% endblock %}
+
+    <!-- fix tools -->
+    {% block fixtool %}
+    <div class="fix-tool">
+        <div class="fix-tool-wrap">
+            <div class="fix-tool-btn">
+                <a href="javascript:void(0);"><i class="fa fa-edit"></i></a>
+            </div>
+            <div class="fix-tool-btn" id="sendMail">
+                <a href="javascript:void(0);"><i class="fa fa-envelope"></i></a>
+            </div>
+            <div class="fix-tool-btn" id="goTop">
+                <a href="javascript:void(0);"><i class="fa fa-arrow-up"></i></a>
+            </div>
         </div>
     </div>
     {% endblock %}
@@ -108,11 +136,14 @@
             </div>
         </div>
     </div>
-{#    <div class="footer">#}
-{#        这里是footer#}
-{#    </div>#}
     {% endblock %}
 
+    <!-- hidden inputs config -->
+    {% block hidden_inputs %}
+    <div class="hidden-inputs-area">
+        <input type="hidden" value="{{ mail_addr|default:'wyzypa@gmail.com' }}" id="MailAddr" />
+    </div>
+    {% endblock %}
 
     {% block script %}{% endblock %}
 </body>
