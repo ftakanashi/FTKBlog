@@ -2,17 +2,27 @@
 a:hover{
     transition: all .5s;
 }
-
+.navbar{
+    border: 0;
+}
 .navbar-inverse{
     background-color: #256a88;
     border-color: #256a88;
     height: 65px;
 }
+.navbar-brand-img .navbar-brand{
+    height: 65px;
+    width: 15%;
+}
+.navbar-brand:hover{
+    cursor: pointer;
+    background: rgba(255,255,255,0.1);
+}
 .navbar-inverse .navbar-collapse{
     padding-left: 0;
 }
 .navbar-inverse .navbar-nav{
-    padding-left: 15%;
+    /*padding-left: 15%;*/
 }
 .navbar-inverse .navbar-nav > li > a{
     color: white;
@@ -38,7 +48,7 @@ a:hover{
     width: 25px;
     height: 100%;
     font-size: 15px;
-    background: #256a88;
+    background: white;
 }
 
 .left-ground-toggle a{
@@ -46,34 +56,35 @@ a:hover{
     float: right;
 }
 .left-ground-toggle a:hover{
-    color: white;
+    color: black;
+}
+.left-ground-toggle a:focus{
+    color: black;
 }
 
 .main-ground{
     width: 70%;
-    margin-left: 18%;
+    margin-left: 16%;
 }
 .left-ground{
-    background-color: #f4f4f4;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
     position: fixed;
-    top: 83px;
+    top: 98px;
     overflow-y: auto;
     padding: 10px;
     width: 15%;
     height: 100%;
-    display: none;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
 }
-/*.left-ground::-webkit-scrollbar{*/
-    /*width: 8px;*/
-/*}*/
-/*.left-ground::-webkit-scrollbar-thumb{*/
-    /*background-color: #bdbdbd;*/
-    /*border-radius: 5px;*/
-/*}*/
-/*.left-ground::-webkit-scrollbar-track{*/
-    /*background-color: white;*/
-/*}*/
+.left-ground > div.widget{
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 10px;
+    opacity: 0.9;
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+}
+.left-ground > div.widget:hover{
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.6);
+}
 .aside{
     width: 30%;
     float: right;
@@ -86,7 +97,7 @@ a:hover{
 }
 .content{
     margin-right: 30%;
-    padding-left: 10px;
+    /*padding-left: 10px;*/
 }
 .fix-tool{
     position: fixed;

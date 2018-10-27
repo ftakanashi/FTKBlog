@@ -4,7 +4,6 @@
 {% block style %}
     <link href="{% static 'ftk/blog/post.css' %}" rel="stylesheet" />
     <link href="{% static 'comp/editormd/css/editormd.min.css' %}" rel="stylesheet" />
-    <link href="{% static 'comp/mCustomScrollbar/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block main_ground %}
@@ -38,36 +37,30 @@
 
 {% block left_page_content %}
     <div class="left-ground">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Hello, World</h1>
+        <div class="my-clock widget">
+            <div class="icon-large icon-clock">
+                <div class="clock">
+                    <ol>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ol>
+                    <div id="div-hour" class="hour" style=""></div>
+                    <div id="div-minute" class="minute" style=""></div>
+                    <div id="div-second" class="second" style=""></div>
+                </div>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Hello, World</h1>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Hello, World</h1>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Hello, World</h1>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Hello, World</h1>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Hello, World</h1>
-            </div>
-        </div>
+
     </div>
 {% endblock %}
 
@@ -81,7 +74,6 @@
     <script src="{% static 'comp/editormd/lib/flowchart.min.js' %}"></script>
     <script src="{% static 'comp/editormd/lib/jquery.flowchart.min.js' %}"></script>
     <script src="{% static 'comp/editormd/editormd.min.js' %}"></script>
-    <script src="{% static 'comp/mCustomScrollbar/js/minified/jquery.mCustomScrollbar.min.js' %}"></script>
     <script>
         $(function() {
             var testEditor = editormd.markdownToHTML('postContent',{
@@ -93,12 +85,7 @@
                 sequenceDiagram: true,
                 codeFold: true
             });
-            $(window).load(function(){
-               $('.left-ground').mCustomScrollbar({
-                   axis: 'y',
-                   theme: 'dark'
-               });
-            });
         });
     </script>
+
 {% endblock %}

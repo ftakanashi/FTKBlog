@@ -16,15 +16,22 @@
     <link href="{% static 'comp/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
     <script src="{% static 'comp/bootstrap/js/bootstrap.min.js' %}"></script>
     <link href="{% static 'comp/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/ios-clock/clock.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/ios-clock/shake.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/ios-clock/shake-clock.css' %}" rel="stylesheet" />
     <script src="{% static 'ftk/base/main.js' %}"></script>
     <link href="{% static 'ftk/base/main.css' %}" rel="stylesheet" />
-    {% block style %}{% endblock %}
+    {% block style %}
+    {% endblock %}
 </head>
-<body style="font-size: 15px;background: #f4f4f4">
+<body {% block body_attribute %}style="font-size: 15px;background: #f4f4f4" {% endblock %}>
 
     <!-- header -->
     {% block page_header %}
     <div class="navbar navbar-inverse" role="navigation" style="border-radius:0;z-index: 999;">
+        <div class="navbar-brand-img">
+            <img src="{% static 'image/site_logo.png' %}" class="navbar-brand" />
+        </div>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-toggle-menu">
                 <span class="icon-bar"></span>
@@ -75,7 +82,52 @@
 
         <!-- left -->
         {% block left_page_content %}
-        <div class="left-ground">
+        <div class="left-ground" style="background-image: url({% static 'image/kotonoha_bg/kotonoha_1.jpg' %}); background-size: 100% 100%">
+            <div class="clock-wrap widget">
+                <div class="my-clock">
+                    <div class="icon-large icon-clock">
+                        <div class="clock">
+                            <div id="div-hour" class="hour" style=""></div>
+                            <div id="div-minute" class="minute" style=""></div>
+                            <div id="div-second" class="second" style=""></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="shake-clock-wrap">
+                    <div class="shake-clock">
+                        <div class="h shake shake-slow"></div>
+                        <span style="font-size:30px">:</span>
+                        <div class="m shake shake-slow"></div>
+                        <span style="font-size:30px">:</span>
+                        <div class="s shake shake-slow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="widget panel panel-default">
+                <div class="panel-body">
+                    <h3>Hello,World</h3>
+                </div>
+            </div>
+            <div class="widget panel panel-default">
+                <div class="panel-body">
+                    <h3>Hello,World</h3>
+                </div>
+            </div>
+            <div class="widget panel panel-default">
+                <div class="panel-body">
+                    <h3>Hello,World</h3>
+                </div>
+            </div>
+            <div class="widget panel panel-default">
+                <div class="panel-body">
+                    <h3>Hello,World</h3>
+                </div>
+            </div>
+            <div class="widget panel panel-default">
+                <div class="panel-body">
+                    <h3>Hello,World</h3>
+                </div>
+            </div>
         </div>
         {% endblock %}
 
@@ -145,6 +197,9 @@
     </div>
     {% endblock %}
 
-    {% block script %}{% endblock %}
+    <script src="{% static 'comp/ios-clock/clock.js' %}"></script>
+    <script src="{% static 'comp/ios-clock/shake.js' %}"></script>
+    {% block script %}
+    {% endblock %}
 </body>
 </html>

@@ -1,0 +1,64 @@
+{% load macros %}
+
+{% macro render_digital_clock %}
+    <!-- 星期几 -->
+    <div class="days">
+        <div class="day">
+            <p class="sunday">星期日</p>
+        </div>
+        <div class="day">
+            <p class="monday">星期一</p>
+        </div>
+        <div class="day">
+            <p class="tuesday">星期二</p>
+        </div>
+        <div class="day">
+            <p class="wednesday">星期三</p>
+        </div>
+        <div class="day">
+            <p class="thursday">星期四</p>
+        </div>
+        <div class="day">
+            <p class="friday">星期五</p>
+        </div>
+        <div class="day">
+            <p class="saturday">星期六</p>
+        </div>
+    </div>
+    <!-- CLOCK -->
+    <div class="clock">
+        <!-- 小时 -->
+        <div class="numbers">
+            <p class="hours"></p>
+            <p class="placeholder">88</p>
+        </div>
+        <div class="colon">
+            <p>:</p>
+        </div>
+        <!-- 分 -->
+        <div class="numbers">
+            <p class="minutes"></p>
+            <p class="placeholder">88</p>
+        </div>
+
+        <div class="colon">
+            <p>:</p>
+        </div>
+        <!-- 秒 -->
+        <div class="numbers">
+            <p class="seconds"></p>
+            <p class="placeholder">88</p>
+        </div>
+        <!-- 上午 / 下午 -->
+        <div class="am-pm">
+            <!-- AM -->
+            <div>
+                <p class="am">am</p>
+            </div>
+            <!-- PM -->
+            <div>
+                <p class="pm">pm</p>
+            </div>
+        </div>
+    </div><!-- END CLOCK -->
+{% endmacro %}

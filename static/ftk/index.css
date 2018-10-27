@@ -1,3 +1,9 @@
+.left-ground{
+    top: 65px;
+}
+.toolbar{
+    display: none;
+}
 span.post-info{
     display: inline;
     color: darkgray;
@@ -65,4 +71,3 @@ h3 > .post-wrap-title:hover{
 .me-icon a:hover{
     color: #5a5a5a;
 }
-
