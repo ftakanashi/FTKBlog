@@ -43,14 +43,14 @@ class Post(models.Model):
             Category,
             null=True,
             on_delete=models.SET_NULL,
-            related_name='category',
+            related_name='in_category_posts',
             verbose_name='文章分类'
     )
     tag = models.ManyToManyField(
             Tag,
             blank=True,
             null=True,
-            related_name='tags',
+            related_name='in_tag_posts',
             verbose_name='文章标签'
     )
 

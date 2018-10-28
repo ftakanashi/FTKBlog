@@ -11,8 +11,10 @@
 {% block main_ground_aside %}
     <div class="aside">
         <div class="aside-frame">
-            <div>
-                <p>一些内容</p>
+            <div class="welcome-info">
+                <h3>欢迎！</h3>
+                <hr>
+                <p>一个半路出家素人的自言自语</p>
             </div>
             <div class="auto-me">
                 <div class="me-avatar"><img src="{% static 'image/profile.jpg' %}"></div>
@@ -20,8 +22,31 @@
                 <div class="me-declaration">竜神の剣を喰らえ！</div>
                 <div class="me-icon">
                     <a href="https://github.com/wyzypa/"><i class="fa fa-github"></i></a>
+                    <a href="mailto:{{ mail_addr | default:"wyzypa@gmail.com" }}?subject=来自博客的邮件&subject=来自博客的邮件"><i class="fa fa-envelope"></i></a>
                     <a href="#"><i class="fa fa-rss-square"></i></a>
                 </div>
+            </div>
+            <div class="category-list-wrap">
+                <h3>分类列表</h3>
+                <ul class="category-list">
+                {% for category in categoryList %}
+                    <li class="category-name">
+                        <a href="{% url 'index' %}?category={{ category.cate_id }}">{{ category.name }}</a>
+                        <span class="category-count">{{ category.count }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="category-list-wrap">
+                <h3>标签列表</h3>
+                <ul class="category-list">
+                {% for tag in tagList %}
+                    <li class="category-name">
+                        <a href="javascript:void(0);">{{ tag.name }}</a>
+                        <span class="category-count">{{ tag.count }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
@@ -38,10 +63,12 @@
                     <span class="label label-primary">原创</span>
                 {% endif %}
                 <span class="post-info">更新时间：{{ post.update_time }}</span>
-                <span class="post-info">分类[{{ post.category.name }}]</span>
-                <span class="post-info">标签:
-                    {% if post.tags.length > 0 %}
-                    {% for tag in post.tags %}{{ tag.name }},{% endfor %}</span>
+                <span class="post-info">
+                    <a href="{% url 'index' %}?category={{ post.category.cate_id }}">[{{ post.category.name }}]</a>
+                </span>
+                <span class="post-info">
+                    {% if post.tag %}
+                    {% for tag in post.tag.all %}<span class="label label-default">{{ tag.name }}</span>&nbsp;{% endfor %}</span>
                     {% else %}无
                     {% endif %}
             </div>
@@ -83,4 +110,9 @@
             </ul>
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script src="{% static 'ftk/index.js' %}"></script>
 {% endblock %}

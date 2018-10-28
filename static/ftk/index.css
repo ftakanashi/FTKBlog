@@ -9,6 +9,17 @@ span.post-info{
     color: darkgray;
     margin-right: 10px;
 }
+.post-info a{
+    text-decoration: none;
+    color: #256a88;
+}
+.post-info a:hover{
+    padding: 3px;
+    border-radius: 3px;
+    background-color: #256a88;
+    margin-left: 2px;
+    color: white;
+}
 .post-wrap-title{
     transition: margin-left .5s;
     text-decoration: none;
@@ -70,4 +81,32 @@ h3 > .post-wrap-title:hover{
 }
 .me-icon a:hover{
     color: #5a5a5a;
+}
+.category-list-wrap h3{
+    font-size: 20px;
+    margin-bottom: 25px;
+    text-align:center;
+}
+.category-list{
+    margin: 0 30px;
+    border-bottom: 2px solid #eeeeee;
+    padding-bottom: 5px;
+    font-size: 14px;
+}
+.category-list > li{
+    margin-top: 10px;
+}
+.category-list>li a{
+    text-decoration: none;
+    color: #256a88;
+}
+.category-list>li a:hover{
+    padding: 3px;
+    background: #256a88;
+    border-radius: 3px;
+    color: white;
+    margin-left: 5px;
+}
+.category-count{
+    float: right;
 }
