@@ -28,7 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pure_pagination',
-    'blog.apps.BlogConfig'
+    'ratelimit',
+    'blog.apps.BlogConfig',
+    'ftkuser.apps.FtkuserConfig'
 ]
 
 MIDDLEWARE = [

@@ -2,17 +2,32 @@
  * Created by weiyz18939 on 2018/10/24.
  */
 
+function getParam(key,defaultValue){
+    var search = location.search.substr(1);
+    var kvs = search.split('&');
+    for(var i=0;i<kvs.length;i++){
+        var kv = kvs[i];
+        var info = kv.split('=');
+        var k = info[0];
+        var v = info[1];
+        if (k == key){
+            return v;
+        }
+    }
+    return defaultValue;
+}
+
 $(document).ready(function(event){
+
     $('div.navbar-inverse').css({top: $(window).scrollTop()});
     $(window).scroll(function(event){
         $('div.navbar-inverse').css({top: $(window).scrollTop()});
     });
 
-    // left-ground滚动条
-    //$('.left-ground').mCustomScrollbar({
-    //    theme: 'dark',
-    //    scrollbarPosition: 'outside'
-    //});
+    // left-ground lazy load
+    $('.shake').ready(function(){
+        console.log('left done');
+    });
 
     // 各个固定按钮功能
     var mailAddr = $('#MailAddr').val();

@@ -1,0 +1,30 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block style %}
+    <link href="{% static 'comp/paperplane-in-space/fly.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+<body>
+    <div class="error-info-wrap">
+        <h2 class="error-info-title">{{ error_title }}</h2>
+        <div class="error-info">
+            {{ error_msg }}
+        </div>
+        <a href="javascript:void(0);" class="return-link">返回首页</a>
+    </div>
+    <canvas id="paperplane-lost-in-space" resize="true" style="-moz-user-select: none; touch-action: none;"></canvas>
+    <script src="{% static 'comp/paperplane-in-space/paper-full.min.js' %}"></script>
+    <script src="{% static 'comp/paperplane-in-space/fly.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $('.return-link').click(function(event){
+                event.preventDefault();
+                location.pathname = getParam('next','{% url 'index' %}');
+            });
+        });
+    </script>
+</body>
+{% endblock %}
