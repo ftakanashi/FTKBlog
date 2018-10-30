@@ -51,12 +51,15 @@
         </div>
     </div>
 {% endblock %}
+
 {% block main_ground_content %}
     <div class="content">
     {% for post in posts.object_list%}
         <div class="post-wrap">
             <div class="post-wrap-header">
-                <h3><a href="{% url 'detail' post.post_uuid %}" class="post-wrap-title">{{ post.title }}</a></h3>
+                <h4><a href="{% url 'detail' post.post_uuid %}" class="post-wrap-title">
+                    {% if post.is_top %}[置顶]{% endif %}
+                    {{ post.title }}</a></h4>
                 {% if post.is_reprint %}
                 <span class="label label-danger"><a href="{{ post.reprint_src }}">转载</a></span>
                 {% else %}

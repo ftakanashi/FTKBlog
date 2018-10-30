@@ -1,3 +1,8 @@
+.highlight{
+    background: #ffab3e;
+    padding: 0;
+    font-weight: bold;
+}
 .toolbar{
     height: 30px;
     position: fixed;
@@ -5,8 +10,20 @@
     width: 100%;
     background: white;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    z-index: 997;
 }
-
+.intern-search{
+    width: 100%;
+    height: 100%;
+}
+.intern-search input{
+    height: 30px;
+    width: calc(100% - 25px);
+    border: 0;
+}
+.intern-search input:focus{
+    border: 1px dashed rgba(0,0,0,0.4);
+}
 .left-ground{
     top: 95px;
 }
@@ -19,6 +36,7 @@
     font-size: 15px;
     background-color: black;
     opacity: 0.76;
+    float: left;
 }
 .left-ground-toggle a{
     text-decoration: none;
@@ -32,6 +50,8 @@
 }
 .main-ground{
     margin-top: 50px;
+    width: 90%;
+    margin-left: 5%;
 }
 .post{
     padding: 5%;
@@ -54,10 +74,6 @@
 }
 .post-body{
     margin-top: 5%;
-}
-.main-ground{
-    width: 90%;
-    margin-left: 5%;
 }
 .my-clock{
     max-height: 100%;

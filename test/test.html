@@ -1,14 +1,18 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <link href="test.css" rel="stylesheet" />
-    <script src="../static/comp/paperplane-in-space/paper-full.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="editormd/css/editormd.min.css" rel="stylesheet" />
 </head>
 <body>
-<div class="error-info-wrap">
-    <h1 class="error-info">403 登出不适用GET方法</h1>
+<div id="content">
+    <textarea id="content-markdown-doc" name="content-markdown-doc" style="display:none"></textarea>
+    <textarea id="content-html-code" name="content-html-code" style="display:none"></textarea>
 </div>
-<canvas id="triangle-lost-in-space" resize="true" style="-moz-user-select: none; touch-action: none;"></canvas>
-<script src="../static/comp/paperplane-in-space/fly.js"></script>
+<button id="mybutton">test</button>
+<script src="jquery.min.js"></script>
+<script src="editormd/editormd.min.js"></script>
+<script src="test.js"></script>
 </body>
 </html>

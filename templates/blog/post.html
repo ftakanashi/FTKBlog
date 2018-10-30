@@ -8,6 +8,12 @@
 
 {% block left_ground_display %}none{% endblock %}
 
+{% block toolbar-items %}
+    <div class="intern-search">
+        <input id="intern-search-input" placeholder="请输入关键词搜索页面..." />
+    </div>
+{% endblock %}
+
 {% block main_ground %}
     <div class="main-ground">
         <div class="post">
@@ -47,6 +53,8 @@
     <script src="{% static 'comp/editormd/lib/flowchart.min.js' %}"></script>
     <script src="{% static 'comp/editormd/lib/jquery.flowchart.min.js' %}"></script>
     <script src="{% static 'comp/editormd/editormd.min.js' %}"></script>
+    <script src="{% static 'comp/layer/layer.js' %}"></script>
+    <script src="{% static 'comp/textSearch.js' %}"></script>
     <script src="{% static 'ftk/blog/post.js' %}"></script>
     <script>
         $(function() {

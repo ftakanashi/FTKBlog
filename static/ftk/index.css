@@ -29,7 +29,7 @@ span.post-info{
     text-decoration: none;
     color: white;
 }
-h3 > .post-wrap-title:hover{
+h4 > .post-wrap-title:hover{
     background-color: #256abc;
     padding: 3px;
     border-radius: 5%;
@@ -51,7 +51,7 @@ h3 > .post-wrap-title:hover{
     box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
 }
 .post-wrap,.aside-frame > div{
-    padding: 5%;
+    padding: 5px 20px 20px 20px;
     background: white;
     margin-bottom: 20px;
     border: 1px solid #eeeeee;

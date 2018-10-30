@@ -1,0 +1,37 @@
+.main-ground{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    width: 90%;
+    background: white;
+    border: 1px solid darkgray;
+    border-radius: 10px;
+    padding: 20px;
+}
+.tag-group{
+    margin-bottom: 15px;
+}
+.tag-check{
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 5px;
+    background: lightgrey;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.tag-check .tag-check-sign{
+    display: none;
+}
+.tag-check:hover{
+    background: #428a98;
+}
+.tag-check:hover .tag-check-sign{
+    display: inline;
+}
+.tag-check.active{
+    background: #256a88;
+}
+.tag-check.active .tag-check-sign{
+    display: inline;
+}

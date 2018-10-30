@@ -21,8 +21,8 @@ class IndexView(View):
         else:
             posts = Post.objects.filter(status=0)
 
-        posts = posts.order_by('update_time').reverse()
-        p = Paginator(posts, 2, request=request)
+        posts = posts.order_by('-is_top','-update_time')
+        p = Paginator(posts, 10, request=request)
         paged_posts = p.page(page)
 
         categories = Category.objects.all()
@@ -38,6 +38,19 @@ class IndexView(View):
         ctx['categoryList'] = categories
         ctx['tagList'] = tags
         return render(request, 'index.html', ctx)
+
+class NewPostView(View):
+
+    def get(self, request):
+        categoryList = Category.objects.all()
+        tagList = Tag.objects.all()
+        return render(request, 'blog/new.html', locals())
+
+    def post(self, request):
+        ctx = {}
+
+        return redirect(reverse('index'))
+
 
 class PostView(View):
     def get(self, request, uuid):

@@ -56,6 +56,7 @@ class Post(models.Model):
 
     is_reprint = models.BooleanField(default=False, verbose_name='转载')
     reprint_src = models.CharField(max_length=512, blank=True, null=True, verbose_name='转载源')
+    is_top = models.BooleanField(default=False,verbose_name='置顶')
 
     def __unicode__(self):
         return '[%s] <%s: %s>' % (self.post_id, self.category.name, self.title)

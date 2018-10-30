@@ -32,9 +32,7 @@ background-image: url({% static 'image/bg/main.jpg' %});
 background-size: cover;
 background-attachment: fixed;
 " {% endblock %}>
-{#    <div class="bg">#}
-{#        <img src="{% static 'image/bg/main.jpg' %}" />#}
-{#    </div>#}
+
     <!-- header -->
     {% block page_header %}
     <div class="navbar navbar-inverse" role="navigation" style="border-radius:0;z-index: 999;">
@@ -53,7 +51,7 @@ background-attachment: fixed;
                 <li><a class="{% ifequal request.path '/blog/' %}active{% endifequal %}" href="{% url 'index' %}">首页</a></li>
                 <li><a class="{% ifequal request.path '/about/' %}active{% endifequal %}" href="{% url 'about' %}">关于</a></li>
                 {% if request.user.is_active %}
-                <li><a href="javascript:void(0);">新文章</a></li>
+                <li><a href="{% url 'new_post' %}">新文章</a></li>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -87,9 +85,12 @@ background-attachment: fixed;
     {% block toolsbar %}
     <div class="toolbar">
         {% block left_ground_toggle %}
-        <div class="left-ground-toggle">
+        <span class="left-ground-toggle">
             <a href="javascript:void(0);"><i class="fa fa-bars"></i></a>
-        </div>
+        </span>
+        {% endblock %}
+        {% block toolbar-items %}
+
         {% endblock %}
     </div>
     {% endblock %}
@@ -182,7 +183,7 @@ background-attachment: fixed;
                 <p>我还没有想好要写什么…</p>
             </div>
             <div class="col-lg-4 col-sm-12 col-xs-12">
-                <img src="{% static 'image/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />
+                <img class="img-circle" src="{% static 'image/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />
             </div>
             <div class="col-lg-4 col-sm-12 col-xs-12">
                 <h5 class="footer-title">友情链接</h5>
@@ -208,11 +209,12 @@ background-attachment: fixed;
     {% endblock %}
 
     <!-- hidden inputs config -->
-    {% block hidden_inputs %}
     <div class="hidden-inputs-area">
+    {% block hidden_inputs %}
         <input type="hidden" value="{{ mail_addr|default:'wyzypa@gmail.com' }}" id="MailAddr" />
-    </div>
     {% endblock %}
+    </div>
+
 
     <script src="{% static 'comp/ios-clock/clock.js' %}"></script>
     <script src="{% static 'comp/ios-clock/shake.js' %}"></script>
