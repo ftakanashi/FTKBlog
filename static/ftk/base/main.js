@@ -19,10 +19,10 @@ function getParam(key,defaultValue){
 
 $(document).ready(function(event){
 
-    $('div.navbar-inverse').css({top: $(window).scrollTop()});
-    $(window).scroll(function(event){
-        $('div.navbar-inverse').css({top: $(window).scrollTop()});
-    });
+    //$('div.navbar-inverse').css({top: $(window).scrollTop()});
+    //$(window).scroll(function(event){
+    //    $('div.navbar-inverse').css({top: $(window).scrollTop()});
+    //});
 
     // left-ground lazy load
     $('.shake').ready(function(){
@@ -36,5 +36,17 @@ $(document).ready(function(event){
     });
     $('#sendMail').find('a').click(function(event){
         window.location = 'mailto:'+ mailAddr +'?subject=来自博客的邮件&subject=来自博客的邮件&body=【来源URL：'+ location.href +'】';
-    })
+    });
+
+    $.extend({
+        'scrollTo': function(tid){
+            if (tid.substr(0,1) == '#'){
+                selector = tid;
+            }
+            else{
+                selector = '#' + tid;
+            }
+            $('html,body').animate({scrollTop: $(selector).offset().top - 200 + 'px'},300);
+        }
+    });
 });

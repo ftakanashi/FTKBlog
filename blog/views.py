@@ -2,10 +2,14 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render,redirect,reverse
-from django.http.response import Http404
+from django.http.response import Http404, JsonResponse
 from django.views.generic import View
 from pure_pagination import Paginator
 from .models import Post, Category, Tag
+
+import json
+import re
+import traceback
 # Create your views here.
 
 class IndexView(View):
@@ -41,15 +45,53 @@ class IndexView(View):
 
 class NewPostView(View):
 
+    @classmethod
+    def markdown2text(cls, markdown):
+        p = re.compile('[\\\_\[\]\#\+\!]|[\`\*\-]{3,}|^>')
+        return p.sub('', markdown)
+
     def get(self, request):
         categoryList = Category.objects.all()
         tagList = Tag.objects.all()
         return render(request, 'blog/new.html', locals())
 
     def post(self, request):
-        ctx = {}
+        # ctx = {}
+        try:
+            postInfo = {}
+            postInfo['title'] = request.POST.get('title')
+            postInfo['content'] = request.POST.get('content')
+            postInfo['category'] = Category.objects.get(cate_id=request.POST.get('category'))
+            postInfo['abstract'] = self.markdown2text(postInfo['content'])[:150]
+            postInfo['is_top'] = request.POST.get('is_top') == 'true'
+            postInfo['is_reprint'] = request.POST.get('is_reprint') == 'true'
+            postInfo['reprint_src'] = request.POST.get('reprint_src')
+            postInfo['status'] = '0' if request.POST.get('is_publish') == 'true' else '1'
+            tags = json.loads(request.POST.get('tag'))
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '上传内容错误'},status=500)
 
-        return redirect(reverse('index'))
+        processFlag = False
+        try:
+            post = Post(**postInfo)
+            post.save()
+            processFlag = True
+            for tag in tags:
+                if isinstance(tag,unicode):
+                    tag = int(tag)
+                post.tag.add(Tag.objects.get(tag_id=tag))
+        except Exception,e:
+            print traceback.format_exc(e)
+            if processFlag:
+                postUrl = reverse('detail',kwargs={'uuid': post.post_uuid})
+                return JsonResponse({'msg': '添加文章成功，但是关联标签失败','next': postUrl})
+            else:
+                return JsonResponse({'msg': '添加文章失败'},status=500)
+        else:
+            postUrl = reverse('detail',kwargs={'uuid': post.post_uuid})
+            return JsonResponse({'next': postUrl})
+
 
 
 class PostView(View):

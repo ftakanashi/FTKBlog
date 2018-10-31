@@ -33,7 +33,7 @@ class Post(models.Model):
 
     post_id = models.AutoField(primary_key=True, verbose_name='文章真实ID')
     post_uuid = models.UUIDField(default=uuid.uuid1, verbose_name='文章伪装ID')
-    title = models.CharField(max_length=256, verbose_name='文章标题')
+    title = models.CharField(max_length=256, verbose_name='文章标题', unique=True)
     abstract = models.CharField(max_length=256, verbose_name='文章摘要')
     content = models.TextField(null=True, default='', verbose_name='文章内容')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
@@ -56,7 +56,10 @@ class Post(models.Model):
 
     is_reprint = models.BooleanField(default=False, verbose_name='转载')
     reprint_src = models.CharField(max_length=512, blank=True, null=True, verbose_name='转载源')
-    is_top = models.BooleanField(default=False,verbose_name='置顶')
+    is_top = models.BooleanField(default=False, verbose_name='置顶')
 
     def __unicode__(self):
-        return '[%s] <%s: %s>' % (self.post_id, self.category.name, self.title)
+        if self.category is not None:
+            return '[%s] <%s: %s>' % (self.post_id, self.category.name, self.title)
+        else:
+            return '[%s] <NoCategory: %s>' % (self.post_id, self.title)

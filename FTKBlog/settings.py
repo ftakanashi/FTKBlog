@@ -14,6 +14,7 @@ SECRET_KEY = '6gz5nmsl-kdkne+(em)uv03^v9_^d(!1#bb8dfj!u+uem)k_19'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -28,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pure_pagination',
+    'django_elasticsearch_dsl',
     'ratelimit',
     'blog.apps.BlogConfig',
     'ftkuser.apps.FtkuserConfig'
@@ -75,6 +77,11 @@ DATABASES = {
     }
 }
 
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': '192.168.178.59:9200'
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """FTKBlog URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -21,8 +22,18 @@ def index(request):
     return redirect(reverse('index'))
 
 def about(request):
-    ctx = {}
-    return render(request, 'index.html', ctx)
+    ctx = {
+        'error_title': '未找到页面',
+        'error_msg': '这个页面已经飘到M78星云了'
+    }
+    return render(request,'error.html',ctx)
+
+def handler_404(request):
+    ctx = {
+        'error_title': '未找到页面',
+        'error_msg': '这个页面已经飘到M78星云了'
+    }
+    return render(request,'error.html',ctx)
 
 urlpatterns = [
     url('^$', index),
@@ -31,3 +42,5 @@ urlpatterns = [
     url(r'^user/',include('ftkuser.urls')),
     url(r'^about/', about, name='about')
 ]
+
+handler404 = handler_404
