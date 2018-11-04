@@ -32,13 +32,14 @@ class Post(models.Model):
     POST_STATUS = [('0', '发布'), ('1', '草稿')]
 
     post_id = models.AutoField(primary_key=True, verbose_name='文章真实ID')
-    post_uuid = models.UUIDField(default=uuid.uuid1, verbose_name='文章伪装ID')
+    post_uuid = models.UUIDField(default=uuid.uuid4, verbose_name='文章伪装ID')
     title = models.CharField(max_length=256, verbose_name='文章标题', unique=True)
     abstract = models.CharField(max_length=256, verbose_name='文章摘要')
     content = models.TextField(null=True, default='', verbose_name='文章内容')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     status = models.CharField(default='0', max_length=1, choices=POST_STATUS, verbose_name='文章状态')
+    read_count = models.IntegerField(default=0,verbose_name='浏览量')
     category = models.ForeignKey(
             Category,
             null=True,
@@ -63,3 +64,24 @@ class Post(models.Model):
             return '[%s] <%s: %s>' % (self.post_id, self.category.name, self.title)
         else:
             return '[%s] <NoCategory: %s>' % (self.post_id, self.title)
+
+
+class Comment(models.Model):
+    comment_id = models.AutoField(primary_key=True,verbose_name='评论ID')
+    comment_uuid = models.UUIDField(default=uuid.uuid4,verbose_name='评论UUID')
+    in_post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='所属文章'
+    )
+    create_time = models.DateTimeField(auto_now_add=True,verbose_name='评论时间')
+    author = models.TextField(max_length=128,verbose_name='评论者')
+    title = models.TextField(max_length=256,default='无题',verbose_name='评论标题')
+    content = models.TextField(max_length=2048,verbose_name='评论内容')
+    email = models.EmailField(null=True,blank=True,verbose_name='邮箱地址')
+    floor = models.IntegerField(default=1,verbose_name='楼层')
+    reply_to = models.CharField(max_length=32,default='',verbose_name='回复楼层')
+
+    def __unicode__(self):
+        return '%s: <Comment %s>' % (self.comment_id,self.author)

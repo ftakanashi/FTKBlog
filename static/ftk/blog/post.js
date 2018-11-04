@@ -4,6 +4,10 @@
 $(function(){
 $(document).ready(function(){
 
+    layui.use('element',function(){
+        var element = layui.element;
+    });
+
     // 开关边栏动画
     $('.left-ground-toggle a').click(function(event){
         event.preventDefault();
@@ -37,6 +41,58 @@ $(document).ready(function(){
             markClass: 'highlight',
             divStr: '|'
         });
+    });
+
+    // 折叠评论
+    $('.collapse-comment').click(function(){
+        $('.layui-colla-content').removeClass('layui-show');
+    });
+
+    // 删除评论
+    $('.delete-comment').click(function(event){
+        var uuid = $(this).attr('name');
+        layer.confirm('确定删除此条评论吗？',{icon: 3,title: '提示'},function(index){
+            var loadLayer = layer.load('1',{shade: 0.5});
+            $.ajax({
+                url: location.pathname,
+                type: 'delete',
+                dataType: 'json',
+                data: {
+                    target: 'comment',
+                    uuid: uuid
+                },
+                complete: function(){
+                    layer.close(loadLayer);
+                },
+                success: function(data){
+                    location.reload();
+                },
+                error: function(xml, err, exc){
+                    try{
+                        layer.msg(JSON.parse(xml.responseText).msg);
+                    }
+                    catch(e){
+                        layer.msg('未知错误');
+                    }
+                }
+            })
+        });
+    });
+
+    // 跳到相关评论
+    $('.jump-to-comment').click(function(event){
+        var tuuid = $(this).attr('name');
+        var tdom = $('#comment_' + tuuid);
+        if (tdom.length < 1){
+            layer.msg('那条评论已经被删除啦！');
+        }
+        else{
+            $('.layui-colla-item').each(function(i,ele){
+                $(ele).removeClass('active');
+            });
+            $(tdom).parents('.layui-colla-item').addClass('active');
+            $.scrollTo('#comment_' + tuuid);
+        }
     });
 });
 });

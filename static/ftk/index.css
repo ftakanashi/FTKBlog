@@ -47,8 +47,13 @@ h4 > .post-wrap-title:hover{
     padding: 5px;
     border-radius: 5%;
 }
+.post-wrap{
+    opacity: 0.7;
+    transition: opacity .5s;
+}
 .post-wrap:hover{
     box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    opacity: 1;
 }
 .post-wrap,.aside-frame > div{
     padding: 5px 20px 20px 20px;

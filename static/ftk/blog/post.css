@@ -75,7 +75,56 @@
 .post-body{
     margin-top: 5%;
 }
+.fix-tool-btn{
+    padding: 7px;
+}
 .my-clock{
     max-height: 100%;
     max-width: 100%;
+}
+.comment{
+    margin-left: 5%;
+    width: 90%;
+    margin-bottom: 5%;
+    padding: 20px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 10px;
+}
+.comment-title{
+    font-weight: bold;
+    font-size: 14px;
+}
+.layui-colla-item.active{
+    border: 3px solid gray;
+}
+.layui-colla-item.active .layui-colla-title{
+    background: gray;
+    color: white;
+}
+.jump-to-comment{
+    text-decoration: none;
+}
+.jump-to-comment:hover{
+    text-decoration: none;
+}
+.jump-to-comment:focus{
+    text-decoration: none;
+    color: #0f0f0f;
+}
+.comment-footer a{
+    transition: all .5s;
+    text-decoration: none;
+    font-size: 13px;
+}
+.comment-footer a:hover{
+    background: #256a88;
+    color: white;
+    margin-left: 3px;
+    padding: 3px;
+    text-decoration: none;
+    border-radius: 3px;
+}
+.layui-colla-content{
+    background: rgba(255,255,255,0.9);
+    font-size: 17px;
 }

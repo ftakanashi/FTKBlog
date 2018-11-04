@@ -19,15 +19,15 @@ function getParam(key,defaultValue){
 
 $(document).ready(function(event){
 
-    //$('div.navbar-inverse').css({top: $(window).scrollTop()});
-    //$(window).scroll(function(event){
-    //    $('div.navbar-inverse').css({top: $(window).scrollTop()});
-    //});
+    $('div.navbar-inverse').css({top: $(window).scrollTop()});
+    $(window).scroll(function(event){
+        $('div.navbar-inverse').css({top: $(window).scrollTop()});
+    });
 
     // left-ground lazy load
-    $('.shake').ready(function(){
-        console.log('left done');
-    });
+    //$('.shake').ready(function(){
+    //    console.log('left done');
+    //});
 
     // 各个固定按钮功能
     var mailAddr = $('#MailAddr').val();

@@ -8,6 +8,9 @@ from django.contrib.auth import logout, authenticate, login
 
 from ratelimit.decorators import ratelimit
 
+from .models import Slogan
+
+import random
 # Create your views here.
 class UserLogout(View):
 
@@ -24,6 +27,9 @@ class UserLogout(View):
 
 class UserLogin(View):
 
+    def _randomGetSlogan(self):
+        return random.choice(Slogan.objects.all())
+
     def get(self, request):
         ctx = {}
 
@@ -33,12 +39,12 @@ class UserLogin(View):
 
         # slogan彩蛋
         if request.GET.get('changeslogan') == 'true':
-            ctx['slogan'] = '除了我的无知外，我其实一无所知'
-            ctx['author'] = '苏格拉底'
+            slogan = self._randomGetSlogan()
+            ctx['content'] = slogan.content
+            ctx['author'] = slogan.author
             return JsonResponse(ctx)
 
-        ctx['slogan'] = '勇气是多一分钟的无惧'
-        ctx['author'] = '美国将军·巴顿'
+        ctx['slogan'] = self._randomGetSlogan()
         return render(request, 'ftkuser/login.html', ctx)
 
     @ratelimit(key='ip', rate='3/m')

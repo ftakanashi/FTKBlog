@@ -165,13 +165,14 @@ background-attachment: fixed;
     {% block fixtool %}
     <div class="fix-tool">
         <div class="fix-tool-wrap">
-            <div class="fix-tool-btn">
-                <a href="javascript:void(0);"><i class="fa fa-edit"></i></a>
-            </div>
-            <div class="fix-tool-btn" id="sendMail">
+            {% block fixtool_btn %}{% endblock %}
+            <div class="fix-tool-btn" id="sendMail" title="发送邮件给我">
                 <a href="javascript:void(0);"><i class="fa fa-envelope"></i></a>
             </div>
-            <div class="fix-tool-btn" id="goTop">
+            <div class="fix-tool-btn" id="goSearch" title="站内搜索">
+                <a href="{% url 'search_index' %}" target="_blank"><i class="fa fa-search"></i></a>
+            </div>
+            <div class="fix-tool-btn" id="goTop" title="回到顶部">
                 <a href="javascript:void(0);"><i class="fa fa-arrow-up"></i></a>
             </div>
         </div>
@@ -224,6 +225,7 @@ background-attachment: fixed;
     <script src="{% static 'comp/ios-clock/shake.js' %}"></script>
     <script>
         $.ajaxSetup({
+            headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
             data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}
         });
     </script>

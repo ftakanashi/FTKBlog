@@ -7,5 +7,6 @@ from .models import *
 admin.site.register([
     Post,
     Category,
-    Tag
+    Tag,
+    Comment
 ])

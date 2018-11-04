@@ -9,7 +9,8 @@ $(document).ready(function(){
     });
 
     $('#categorySelect').select2({
-        language: 'zh-CN'
+        language: 'zh-CN',
+        width: '100%'
     });
 
     $('#isTopCheck').bootstrapSwitch({
@@ -54,14 +55,57 @@ $(document).ready(function(){
         imageUploadUrl: location.pathname + 'upload/'
     });
 
+    $.extend({
+        loadCache: function(){
+            layer.msg('正在加载自动保存内容...',{offset: 't',icon: 0});
+            $.ajax({
+                url: location.pathname,
+                type: 'put',
+                dataType: 'json',
+                data: {
+                    act: 'load'
+                },
+                success: function(data){
+                    layer.confirm('发现最近('+moment(Date.now() - 1000 * data.time).fromNow()+')自动保存的内容，是否恢复？',{icon:3,title:'提示'},function(index){
+                        contentEditor.insertValue(data.content);
+                        layer.msg('恢复成功',{offset: 't',icon: 1});
+                    });
+                },
+                error: function(xml,err,exc){
+                    var msg;
+                    try{
+                        msg = JSON.parse(xml.responseText).msg;
+                    }
+                    catch(e){
+                        msg = '未知错误';
+                    }
+                    layer.msg(msg,{offset: 't',icon: 0});
+                }
+            });
+        },
+        clearCache: function(){
+            $.ajax({
+                url: location.pathname,
+                type: 'put',
+                dataType: 'json',
+                data: {
+                    act: 'clear'
+                }
+            })
+        }
+    });
     // 先验自动保存
-    var autoSavePre = JSON.parse($.cookie('autosave'));
-    if(autoSavePre && (Date.now() - autoSavePre.timestamp) < 1000 * 10 * 60){
-        layer.confirm('发现最近('+moment(autoSavePre.timestamp).fromNow()+')自动保存的内容，是否恢复？',{icon:3,title:'提示'},function(index){
-            contentEditor.insertValue(autoSavePre.content);
-            layer.msg('恢复成功',{offset: 'lb'});
-        });
-    }
+    $.loadCache();
+    //if ($.cookie('autosave')){
+    //    var autoSavePre = JSON.parse($.cookie('autosave'));
+    //    if(autoSavePre && (Date.now() - autoSavePre.timestamp) < 1000 * 10 * 60){
+    //        layer.confirm('发现最近('+moment(autoSavePre.timestamp).fromNow()+')自动保存的内容，是否恢复？',{icon:3,title:'提示'},function(index){
+    //            contentEditor.insertValue(autoSavePre.content);
+    //            layer.msg('恢复成功',{offset: 'lb'});
+    //        });
+    //    }
+    //}
+
 
     // 点击重置按钮
     $('#reset').click(function(event){
@@ -77,6 +121,7 @@ $(document).ready(function(){
     // 点击保存/提交按钮
     $('#save,#submit').click(function(event){
         event.preventDefault();
+        layer.load('1',{shade: 0.7});
         var title = $('#titleInput').val();
         if (!title){
             $.scrollTo('titleInput');
@@ -124,7 +169,7 @@ $(document).ready(function(){
             success: function(data){
                 var next = data.next;
                 var msg = data.msg;
-                $.cookie('autosave',null);
+                $.clearCache();
                 setTimeout('location.href = "' + next + '"', 3000);
                 layer.load('1',{shade: 0.5});
                 layer.msg(msg?msg:'' + '  3秒后跳转到新文章界面');
@@ -148,25 +193,49 @@ $(document).ready(function(){
 
     // 手动恢复缓存内容
     $('#restoreContent').click(function(event){
-        var autoSave = JSON.parse($.cookie('autosave'));
-        if (!autoSave){
-            layer.msg('抱歉，没有找到自动保存内容');
-            return;
-        }
-        layer.confirm('是否恢复最近( '+moment(autoSave.timestamp).fromNow()+')的自动存档?',{icon:3,title:'提示'},function(index){
-            contentEditor.clear().insertValue(autoSave.content);
-            layer.msg('恢复完成',{offset: 'lb'});
-        });
+        $.loadCache();
+        //if (!$.cookie('autosave')){
+        //    layer.msg('抱歉，没有找到自动保存内容');
+        //    return;
+        //}
+        //var autoSave = JSON.parse($.cookie('autosave'));
+        //layer.confirm('是否恢复最近( '+moment(autoSave.timestamp).fromNow()+')的自动存档?',{icon:3,title:'提示'},function(index){
+        //    contentEditor.clear().insertValue(autoSave.content);
+        //    layer.msg('恢复完成',{offset: 'lb'});
+        //});
     });
 
     // todo 博文自动保存
     function autoSave(){
-        layer.msg('自动保存中...',{offset: 'lb'});
         var currentContent = contentEditor.getMarkdown();
-        $.cookie('autosave',JSON.stringify({'timestamp': Date.now(),'content': currentContent}));
-        layer.msg('自动保存成功',{offset: 'lb'});
+        $.ajax({
+            url: location.pathname,
+            type: 'put',
+            dataType: 'json',
+            data: {
+                act: 'save',
+                content: currentContent
+            },
+            beforeSend: function(xhr, settings){
+                layer.msg('自动保存中...',{offset: 'lb',icon:0});
+            },
+            success: function(data){
+                layer.msg(data.msg,{offset: 'lb',icon: 1});
+            },
+            error: function(xml,err,exc){
+                var msg;
+                try{
+                    msg = JSON.parse(xml.responseText).msg;
+                }
+                catch(e){
+                    msg = '未知错误';
+                }
+                layer.msg(msg,{offset: 'lb',icon: 2});
+            }
+        })
     }
     setInterval(autoSave,3 * 60 * 1000);
+    //setInterval(autoSave, 10 * 1000);
 
 });
 });

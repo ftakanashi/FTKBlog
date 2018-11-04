@@ -1,0 +1,267 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block left_ground_display %}none{% endblock %}
+
+{% block left_ground_toggle %}{% endblock %}
+
+{% block style %}
+    {{ block.super }}
+    <style>
+        .main-ground{
+            margin: 1% 10%;
+        }
+
+        {% if posts %}
+        .search-ground {
+            background: rgba(255, 255, 255, 0.7);
+            height: 70px;
+            margin-top: -20px;
+            margin-bottom: 20px;
+            padding: 10px 10%;
+            width: 100%;
+            border-radius: 5px;
+            text-align: center;
+        }
+        {% else %}
+        span.title{
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .search-ground{
+            background: rgba(255,255,255,0.7);
+            height: 200px;
+            margin: 5% 10%;
+            padding: 2% 10%;
+            width: 80%;
+            border-radius: 5px;
+            text-align:center;
+        }
+        {% endif %}
+
+        .search-input-wrap {
+            width: 100%;
+        }
+
+        #kw {
+            border-radius: 0;
+            border-top: 1px solid #256a88;
+            border-bottom: 1px solid #256a88;
+            border-left: 1px solid #256a88;
+            border-right: 0;
+        }
+
+        #sm {
+            border-radius: 0;
+            border-top: 1px solid #256a88;
+            border-bottom: 1px solid #256a88;
+            border-right: 1px solid #256a88;
+            border-left: 0;
+        }
+        span.post-info {
+            display: inline;
+            color: darkgray;
+            margin-right: 10px;
+        }
+
+        .post-info a {
+            text-decoration: none;
+            color: #256a88;
+        }
+
+        .post-info a:hover {
+            padding: 3px;
+            border-radius: 3px;
+            background-color: #256a88;
+            margin-left: 2px;
+            color: white;
+        }
+
+        .post-wrap-title {
+            transition: margin-left .5s;
+            text-decoration: none;
+        }
+
+        .post-wrap-title:hover {
+            margin-left: 3%;
+            text-decoration: none;
+            color: white;
+        }
+
+        h4 > .post-wrap-title:hover {
+            background-color: #256abc;
+            padding: 3px;
+            border-radius: 5%;
+        }
+
+        .post-wrap-body, .post-wrap-footer {
+            margin-top: 10px;
+        }
+
+        .post-wrap-footer a {
+            text-decoration: none;
+            color: #256abc;
+        }
+
+        .post-wrap-footer a:hover {
+            background-color: #256abc;
+            color: white;
+            padding: 5px;
+            border-radius: 5%;
+        }
+
+        .post-wrap:hover {
+            box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .post-wrap, .aside-frame > div {
+            padding: 5px 20px 20px 20px;
+            background: white;
+            margin-bottom: 20px;
+            border: 1px solid #eeeeee;
+            border-radius: 1%;
+        }
+
+        .highlight {
+            color: red;
+            padding: 3px 0;
+            border-radius: 3px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="main-ground">
+        <div class="search-ground">
+            {% if not posts %}
+            <span class="title">站内搜索</span>
+            <hr>
+            {% endif %}
+            <div class="search-input-wrap">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <select id="and-or-select">
+                            <option value="0">AND</option>
+                            <option value="1" selected>OR</option>
+                        </select>
+                    </span>
+                    <input type="text" placeholder="请输入关键词站内搜索..." class="form-control" id="kw"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" id="sm">
+                            <i class="fa fa-search-plus"></i>
+                        </button>
+                    </span>
+                </div>
+                {% if time_cost %}
+                <span>共找到{{ total }}条结果，耗时{{ time_cost }} ms</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="res-ground">
+            {% if posts %}
+            {% for post in posts.object_list %}
+                <div class="post-wrap">
+                    <div class="post-wrap-header">
+                        <h4><a href="{% url 'detail' post.post_uuid %}" class="post-wrap-title">
+                            {% if post.status == '1' %}[草稿]{% endif %}
+                            {% if post.highlight.title %}{% autoescape off %}{{ post.highlight.title.0 }}
+                            {% endautoescape %}{% else %}{{ post.title }}{% endif %}</a></h4>
+                        {% if post.is_reprint %}
+                            <span class="label label-danger"><a href="{{ post.reprint_src }}">转载</a></span>
+                        {% else %}
+                            <span class="label label-primary">原创</span>
+                        {% endif %}
+                        <span class="post-info">更新时间：{{ post.update_time }}</span>
+                    <span class="post-info">
+                        <a href="{% url 'index' %}?category={{ post.category.cate_id }}">[{{ post.category.name }}]</a>
+                    </span>
+                    <span class="post-info">
+                        {% if post.tag %}
+                            {% for tag in post.tag.all %}<span class="label label-default">{{ tag.name }}</span>&nbsp;
+                            {% endfor %}</span>
+                        {% else %}无
+                        {% endif %}
+                    </div>
+                    <div class="post-wrap-body">
+                        {% autoescape off %}
+                            {{ post.highlight.content | join:"......<br/>" }}
+                        {% endautoescape %}
+                    </div>
+                    <div class="post-wrap-footer">
+                        <a href="{% url 'detail' post.post_uuid %}">阅读全文</a>
+                        <span class="post-info">浏览{{ post.read_count }}</span>
+                        <span class="post-info">评论{{ post.comments.count }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="post-pagination">
+                <ul class="pagination">
+                    {# 上一页 #}
+                    {% if posts.has_previous %}
+                        <li>
+                            <a href="?{{ posts.previous_page_number.querystring }}"><span>&laquo;</span></a>
+                        </li>
+                    {% endif %}
+                    {% for page in posts.pages %}
+                        {% if page %}
+                            {% ifequal page posts.number %}
+                                {# 当前页 #}
+                                <li class="active"><a>{{ page }}</a></li>
+                            {% else %}
+                                {# 指定页 #}
+                                <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                            {% endifequal %}
+                        {% else %}
+                            <li><a href="#">...</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {# 下一页 #}
+                    {% if posts.has_next %}
+                        <li><a href="?{{ posts.next_page_number.querystring }}">&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'comp/layer/layer.js' %}"></script>
+    <script>
+        $(function () {
+            $(document).ready(function () {
+                {% if msg %}
+                    layer.closeAll();
+                    layer.tips('{{ msg }}','#kw',{tips: [3]});
+                {% endif %}
+
+                var layerIdx;
+                $('#and-or-select').on('mouseenter', function () {
+                    layerIdx = layer.tips('设置关键词间的逻辑关系，默认为AND逻辑', '#and-or-select', {tips: [3], time: 0});
+                }).on('mouseleave', function () {
+                    layer.close(layerIdx);
+                });
+
+                $('#sm').click(function (event) {
+                    event.preventDefault();
+                    layer.load('1');
+                    var kw = encodeURIComponent($('#kw').val());
+                    if (!kw) {
+                        layer.tips('请输入关键词', '#kw', {tips: 3});
+                        return;
+                    }
+                    var logicCond = $('#and-or-select').val();
+                    location.href = location.href.replace(location.href,'') + '?kw=' + kw + '&logic=' + logicCond;
+                });
+
+                $('#kw').keyup(function (event) {
+                    if (event.keyCode == '13') {
+                        $('#sm').trigger('click');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

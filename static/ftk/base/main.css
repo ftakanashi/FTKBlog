@@ -161,3 +161,10 @@ a:hover{
     padding: 15px 0;
     font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif
 }
+
+
+
+.layui-layer-mybg{
+    background: #256a88;
+    opacity: 0.8;
+}

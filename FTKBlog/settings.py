@@ -30,9 +30,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pure_pagination',
     'django_elasticsearch_dsl',
+    'django_redis',
+    'django_crontab',
     'ratelimit',
     'blog.apps.BlogConfig',
-    'ftkuser.apps.FtkuserConfig'
+    'ftkuser.apps.FtkuserConfig',
+    'search.apps.SearchConfig'
 ]
 
 MIDDLEWARE = [
@@ -79,9 +82,26 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '192.168.178.59:9200'
+        'hosts': '192.168.3.29:9200'
     },
 }
+ELASTICSEARCH_INDEX = 'ftkblog'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://192.168.3.29:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'CONNECTION_POOL_KWARGS': {'max_connections': 100},
+            'PASSWORD': 'franknihao'
+        }
+    }
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_COOKIE_AGE = 43200
+SESSION_CACHE_ALIAS = 'default'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -101,6 +121,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CRONJOBS = [
+    ('*/1 * * * *', 'blog.cron.sync_read_count','>> %s' % os.path.join(BASE_DIR,'logs','cron','sync_read_count.log'))
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -132,7 +155,11 @@ PAGINATION_SETTINGS = {
 }
 
 ######## 一些自定义的配置 ########
-
+from elasticsearch import Elasticsearch
+es_host,es_port = ELASTICSEARCH_DSL.get('default').get('hosts').split(':')
+ES_CLIENT = Elasticsearch([
+    {'host': es_host, 'port': es_port}
+])
 '''
 似乎django有个自动压缩前端所有需要比如css，js这些文件的组件
 '''

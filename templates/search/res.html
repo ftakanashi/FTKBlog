@@ -1,0 +1,102 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block style %}
+    <style>
+        .main-ground {
+            margin: 5% 10%;
+        }
+
+        span.post-info {
+            display: inline;
+            color: darkgray;
+            margin-right: 10px;
+        }
+
+        .post-info a {
+            text-decoration: none;
+            color: #256a88;
+        }
+
+        .post-info a:hover {
+            padding: 3px;
+            border-radius: 3px;
+            background-color: #256a88;
+            margin-left: 2px;
+            color: white;
+        }
+
+        .post-wrap-title {
+            transition: margin-left .5s;
+            text-decoration: none;
+        }
+
+        .post-wrap-title:hover {
+            margin-left: 3%;
+            text-decoration: none;
+            color: white;
+        }
+
+        h4 > .post-wrap-title:hover {
+            background-color: #256abc;
+            padding: 3px;
+            border-radius: 5%;
+        }
+
+        .post-wrap-body, .post-wrap-footer {
+            margin-top: 10px;
+        }
+
+        .post-wrap-footer a {
+            text-decoration: none;
+            color: #256abc;
+        }
+
+        .post-wrap-footer a:hover {
+            background-color: #256abc;
+            color: white;
+            padding: 5px;
+            border-radius: 5%;
+        }
+
+        .post-wrap:hover {
+            box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .post-wrap, .aside-frame > div {
+            padding: 5px 20px 20px 20px;
+            background: white;
+            margin-bottom: 20px;
+            border: 1px solid #eeeeee;
+            border-radius: 1%;
+        }
+
+        .highlight {
+            background: #FFCC00;
+            color: red;
+            padding: 3px 0;
+            border-radius: 3px;
+        }
+    </style>
+{% endblock %}
+
+{% block left_ground_toggle %}{% endblock %}
+
+{% block content %}
+    <div class="main-ground">
+
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'comp/layer/layer.js' %}"></script>
+    <script>
+        $(function () {
+            $(document).ready(function () {
+{#                layer.alert('总共找到{{ total }}条结果，共耗时{{ time_cost }} ms');#}
+            });
+
+        });
+    </script>
+{% endblock %}

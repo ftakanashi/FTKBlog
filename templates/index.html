@@ -54,7 +54,7 @@
 
 {% block main_ground_content %}
     <div class="content">
-    {% for post in posts.object_list%}
+    {% for post in posts.object_list %}
         <div class="post-wrap">
             <div class="post-wrap-header">
                 <h4><a href="{% url 'detail' post.post_uuid %}" class="post-wrap-title">
@@ -76,12 +76,12 @@
                     {% endif %}
             </div>
             <div class="post-wrap-body">
-                {{ post.abstract }}...
+                摘要:  {{ post.abstract }}...
             </div>
             <div class="post-wrap-footer">
                 <a href="{% url 'detail' post.post_uuid %}">阅读全文</a>
-                <span class="post-info">浏览(-1)</span>
-                <span class="post-info">评论(-1)</span>
+                <span class="post-info">浏览({{ post.read_count }})</span>
+                <span class="post-info">评论({{ post.comments.count }})</span>
             </div>
         </div>
     {% endfor %}

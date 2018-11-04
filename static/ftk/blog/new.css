@@ -35,3 +35,7 @@
 .tag-check.active .tag-check-sign{
     display: inline;
 }
+
+#post-content-editor{
+    z-index:999;
+}

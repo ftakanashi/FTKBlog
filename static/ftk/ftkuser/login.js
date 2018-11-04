@@ -14,7 +14,7 @@ $(document).ready(function(){
             dataType: 'json',
             data: {},
             success: function(data){
-                $('#slogan').text(data.slogan);
+                $('#slogan').text(data.content);
                 $('#slogan-author').text('——' + data.author);
             }
         });

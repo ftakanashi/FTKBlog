@@ -22,6 +22,10 @@ def index(request):
     return redirect(reverse('index'))
 
 def about(request):
+    ctx = {}
+    return render(request,'about.html',ctx)
+
+def errortest(request):
     ctx = {
         'error_title': '未找到页面',
         'error_msg': '这个页面已经飘到M78星云了'
@@ -40,7 +44,10 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^blog/', include('blog.urls')),
     url(r'^user/',include('ftkuser.urls')),
-    url(r'^about/', about, name='about')
+    url(r'^search/',include('search.urls')),
+    url(r'^about/', about, name='about'),
+    url(r'^error/', errortest, name='errortest'),
+    url(r'^accounts/login/', lambda x: redirect(reverse('login')))
 ]
 
 handler404 = handler_404

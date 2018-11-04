@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block style %}
-    <link href="{% static 'ftk/blog/post.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/layer/css/layui.css' %}" rel="stylesheet" />
     <link href="{% static 'comp/editormd/css/editormd.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'ftk/blog/post.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block left_ground_display %}none{% endblock %}
@@ -24,7 +25,7 @@
                     <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>更新时间 {{ post.update_time }}</span>
                 </div>
                 <div class="post-info-wrap">
-                    <span class="post-info"><i class="fa fa-bookmark"></i>阅读量 (-1)</span>
+                    <span class="post-info"><i class="fa fa-bookmark"></i>阅读量 ({{ read_count }})</span>
                 </div>
                 <div class="post-info-wrap">
                     <span class="post-info"><i class="fa fa-tags"></i>分类 {{ post.category.name }}</span>
@@ -38,9 +39,59 @@
             </div>
         </div>
     </div>
+    {% if post.comments.count > 0 %}
     <div class="comment">
-        <!-- 评论系统 -->
+        <div class="comment-title-wrap">
+            <h4>评论留言({{ post.comments.count }}条) &nbsp;<a class="collapse-comment" href="javascript:void(0);">(全部折叠)</a></h4>
+            <hr>
+        </div>
+        <div class="display-comment">
+            <div class="layui-collapse">
+            {% for comment in post.comments.all %}
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">
+                        <b>#<span class="comment-floor">{{ forloop.counter }}</span>&nbsp;
+                            {% if comment.author == '博主' %}<span class="comment-author-name" style="background: black; color: white; padding: 3px; border-radius: 3px;"><i class="fa fa-user"></i>{{ comment.author }}</span>
+                            {% else %}<span class="comment-author-name">{{ comment.author }}</span>
+                            {% endif %}
+                        </b>&nbsp;&nbsp;{{ comment.create_time }}</h2>
+                    <div class="layui-colla-content layui-show">
+                        <div class="comment-header">
+                            <span class="comment-title">
+                                {{ comment.title }}
+                            {% if comment.reply_to %}<a href="javascript:void(0);" class="jump-to-comment" name="{{ comment.reply_to }}">[跳转]</a>{% endif %}
+                            </span>
+                        </div>
+                        <div class="comment-body" id="comment_{{ comment.comment_uuid }}">
+                            <textarea style="display:none;">{{ comment.content }}</textarea>
+                        </div>
+                        <div class="comment-footer">
+                            <a class="reply" href="javascript:void(0);">回复</a>
+                            {% if request.user.is_active %}
+                            <a class="delete-comment" href="javascript:void(0);" name="{{ comment.comment_uuid }}">删除</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
     </div>
+    <div id="new-comment">
+
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block fixtool_btn %}
+    <div class="fix-tool-btn" id="addComment" title="添加评论">
+        <a href="javascript:void(0);"><i class="fa fa-edit"></i></a>
+    </div>
+{% endblock %}
+
+{% block hidden_inputs %}
+    {{ block.super }}
+    <input type="hidden" value="{{ post.post_uuid }}" id="post-uuid" />
 {% endblock %}
 
 {% block script %}
@@ -54,19 +105,49 @@
     <script src="{% static 'comp/editormd/lib/jquery.flowchart.min.js' %}"></script>
     <script src="{% static 'comp/editormd/editormd.min.js' %}"></script>
     <script src="{% static 'comp/layer/layer.js' %}"></script>
+    <script src="{% static 'comp/layer/layui.js' %}"></script>
     <script src="{% static 'comp/textSearch.js' %}"></script>
     <script src="{% static 'ftk/blog/post.js' %}"></script>
+{#    <script src="{% static 'comp/showdown.min.js' %}"></script>#}
     <script>
         $(function() {
-            var testEditor = editormd.markdownToHTML('postContent',{
-                htmlDecode: 'style,script,iframe',
-                emoji: true,
-                taskList: true,
-                tex: true,
-                flowChart: true,
-                sequenceDiagram: true,
-                codeFold: true
+
+            $('#addComment,.reply').click(function(event){
+                var preContent;
+                var replyFloor;
+                if($(this).hasClass('reply')){
+                    replyFloor = $(this).parents('.layui-colla-item').find('.comment-floor').text();
+                    preContent = ' >#' + replyFloor + ' ' + $(this).parents('.layui-colla-item').find('.comment-author-name').text();
+                }
+                var url = '{% url 'comment' %}?post_uuid=' + encodeURIComponent($('#post-uuid').val());
+                if (preContent){
+                    url += '&pre=' + encodeURIComponent(preContent);
+                    url += '&rf=' + replyFloor;
+                }
+                layer.open({
+                    type: 2,
+                    title: '添加评论',
+                    area: ['70%','95%'],
+                    content: url
+                });
             });
+
+            function markdown2Html(domId){
+                editormd.markdownToHTML(domId,{
+                    htmlDecode: 'style,script,iframe',
+                    emoji: true,
+                    taskList: true,
+                    tex: true,
+                    flowChart: true,
+                    sequenceDiagram: true,
+                    codeFold: true
+                });
+            }
+            markdown2Html('postContent');
+            $('.comment-body').each(function(ele,i){
+                markdown2Html($(this).attr('id'));
+            });
+
         });
     </script>
 

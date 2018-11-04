@@ -1,0 +1,141 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block style %}
+    {{ block.super }}
+    <style>
+    .new-comment-wrap{
+        background: white;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+    }
+    .new-comment-wrap:hover{
+        box-shadow: 2px 2px 0 0 rgba(0,0,0,0.3);
+    }
+    .sm-btn{
+        text-align: center;
+        padding: 10px;
+    }
+    </style>
+    <link href="{% static 'comp/editormd/css/editormd.min.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+<body style="background: #f4f4f4;">
+    <div class="new-comment-wrap">
+        <input type="hidden" value="{{ post_uuid }}" id="post-uuid" />
+        <input type="hidden" value="
+        {% if reply_comment %}
+            {{ reply_comment.comment_uuid }}
+        {% endif %}" id="reply-to-uuid" />
+        <div class="form-group">
+            <label class="control-label" for="authorInput">您的昵称</label>
+            <input class="form-control" id="authorInput" />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="emailInput">您的电子邮箱(选填)</label>
+            <input class="form-control" id="emailInput" />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="titleInput">标题</label>
+            <input class="form-control" id="titleInput" {% if pre %}value="{{ pre }}" readonly{% else %}value="无题"{% endif %} />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="contentInput">评论内容</label>
+            <div id="contentInput">
+                <textarea id="contentInput-markdown-doc" name="contentInput-markdown-doc" style="display:none;" ></textarea>
+                <textarea id="contentInput-html-code" name="contentInput-html-code" style="display: none;"></textarea>
+            </div>
+        </div>
+        <div class="sm-btn">
+            <button type="button" class="btn btn-default btn-primary" id="submit">提交</button>
+            <button type="button" class="btn btn-default" id="reset">重置</button>
+        </div>
+    </div>
+    <script src="{% static 'comp/layer/layer.js' %}"></script>
+    <script src="{% static 'comp/editormd/editormd.min.js' %}"></script>
+    <script>
+        $(function(){
+            if ($.cookie('currentAuthor')){
+                $('#authorInput').val($.cookie('currentAuthor'));
+            }
+
+            var contentEditor;
+            contentEditor = editormd('contentInput',{
+                width: '95%',
+                height: 640,
+                path: '{% static 'comp/editormd/lib' %}/',
+                markdown: '',
+                codeFold: true,
+                saveHtmlToTextarea: true,
+                searchPlace: true,
+                watch: false,
+                placeholder: '支持markdown语法写作..',
+                htmlDecode: 'script,style,iframe|on*',
+                toolbar: true,
+                emoji: true,
+                taskList: true,
+                tocm: true,
+                tex: true,
+                dialogLockScreen: false,
+                dialogShowMask: true,
+                dialogMaskBgColor: '#000',
+                dialogMaskOpacity: 0.3,
+                flowChart: true,
+                sequenceDiagram: true,
+                imageUpload: true,
+                imageFormats: ['jpg','png','gif','jpeg','bmp'],
+                imageUploadUrl: location.pathname + 'upload/'
+            });
+
+            $('#reset').click(function(event){
+                $('#contentInput,#emailInput,#authorInput').val('');
+            });
+            $('#submit').click(function(event){
+                var author = $('#authorInput').val();
+                var email = $('#emailInput').val();
+                var title = $('#titleInput').val();
+                var content = contentEditor.getMarkdown();
+                if(!author || !title || !content){
+                    layer.msg('请填写完整必填项');
+                    return;
+                }
+                $.ajax({
+                    url: location.pathname,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        author: author,
+                        email: email,
+                        title: title,
+                        content: content,
+                        replyto: $('#reply-to-uuid').val(),
+                        pid: encodeURIComponent($('#post-uuid').val()),
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    beforeSend: function(){
+                        layer.load('1');
+                    },
+                    success: function(data){
+                        $.cookie('currentAuthor',author);
+                        var frameIndex = parent.layer.getFrameIndex(window.name);
+                        parent.location.reload();
+                        parent.layer.close(frameIndex);
+                    },
+                    error: function(xml, err, exc){
+                        layer.closeAll();
+                        try{
+                            layer.msg(JSON.parse(xml.responseText).msg);
+                        }
+                        catch(e){
+                            layer.msg('未知错误');
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+</body>
+{% endblock %}
