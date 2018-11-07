@@ -36,6 +36,7 @@ background-attachment: fixed;
 
     <!-- header -->
     {% block page_header %}
+    {% block carousel %}{% endblock %}
     <div class="navbar navbar-inverse" role="navigation" style="border-radius:0;z-index: 999;">
         <div class="navbar-brand-img">
             <img src="{% static 'image/site_logo.png' %}" class="navbar-brand" />
@@ -63,7 +64,8 @@ background-attachment: fixed;
                         </a>
                         <ul class="dropdown-menu">
                             {% if request.user.is_superuser %}
-                            <li><a href="/admin">后台</a></li>
+                            <li><a href="{% url 'my_admin_index' %}">我的后台</a></li>
+{#                            <li><a href="/admin">后台</a></li>#}
                             {% endif %}
                             <li><a href="javascript:void(0);">个人资料</a></li>
                             <li class="divider"></li>
@@ -76,7 +78,7 @@ background-attachment: fixed;
                             <i class="fa fa-user-circle"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'login' %}">登录</a></li>
+                            <li><a href="{% url 'login' %}"><i class="fa fa-send"></i>登录</a></li>
                         </ul>
                     </li>
                 {% endif %}
@@ -150,6 +152,10 @@ background-attachment: fixed;
                 <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=4" width="160" height="200" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" ></iframe>
             </div>
 
+            <div class="widget">
+                <a href="https://info.flagcounter.com/kWXe"><img src="https://s11.flagcounter.com/mini/kWXe/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt="Flag Counter" border="0"></a>
+            </div>
+
         </div>
         {% endblock %}
 
@@ -184,8 +190,8 @@ background-attachment: fixed;
     <div class="footer">
         <div class="row page-footer">
             <div class="col-lg-4 col-sm-12 col-xs-12">
-                <h5 class="footer-title">页脚标题</h5>
-                <p>我还没有想好要写什么…</p>
+                <h5 class="footer-title">BGM</h5>
+                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=2389989722&auto=0&height=90"></iframe>
             </div>
             <div class="col-lg-4 col-sm-12 col-xs-12">
                 <img class="img-circle" src="{% static 'image/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />
@@ -219,7 +225,6 @@ background-attachment: fixed;
         <input type="hidden" value="{{ mail_addr|default:'wyzypa@gmail.com' }}" id="MailAddr" />
     {% endblock %}
     </div>
-
 
     <script src="{% static 'comp/ios-clock/clock.js' %}"></script>
     <script src="{% static 'comp/ios-clock/shake.js' %}"></script>

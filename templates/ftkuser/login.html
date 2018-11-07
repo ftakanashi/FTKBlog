@@ -42,11 +42,11 @@
     </div>
 
     <script src="{% static 'comp/layer/layer.js' %}"></script>
-    <script src="{% static 'ftk/ftkuser/login.js' %}"></script>
     <script>
         $.ajaxSetup({
             data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}
         });
     </script>
+    <script src="{% static 'ftk/ftkuser/login.js' %}"></script>
 </body>
 {% endblock %}

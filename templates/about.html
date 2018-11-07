@@ -1,7 +1,36 @@
 {% extends 'original/base.html' %}
+{% load static %}
 
 {% block left_ground_display %}none{% endblock %}
 
-{% block main_ground %}{% endblock %}
+{% block left_ground_toggle %}{% endblock %}
+
+{% block main_ground %}
+{% endblock %}
+
+{% block style %}
+    <style>
+    .welcome-title{
+        width: 100%;
+        text-align:center;
+        color: white;
+        position: absolute;
+        top: 80%;
+        background: rgba(0,0,0,0.5);
+        padding: 15px;
+        font-size: 35px;
+    }
+    </style>
+{% endblock %}
+
+{% block carousel %}
+    <div class="my-carousel" style="position:fixed;top:0;left:0;height:100%;width:100%;z-index:1001;
+            background-image:url({% static 'image/bg/carousel.jpg' %});background-size: cover;">
+        <div class="welcome-title">
+            <p>Welcome!</p>
+            <p>一个半路出家素人的自言自语</p>
+        </div>
+    </div>
+{% endblock %}
 
 {% block footer %}{% endblock %}

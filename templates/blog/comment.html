@@ -40,7 +40,11 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="titleInput">标题</label>
-            <input class="form-control" id="titleInput" {% if pre %}value="{{ pre }}" readonly{% else %}value="无题"{% endif %} />
+            {% if pre %}
+            <input class="form-control" id="titleInput" value="{{ pre }}" readonly />
+            {% else %}
+            <input class="form-control" id="titleInput" value="评论" readonly/>
+            {% endif %}
         </div>
         <div class="form-group">
             <label class="control-label" for="contentInput">评论内容</label>
@@ -85,9 +89,9 @@
                 dialogMaskOpacity: 0.3,
                 flowChart: true,
                 sequenceDiagram: true,
-                imageUpload: true,
-                imageFormats: ['jpg','png','gif','jpeg','bmp'],
-                imageUploadUrl: location.pathname + 'upload/'
+                imageUpload: false
+{#                imageFormats: ['jpg','png','gif','jpeg','bmp'],#}
+{#                imageUploadUrl: location.pathname + 'upload/'#}
             });
 
             $('#reset').click(function(event){

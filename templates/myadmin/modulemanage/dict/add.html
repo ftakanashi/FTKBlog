@@ -1,0 +1,57 @@
+{% extends 'myadmin/modulemanage/base/edit.html' %}
+
+{% load static %}
+
+{% block form-content %}
+    <div class="form-group">
+        <label class="control-label" for="keyInput">Key名</label>
+        <input class="form-control" id="keyInput" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="valueInput">Value</label>
+        <input id="valueInput" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="categoryInput">类型</label>
+        <input class="form-control" id="categoryInput" />
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(function(){
+$(document).ready(function(){
+    $('#submit').click(function(){
+        var loadLayer = layer.load('1',{shade: 0.5});
+        var key = $('#keyInput').val();
+        var value = $('#valueInput').val();
+        var category = $('#categoryInput').val();
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value,
+                category: category
+            },
+            success: function(data){
+                var frameIndex = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(frameIndex);
+                parent.location.reload();
+            },
+            error: function(xml, err, exc){
+                try{
+                    layer.msg(JSON.parse(xml.responseText).msg);
+                }
+                catch(e){
+                    layer.msg('未知错误');
+                }
+            },
+            complete: function(){layer.close(loadLayer);}
+        });
+    });
+});
+});
+</script>
+{% endblock %}

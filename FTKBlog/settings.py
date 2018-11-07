@@ -33,9 +33,12 @@ INSTALLED_APPS = [
     'django_redis',
     'django_crontab',
     'ratelimit',
+    'rest_framework',
+    'django_filters',
     'blog.apps.BlogConfig',
     'ftkuser.apps.FtkuserConfig',
-    'search.apps.SearchConfig'
+    'search.apps.SearchConfig',
+    'myadmin.apps.MyadminConfig'
 ]
 
 MIDDLEWARE = [
@@ -82,7 +85,7 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '192.168.3.29:9200'
+        'hosts': '192.168.178.59:9200'
     },
 }
 ELASTICSEARCH_INDEX = 'ftkblog'
@@ -90,7 +93,7 @@ ELASTICSEARCH_INDEX = 'ftkblog'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.3.29:6379/1',
+        'LOCATION': 'redis://192.168.178.59:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'CONNECTION_POOL_KWARGS': {'max_connections': 100},
@@ -122,7 +125,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 CRONJOBS = [
-    ('*/1 * * * *', 'blog.cron.sync_read_count','>> %s' % os.path.join(BASE_DIR,'logs','cron','sync_read_count.log'))
+    ('*/1 * * * *', 'blog.cron.sync_read_count','>> %s' % os.path.join(BASE_DIR,'logs','cron','sync_read_count.log')),
+    ('0 0 0 * *', 'blog.cron.refresh_today_access_count', '>> %s' % os.path.join(BASE_DIR,'logs','cron','refresh_today_access_count.log'))
 ]
 
 # Internationalization
@@ -145,7 +149,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'run')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'upload')
 ]
 
 PAGINATION_SETTINGS = {
@@ -160,6 +165,19 @@ es_host,es_port = ELASTICSEARCH_DSL.get('default').get('hosts').split(':')
 ES_CLIENT = Elasticsearch([
     {'host': es_host, 'port': es_port}
 ])
+
+READ_COUNT_KEY = 'blog:read_count'
+ACCESS_COUNT_KEY = 'blog:access_count'
+CACHE_KEY = 'blog:post_cache'
+UNREAD_COMMENTS_KEY = 'blog:unread_comment_queue'
+UNREAD_MESSAGE_KEY = 'blog:unread_message_queue'
+
+IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload')
+
+######## 自定义初始化 ##########
+from scripts import *
+redis_init()
+
 '''
 似乎django有个自动压缩前端所有需要比如css，js这些文件的组件
 '''

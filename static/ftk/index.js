@@ -3,6 +3,33 @@
  */
 $(function(){
     $(document).ready(function(){
+        var accessed = $.cookie('accessed');
+        if (!accessed){
+            $('body').fadeIn('slow');
+            $('.welcome-title').fadeIn('slow');
+            setTimeout('$(\'.my-carousel\').fadeOut(\'slow\');',3000);
+            $('.my-carousel').click(function(event){
+                $(this).fadeOut('slow');
+            });
+            $.cookie('accessed',true,{expires: 1});
+        }
+        else{
+            $('.my-carousel').hide();
+            $('body').show();
+        }
+
+
+        //layui.use('carousel',function(){
+        //    var carousel = layui.carousel;
+        //    carousel.render({
+        //        elem: '#test1',
+        //        width: '100%',
+        //        arrow: 'hover',
+        //        anim: 'fade'
+        //    });
+        //});
+
+        //收放左边栏
         $('.navbar-brand').click(function(event){
             event.preventDefault();
             var leftG = $('.left-ground');

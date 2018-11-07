@@ -3,6 +3,12 @@
  */
 $(function(){
 $(document).ready(function(){
+
+    // 离开界面提醒
+    $(window).bind('beforeunload', function(event) {
+        event.preventDefault();
+    });
+
     // 界面初始化工作
     $('.tag-check').click(function(){
         $(this).toggleClass('active');
@@ -52,12 +58,12 @@ $(document).ready(function(){
         sequenceDiagram: true,
         imageUpload: true,
         imageFormats: ['jpg','png','gif','jpeg','bmp'],
-        imageUploadUrl: location.pathname + 'upload/'
+        imageUploadURL: location.pathname + 'upload/'
     });
 
     $.extend({
         loadCache: function(){
-            layer.msg('正在加载自动保存内容...',{offset: 't',icon: 0});
+            layer.msg('正在寻找自动保存内容...',{offset: 't',icon: 0});
             $.ajax({
                 url: location.pathname,
                 type: 'put',
@@ -121,7 +127,7 @@ $(document).ready(function(){
     // 点击保存/提交按钮
     $('#save,#submit').click(function(event){
         event.preventDefault();
-        layer.load('1',{shade: 0.7});
+        var loadLayer = layer.load('1',{shade: 0.7});
         var title = $('#titleInput').val();
         if (!title){
             $.scrollTo('titleInput');
@@ -149,6 +155,7 @@ $(document).ready(function(){
         });
         var isPublished = $('#publish').is(':checked');
         if($(this).attr('id') != 'submit'){
+            // 点击保存草稿
             isPublished = 'false';
         }
 
@@ -186,7 +193,8 @@ $(document).ready(function(){
                         content: '未知错误'
                     });
                 }
-            }
+            },
+            complete: function(){layer.close(loadLayer);}
         });
 
     });
@@ -194,15 +202,6 @@ $(document).ready(function(){
     // 手动恢复缓存内容
     $('#restoreContent').click(function(event){
         $.loadCache();
-        //if (!$.cookie('autosave')){
-        //    layer.msg('抱歉，没有找到自动保存内容');
-        //    return;
-        //}
-        //var autoSave = JSON.parse($.cookie('autosave'));
-        //layer.confirm('是否恢复最近( '+moment(autoSave.timestamp).fromNow()+')的自动存档?',{icon:3,title:'提示'},function(index){
-        //    contentEditor.clear().insertValue(autoSave.content);
-        //    layer.msg('恢复完成',{offset: 'lb'});
-        //});
     });
 
     // todo 博文自动保存

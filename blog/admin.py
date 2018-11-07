@@ -8,5 +8,6 @@ admin.site.register([
     Post,
     Category,
     Tag,
-    Comment
+    Comment,
+    Dict
 ])

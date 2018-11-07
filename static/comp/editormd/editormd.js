@@ -4033,7 +4033,7 @@
                 katexHandle();
             }
         }
-        
+
         div.getMarkdown = function() {            
             return saveTo.val();
         };

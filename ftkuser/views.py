@@ -65,7 +65,8 @@ class UserLogin(View):
                 return JsonResponse({'msg': '登录失败'},status=500)
             else:
                 if user.is_staff:
-                    return JsonResponse({'next': reverse('admin:index')})
+                    return JsonResponse({'next': reverse('my_admin_index')})
+                    # return JsonResponse({'next': reverse('admin:index')})
                 else:
                     return JsonResponse({'next': reverse('index')})
         else:

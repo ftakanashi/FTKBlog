@@ -4,6 +4,17 @@
 {% block style %}
     {{ super }}
     <link href="{% static 'ftk/index.css' %}" rel="stylesheet" />
+{#    <link href="{% static 'comp/layer/css/layui.css' %}" rel="stylesheet" />#}
+{% endblock %}
+
+{% block carousel %}
+    <div class="my-carousel" style="position:fixed;top:0;left:0;height:100%;width:100%;z-index:1001;
+            background-image:url({% static 'image/bg/carousel.jpg' %});background-size: cover;">
+        <div class="welcome-title">
+            <p>Welcome!</p>
+            <p>一个半路出家素人的自言自语</p>
+        </div>
+    </div>
 {% endblock %}
 
 {% block left_ground_toggle %}{% endblock %}
@@ -12,16 +23,16 @@
     <div class="aside">
         <div class="aside-frame">
             <div class="welcome-info">
-                <h3>欢迎！</h3>
+                <h3>{{ pageDictInfo.welcomeTitle | default:"欢迎！" }}</h3>
                 <hr>
-                <p>一个半路出家素人的自言自语</p>
+                <p>{{ pageDictInfo.welcomeText | default:"一个半路出家素人的自言自语" }}</p>
             </div>
             <div class="auto-me">
                 <div class="me-avatar"><img src="{% static 'image/profile.jpg' %}"></div>
                 <div class="me-name"><h4>F. Takanashi</h4></div>
-                <div class="me-declaration">竜神の剣を喰らえ！</div>
+                <div class="me-declaration">{{ pageDictInfo.profileDescription|default:"竜神の剣を喰らえ!" }}</div>
                 <div class="me-icon">
-                    <a href="https://github.com/wyzypa/"><i class="fa fa-github"></i></a>
+                    <a href="https://github.com/"><i class="fa fa-github"></i></a>
                     <a href="mailto:{{ mail_addr | default:"wyzypa@gmail.com" }}?subject=来自博客的邮件&subject=来自博客的邮件"><i class="fa fa-envelope"></i></a>
                     <a href="#"><i class="fa fa-rss-square"></i></a>
                 </div>
@@ -48,6 +59,16 @@
                 {% endfor %}
                 </ul>
             </div>
+            <div class="category-list-wrap">
+                <h3>最近常用站点</h3>
+                <ul class="category-list">
+                {% for name,link in quickLinks.items %}
+                    <li class="category-name">
+                        <i class="fa fa-link"></i><a href="{{ link }}">{{ name }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -66,9 +87,11 @@
                     <span class="label label-primary">原创</span>
                 {% endif %}
                 <span class="post-info">更新时间：{{ post.update_time }}</span>
+                {% if post.category %}
                 <span class="post-info">
                     <a href="{% url 'index' %}?category={{ post.category.cate_id }}">[{{ post.category.name }}]</a>
                 </span>
+                {% endif %}
                 <span class="post-info">
                     {% if post.tag %}
                     {% for tag in post.tag.all %}<span class="label label-default">{{ tag.name }}</span>&nbsp;{% endfor %}</span>
@@ -82,6 +105,7 @@
                 <a href="{% url 'detail' post.post_uuid %}">阅读全文</a>
                 <span class="post-info">浏览({{ post.read_count }})</span>
                 <span class="post-info">评论({{ post.comments.count }})</span>
+                <span class="post-info"><i class="fa fa-thumbs-up"></i>{{ post.greats }}</span>
             </div>
         </div>
     {% endfor %}
@@ -113,9 +137,11 @@
             </ul>
         </div>
     </div>
+    <audio id="oniityann-daisuki" src="{% static 'audio/oniityann.mp3' %}" autoplay></audio>
 {% endblock %}
 
 {% block script %}
     {{ block.super }}
+{#    <script src="{% static 'comp/layer/layui.js' %}"></script>#}
     <script src="{% static 'ftk/index.js' %}"></script>
 {% endblock %}

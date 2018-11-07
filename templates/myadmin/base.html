@@ -1,0 +1,456 @@
+{% load static %}
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html>
+<head>{% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}FTKBlog 后台管理{% endblock %}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css' %}"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/font-awesome/css/font-awesome.min.css' %}"/>
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/Ionicons/css/ionicons.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/AdminLTE.min.css' %}">
+    <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/skins/skin-black.min.css' %}">
+
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    {% block style %}{% endblock %}
+{% endblock %}</head>
+{#<!--#}
+{#BODY TAG OPTIONS:#}
+{#=================#}
+{#Apply one or more of the following classes to get the#}
+{#desired effect#}
+{#|---------------------------------------------------------|#}
+{#| SKINS         | skin-blue                               |#}
+{#|               | skin-black                              |#}
+{#|               | skin-purple                             |#}
+{#|               | skin-yellow                             |#}
+{#|               | skin-red                                |#}
+{#|               | skin-green                              |#}
+{#|---------------------------------------------------------|#}
+{#|LAYOUT OPTIONS | fixed                                   |#}
+{#|               | layout-boxed                            |#}
+{#|               | layout-top-nav                          |#}
+{#|               | sidebar-collapse                        |#}
+{#|               | sidebar-mini                            |#}
+{#|---------------------------------------------------------|#}
+{#-->#}
+<body class="hold-transition skin-black sidebar-mini">
+<div class="wrapper">
+
+    <!-- Main Header -->
+    {% block header %}
+        <header class="main-header">
+
+            {% block logo %}
+                <a href="{% url 'index' %}" class="logo">
+                    <span class="logo-mini"><b>F.T</b></span>
+                    <span class="logo-lg"><b>F.Takanashi</b></span>
+                </a>
+            {% endblock %}
+
+            {% block navbar %}
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="{% url 'index' %}" role="button" title="回到主站"><i class="fa fa-history"></i></a>
+                        </li>
+
+                        {% block message_menu %}
+                        {# 留言板提醒，先不用了吧 #}
+                        <li class="dropdown messages-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="留言板消息">
+                                <i class="fa fa-envelope-o"></i>
+                                <span class="label label-success">{{ messageInfo.currentMessage|default:"" }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 4 messages</li>
+                                <li>
+                                    <ul class="menu">
+                                        <li><!-- start message -->
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <!-- User Image -->
+                                                    <img src="dist/img/user2-160x160.jpg" class="img-circle"
+                                                         alt="User Image">
+                                                </div>
+                                                <!-- Message title and timestamp -->
+                                                <h4>
+                                                    Support Team
+                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                </h4>
+                                                <!-- The message -->
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                        <!-- end message -->
+                                    </ul>
+                                    <!-- /.menu -->
+                                </li>
+                                <li class="footer"><a href="#">See All Messages</a></li>
+                            </ul>
+                        </li>
+                        {% endblock %}
+
+                        {% block notification_menu %}
+                        {# 最近评论提醒 #}
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="评论消息">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="label label-warning">{{ urcInfo | length | default:"" }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% if urcInfo|length > 0 %}
+                                <li class="header">有{{ urcInfo | length }}条未读评论</li>
+                                <li>
+                                    <ul class="menu">
+                                        {% for urc in urcInfo %}
+                                        <li>
+                                            <a href="{% url 'detail' urc.in_post.post_uuid %}">
+                                                <i class="fa fa-users text-aqua"></i> #{{ urc.floor }}&nbsp;{{ urc.content | slice:"0,30" }}...
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="javascript:void(0);" id="ignore-urc">全部忽略</a></li>
+                                {% else %}
+                                <li class="header">没有未读评论</li>
+                                {% endif %}
+                            </ul>
+
+                        </li>
+                        {% endblock %}
+
+                        {% block task_menu %}
+                        {# 导航栏里第三个通知模块按钮，暂时用不上，继承的时候覆盖掉 #}
+                        <li class="dropdown tasks-menu">
+                            <!-- Menu Toggle Button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-flag-o"></i>
+                                <span class="label label-danger">9</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 9 tasks</li>
+                                <li>
+                                    <!-- Inner menu: contains the tasks -->
+                                    <ul class="menu">
+                                        <li><!-- Task item -->
+                                            <a href="#">
+                                                <!-- Task title and progress text -->
+                                                <h3>
+                                                    Design some buttons
+                                                    <small class="pull-right">20%</small>
+                                                </h3>
+                                                <!-- The progress bar -->
+                                                <div class="progress xs">
+                                                    <!-- Change the css width attribute to simulate progress -->
+                                                    <div class="progress-bar progress-bar-aqua" style="width: 20%"
+                                                         role="progressbar"
+                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">20% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <!-- end task item -->
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a href="#">View all tasks</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {% endblock %}
+
+                        {% block user_account_menu %}
+                        <li class="dropdown user user-menu">
+                            <!-- Menu Toggle Button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <!-- The user image in the navbar-->
+                                <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                <span class="hidden-xs">Alexander Pierce</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- The user image in the menu -->
+                                <li class="user-header">
+                                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                                    <p>
+                                        Alexander Pierce - Web Developer
+                                        <small>Member since Nov. 2012</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <li class="user-body">
+                                    <div class="row">
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Followers</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Sales</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Friends</a>
+                                        </div>
+                                    </div>
+                                    <!-- /.row -->
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        {% endblock %}
+
+                        {% block control-sidebar-toggle %}
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                        {% endblock %}
+                    </ul>
+                </div>
+            </nav>{% endblock %}
+        </header>{% endblock %}
+
+    {% block main-sidebar %}
+    <aside class="main-sidebar">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+
+            <!-- search form (Optional) -->
+            {% block main-sidebar-search %}
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+          <span class="input-group-btn">
+              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+              </button>
+            </span>
+                </div>
+            </form>
+            {% endblock %}
+
+            <!-- Sidebar Menu -->
+            {% block main-sidebar-menu %}
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">博客数据管理</li>
+                <!-- Optionally, you can add icons to the links -->
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-gear"></i><span>基础信息</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{% url 'category.manage' %}"><i class="fa fa-cubes"></i>分类管理</a></li>
+                        <li><a href="{% url 'tag.manage' %}"><i class="fa fa-tags"></i>标签管理</a></li>
+                        <li><a href="{% url 'dict.manage' %}"><i class="fa fa-code"></i>数据字典管理</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'comment.manage' %}"><i class="fa fa-comment"></i><span>评论管理</span></a></li>
+                <li><a href="{% url 'post.manage' %}"><i class="fa fa-file"></i><span>文章管理</span></a></li>
+            </ul>
+            {% endblock %}
+            <!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    {% endblock %}
+
+    <!-- Content Wrapper. Contains page content -->
+    {% block content %}
+    <div class="content-wrapper">
+        {% block content-header %}
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                {% block content-header-title %}Page Header{% endblock %}
+                <small>
+                    {% block content-header-description %}Optional description{% endblock %}
+                </small>
+            </h1>
+            {% block breadcrumb %}
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+                <li class="active">Here</li>
+            </ol>
+            {% endblock %}
+        </section>
+        {% endblock %}
+
+        {% block main-content %}
+        <section class="content container-fluid">
+        </section>
+        {% endblock %}
+
+    </div>
+    {% endblock %}
+    <!-- /.content-wrapper -->
+
+    {% block footer %}
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+            いい勉強になりますように…
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2018 <a href="{% url 'about' %}">F.Takanashi</a>.</strong> All rights reserved.
+    </footer>
+    {% endblock %}
+
+    {% block control-side %}
+    {# 这一个block用来存放的是右边栏，目前用不上，具体页面上直接把它覆盖掉好了 #}
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Create the tabs -->
+        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+            <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+            <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <!-- Home tab content -->
+            <div class="tab-pane active" id="control-sidebar-home-tab">
+                <h3 class="control-sidebar-heading">Recent Activity</h3>
+                <ul class="control-sidebar-menu">
+                    <li>
+                        <a href="javascript:;">
+                            <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
+                                <p>Will be 23 on April 24th</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.control-sidebar-menu -->
+
+                <h3 class="control-sidebar-heading">Tasks Progress</h3>
+                <ul class="control-sidebar-menu">
+                    <li>
+                        <a href="javascript:void(0);">
+                            <h4 class="control-sidebar-subheading">
+                                Custom Template Design
+                <span class="pull-right-container">
+                    <span class="label label-danger pull-right">70%</span>
+                  </span>
+                            </h4>
+
+                            <div class="progress progress-xxs">
+                                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.control-sidebar-menu -->
+
+            </div>
+            <!-- /.tab-pane -->
+            <!-- Stats tab content -->
+            <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+            <!-- /.tab-pane -->
+            <!-- Settings tab content -->
+            <div class="tab-pane" id="control-sidebar-settings-tab">
+                <form method="post">
+                    <h3 class="control-sidebar-heading">General Settings</h3>
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Report panel usage
+                            <input type="checkbox" class="pull-right" checked>
+                        </label>
+
+                        <p>
+                            Some information about this general settings option
+                        </p>
+                    </div>
+                    <!-- /.form-group -->
+                </form>
+            </div>
+            <!-- /.tab-pane -->
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+    {% endblock %}
+
+    <!-- Add the sidebar's background. This div must be placed
+    immediately after the control sidebar -->
+    {% block control-sidebar-bg %}
+    <div class="control-sidebar-bg">
+    </div>
+    {% endblock %}
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED JS SCRIPTS -->
+
+<!-- jQuery 3 -->
+<script src="{% static 'AdminLTE/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'AdminLTE/dist/js/adminlte.min.js' %}"></script>
+<script src="{% static 'comp/jquery/jquery.cookie.js' %}"></script>
+<script>
+    $.ajaxSetup({
+        data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        headers: {'X-CSRFTOKEN': $.cookie('csrftoken')}
+    });
+$(function(){
+$(document).ready(function(){
+    $('#ignore-urc').click(function(event){
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {act: 'ignore_urc'},
+            success: function(data){
+                location.reload();
+            },
+            error: function(xml, err, exc){
+                try{
+                    layer.msg(JSON.parse(xml.responseText).msg);
+                }
+                catch(e){
+                    layer.msg('未知错误');
+                }
+            }
+        })
+    });
+});
+});
+</script>
+{% block script %}{% endblock %}
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+</body>
+</html>

@@ -1,0 +1,153 @@
+{% extends 'myadmin/modulemanage/base/view.html' %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}">
+<style>
+    .table-responsive{
+        padding: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content-header-title %}管理文章{% endblock %}
+{% block content-header-description %}{% endblock %}
+
+{% block script %}
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js' %}"></script>
+<script src="{% static 'comp/layer/layer.js' %}"></script>
+<script>
+$(function(){
+$(document).ready(function(){
+    var url = '{% url 'post.api' %}';
+    {% if uuid %}
+    url += '?post_uuid={{ uuid }}';
+    {% endif %}
+    $('#manageTable').bootstrapTable({
+        url: url,
+        columns: [{
+            checkbox: true,
+            align: 'center'
+        },{
+            field: 'post_id',
+            title: '文章ID',
+            sortable: true
+        },{
+            field: 'post_uuid',
+            title: '文章UUID',
+            visible: false
+        },{
+            field: 'category',
+            title: '分类',
+            sortable: true
+        },{
+            field: 'tag',
+            title: '标签',
+            visible: false,
+            formatter: function(value, row, index){
+                var txt = '';
+                for(var i=0; i<value.length; i++){
+                    txt += '<span class="label label-default">' + value[i] + '</span>';
+                }
+                return txt;
+            }
+        },{
+            field: 'title',
+            title: '标题',
+            sortable: true
+        },{
+            field: 'create_time',
+            title: '创建时间',
+            sortable: true
+        },{
+            field: 'update_time',
+            title: '更新时间',
+            sortable: true
+        },{
+            field: 'status',
+            title: '状态',
+            formatter: function(value, row, index){
+                var txt = '';
+                switch(value){
+                    case '0': txt += '<span class="label label-success">已发表</span>';break;
+                    case '1': txt += '<span class="label label-default">草稿</span>';break;
+                }
+                if (row.is_top){
+                    txt += '<span class="label label-info">置顶</span>';
+                }
+                if (row.is_reprint){
+                    txt += '<span class="label label-danger"></span>';
+                }
+                return txt;
+            }
+        },{
+            fields: 'read_count',
+            title: '阅读量',
+            sortable: true
+        },{
+            fields: 'greats',
+            title: '点赞数',
+            sortable: true
+        },{
+            field: 'operations',
+            title: '操作',
+            formatter: function(value, row, index){
+                return [
+                    '<button class="btn btn-xs btn-danger del-btn" name="'+ row.post_uuid +'" alias="' + row.title + '"><i class="fa fa-trash"></i>删除</button>',
+                    '<button class="btn btn-xs btn-primary edit-btn" name="'+ row.post_uuid +'"><i class="fa fa-edit"></i>编辑</button>'
+                ].join('&nbsp;');
+            }
+        }],
+        resizable: true,
+        pagination: true,
+        sidePagination: 'client',
+        pageNumber: 1,
+        pageSize: 5,
+        pageList: [5,10,'All'],
+        search: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true,
+        toolbar: '#toolbar'
+    }).on('click','.del-btn',function(event){
+        var target = $(this).attr('name');
+        var text = $(this).attr('alias');
+        layer.confirm('确定要删除文章 ['+ text +'] 吗?',{icon:3 ,title: '提示'}, function(index){
+            var loadLayer = layer.load('1');
+            $.ajax({
+                url: location.pathname,
+                type: 'delete',
+                dataType: 'json',
+                data: {
+                    target: target
+                },
+                success: function(data){
+                    location.reload();
+                },
+                error: function(xml ,err, exc){
+                    try{
+                        layer.msg(JSON.parse(xml.responseText).msg);
+                    }
+                    catch(e){
+                        layer.msg('未知错误');
+                    }
+                },
+                complete: function(){layer.close(loadLayer)}
+            });
+        });
+    }).on('click','.edit-btn',function(event){
+        var target = $(this).attr('name');
+        window.open(location.pathname + '?pk=' + target +'&type=edit');
+    });
+
+    $('#btn_add').click(function(event){
+        event.preventDefault();
+        window.open('{% url 'new_post' %}');
+    });
+
+});
+});
+</script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'myadmin/base.html' %}
+
+{% block breadcrumb %}{% endblock %}
+{% block task_menu %}{% endblock %}
+{% block message_menu %}{% endblock %}
+{% block control-sidebar-toggle %}{% endblock %}
+{% block control-side %}{% endblock %}
+{% block user_account_menu %}{% endblock %}
+
+{% block content-header-title %}后台总览{% endblock %}
+{% block content-header-description %}{% endblock %}
+
+{% block main-content %}
+<section class="content container-fluid">
+    <h4>今日总访客数：{{ access_count }} 人次</h4>
+    <hr>
+</section>
+{% endblock %}

@@ -113,7 +113,7 @@ class SearchView(View):
             candidate = Post.objects.get(post_id=hit['_id'])
             candidate.highlight = hit['highlight']
             candidate.score = hit['_score']
-            candidate.read_count = self.REDIS.hget('blog:read_count',candidate.post_uuid)
+            candidate.read_count = self.REDIS.hget(settings.READ_COUNT_KEY,candidate.post_uuid)
             candidates.append(candidate)
 
 

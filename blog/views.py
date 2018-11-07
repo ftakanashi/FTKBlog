@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django_redis import get_redis_connection
 from django.shortcuts import render, redirect, reverse
 from django.http.response import Http404, JsonResponse
@@ -11,23 +13,25 @@ from django.core.cache import cache
 from django.utils.decorators import method_decorator
 from pure_pagination import Paginator
 from ratelimit.decorators import ratelimit
-from .models import Post, Category, Tag, Comment
+from .models import Post, Category, Tag, Comment, Dict
 
 import json
+import os
 import re
 import traceback
 
 redis = get_redis_connection('default')
+
+
 # Create your views here.
 
 class IndexView(View):
-
-    @ratelimit(key='ip',rate='1/1s')
+    @ratelimit(key='ip', rate='1/1s')
     def get(self, request):
 
-        was_limited = getattr(request,'limited',False)
+        was_limited = getattr(request, 'limited', False)
         if was_limited:
-            return ''
+            return render(request, 'error.html', {'error_msg': '刷新太频繁啦！','error_title': '请稍候重试'})
 
         try:
             page = int(request.GET.get('page', '1'))
@@ -43,7 +47,7 @@ class IndexView(View):
         posts = posts.order_by('-is_top', '-update_time')
         for post in posts:
             # post.read_count = cache.hget('blog:read_count',post.post_uuid,-1)
-            post.read_count = redis.hget('blog:read_count',post.post_uuid) or -1
+            post.read_count = redis.hget(settings.READ_COUNT_KEY, post.post_uuid) or -1
 
         p = Paginator(posts, 10, request=request)
         paged_posts = p.page(page)
@@ -60,11 +64,16 @@ class IndexView(View):
         ctx['posts'] = paged_posts
         ctx['categoryList'] = categories
         ctx['tagList'] = tags
+        ctx['pageDictInfo'] = {q.key: q.value for q in Dict.objects.filter(category='index_page')}
+        ctx['quickLinks'] = {q.key: q.value for q in Dict.objects.filter(category='quick_links')}
+        if not request.user.is_superuser:
+            cache.incr(settings.ACCESS_COUNT_KEY)
+
         return render(request, 'index.html', ctx)
 
 
 class NewPostView(View):
-    CACHE_KEY = 'blog:post_cache'
+    CACHE_KEY = settings.CACHE_KEY
     CACHE_TTL = 600
 
     @classmethod
@@ -139,7 +148,7 @@ class NewPostView(View):
             print traceback.format_exc(e)
             if processFlag:
                 postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
-                redis.hset('blog:read_count',post.post_uuid,0)
+                redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)
                 # cache.set('read_count:%s' % post.post_uuid,0)
                 # cache.persist('read_count:%s' % post.post_uuid)
                 return JsonResponse({'msg': '添加文章成功，但是关联标签失败', 'next': postUrl})
@@ -148,19 +157,19 @@ class NewPostView(View):
         else:
             # cache.set('read_count:%s' % post.post_uuid,0)
             # cache.persist('read_count:%s' % post.post_uuid)
-            redis.hset('blog:read_count',post.post_uuid,0)    # todo redis中记录要随着模型删除也删除（后台）2.搞个crontab让redis定期入库
+            redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)  # todo redis中记录要随着模型删除也删除（后台）2.搞个crontab让redis定期入库
             postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
             return JsonResponse({'next': postUrl})
 
 
 class PostView(View):
-    @ratelimit(key='ip',rate='1/5s')
+    @ratelimit(key='ip', rate='1/5s')
     def get(self, request, uuid):
         ctx = {}
 
         was_limited = getattr(request, 'limited', False)
         if was_limited:
-            return ''
+            return render(request, 'error.html', {'error_msg': '刷新太频繁啦！', 'error_title': '请稍候再试'})
 
         try:
             postId = int(uuid)
@@ -175,37 +184,59 @@ class PostView(View):
             return Http404()
         else:
             # ctx['read_count'] = cache.incr('read_count:%s' % uuid)
-            ctx['read_count'] = redis.hincrby('blog:read_count',uuid,1)
+            ctx['read_count'] = redis.hincrby(settings.READ_COUNT_KEY, uuid, 1)
             ctx['post'] = post
 
         return render(request, 'blog/post.html', ctx)
+
+    @ratelimit(key='ip', rate='1/5s')
+    def post(self, request, uuid):
+
+        was_limited = getattr(request, 'limited', False)
+        if was_limited:
+            return JsonResponse({'msg': '点赞过于频繁[滑稽]'}, status=500)
+
+        act = request.POST.get('act')
+        if act == 'great':
+            post_uuid = uuid
+            direct = request.POST.get('direct')
+            post = Post.objects.get(post_uuid=post_uuid)
+            if direct == '+':
+                post.greats += 1
+            elif direct == '-':
+                post.greats -= 1
+            else:
+                pass
+            post.save()
+            return JsonResponse({})
+
+        return JsonResponse({'msg': '无效的申请动作'}, status=500)
 
     @method_decorator(login_required)
     def delete(self, request, uuid):
         delete = QueryDict(request.body)
         target = delete.get('target')
         if not request.user.is_superuser:
-            return JsonResponse({'msg': '你的IP已经被记录了，你想什么滴干活？！'},status=500)
+            return JsonResponse({'msg': '你的IP已经被记录了，你想什么滴干活？！'}, status=500)
         if target == 'comment':
             comment_uuid = delete.get('uuid')
             try:
                 comment = Comment.objects.get(comment_uuid=comment_uuid)
-            except Comment.DoesNotExist,e:
-                return JsonResponse({'msg': '没有找到要删除的评论'},status=404)
+            except Comment.DoesNotExist, e:
+                return JsonResponse({'msg': '没有找到要删除的评论'}, status=404)
             try:
                 comment.delete()
-            except Exception,e:
-                return JsonResponse({'msg': '删除失败'},status=500)
+            except Exception, e:
+                print traceback.format_exc(e)
+                return JsonResponse({'msg': '删除失败'}, status=500)
             return JsonResponse({'msg': ''})
 
         else:
             # 删除post直接在页面上实现掉真的好吗…安全方面考虑
-            return JsonResponse({'msg':'你想干什么[发呆]'},status=500)
-
+            return JsonResponse({'msg': '你想干什么[发呆]'}, status=500)
 
 
 class CommentView(View):
-
     def get(self, request):
 
         ctx = {}
@@ -216,14 +247,14 @@ class CommentView(View):
             if not uuid: raise Exception()
             post = Post.objects.get(post_uuid=uuid)
         except Exception:
-            return render(request ,'error.html', {'error_msg':'没有找到相关文章链接'})
+            return render(request, 'error.html', {'error_msg': '没有找到相关文章链接'})
 
         try:
             pre = request.GET.get('pre')
-            replyFloor = int(request.GET.get('rf',-1))
+            replyFloor = int(request.GET.get('rf', -1))
             replyComment = None
             if replyFloor != -1:
-                replyComment = Comment.objects.get(in_post=post,floor=replyFloor)
+                replyComment = Comment.objects.get(in_post=post, floor=replyFloor)
         except Exception:
             return render(request, 'error.html', {'error_msg': '没有找到要回复的评论'})
 
@@ -233,8 +264,8 @@ class CommentView(View):
 
         return render(request, 'blog/comment.html', ctx)
 
-    @ratelimit(key='ip',rate='1/1s')
-    def post(self, request):
+    @ratelimit(key='ip', rate='1/1s')
+    def post(self, request):  # todo 给评论加上验证码，可以防御恶意刷评论
 
         was_limited = getattr(request, 'limited', False)
         if was_limited:
@@ -245,23 +276,51 @@ class CommentView(View):
         email = request.POST.get('email')
         title = request.POST.get('title')
         content = request.POST.get('content')
+        source_ip = request.META.get('REMOTE_ADDR')
         if not author or not title or not content or not post_uuid:
-            return JsonResponse({'msg': '别闹，填正确的信息'},status=500)
+            return JsonResponse({'msg': '别闹，填正确的信息'}, status=500)
         if author == '博主' and not request.user.is_active:
-            return JsonResponse({'msg': '你确定没在冒充我？…'},status=500)
+            return JsonResponse({'msg': '你确定没在冒充我？…'}, status=500)
 
         try:
             post = Post.objects.get(post_uuid=post_uuid)
-        except Post.DoesNotExist,e:
-            return JsonResponse({'msg': '没有找到相关文章'},status=404)
+        except Post.DoesNotExist, e:
+            return JsonResponse({'msg': '没有找到相关文章'}, status=404)
 
         try:
             reply_to = request.POST.get('replyto').strip()
-            comment = Comment(author=author, email=email, title=title, content=content, in_post=post, reply_to=reply_to)
+            comment = Comment(author=author, email=email, title=title, content=content, in_post=post, reply_to=reply_to,
+                              source_ip=source_ip)
             comment.floor = comment.in_post.comments.count() + 1
             comment.save()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
-            return JsonResponse({'msg': '评论失败了...'},status=500)
+            return JsonResponse({'msg': '评论失败了...'}, status=500)
         else:
+            if not request.user.is_superuser:
+                redis.rpush(settings.UNREAD_COMMENTS_KEY, comment.comment_id)
             return JsonResponse({})
+
+@csrf_exempt
+def editormd_upload(request):
+    if request.method != 'POST':
+        return JsonResponse({
+            'success': 0,
+            'message': '错误的请求方法'
+        },status=500)
+    fi_obj = request.FILES.get('editormd-image-file')
+
+    if fi_obj is None:
+        return JsonResponse({'success': 0,'message': '上传体未找到图片文件对象'})
+
+    guid = request.GET.get('guid')
+    fi_name = '%s-%s' % (guid,fi_obj.name)
+    f = open(os.path.join(settings.IMG_UPLOAD_DIR,fi_name),'wb')
+    for chunk in fi_obj.chunks():
+        f.write(chunk)
+    f.close()
+    return JsonResponse({
+        'success': 1,
+        'msg': '上传成功',
+        'url': '/static/upload/%s' % fi_name
+    })

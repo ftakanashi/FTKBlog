@@ -21,7 +21,7 @@ class Category(models.Model):
 
 class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32, unique=True)
     description = models.CharField(max_length=512)
 
     def __unicode__(self):
@@ -40,6 +40,7 @@ class Post(models.Model):
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     status = models.CharField(default='0', max_length=1, choices=POST_STATUS, verbose_name='文章状态')
     read_count = models.IntegerField(default=0,verbose_name='浏览量')
+    greats = models.IntegerField(default=0, verbose_name='点赞量')
     category = models.ForeignKey(
             Category,
             null=True,
@@ -65,10 +66,20 @@ class Post(models.Model):
         else:
             return '[%s] <NoCategory: %s>' % (self.post_id, self.title)
 
+# class PostImage(models.Model):
+#     image = models.ImageField(upload_to='upload',verbose_name='图片')
+#     title = models.CharField(max_length=64,verbose_name='图片标题')
+#     in_post = models.ForeignKey(
+#         Post,
+#         on_delete=models.CASCADE,
+#         related_name='post_images',
+#         verbose_name='所属文章'
+#     )
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True,verbose_name='评论ID')
     comment_uuid = models.UUIDField(default=uuid.uuid4,verbose_name='评论UUID')
+    source_ip = models.GenericIPAddressField(default='',null=True,verbose_name='留言者IP')
     in_post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
@@ -85,3 +96,12 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return '%s: <Comment %s>' % (self.comment_id,self.author)
+
+
+class Dict(models.Model):
+    key = models.CharField(max_length=128,primary_key=True,verbose_name='数据字典键')
+    value = models.CharField(max_length=1024,verbose_name='数据字典值')
+    category = models.CharField(max_length=16, default='default', verbose_name='项分类')
+
+    def __unicode__(self):
+        return '<DictItem>%s:%s' % (self.key,self.value)

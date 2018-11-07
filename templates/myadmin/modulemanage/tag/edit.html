@@ -1,0 +1,57 @@
+{% extends 'myadmin/modulemanage/base/edit.html' %}
+
+{% load static %}
+
+{% block form-content %}
+    <div class="form-group">
+        <label class="control-label" for="idInput">标签ID</label>
+        <input class="form-control" id="idInput" readonly value="{{ tag.tag_id }}" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="nameInput">标签名称</label>
+        <input class="form-control" id="nameInput" value="{{ tag.name }}" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="descriptionInput">标签描述</label>
+        <input id="descriptionInput" class="form-control" value="{{ tag.description }}" />
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(function(){
+$(document).ready(function(){
+    $('#submit').click(function(event){
+        var loadLayer = layer.load('1',{'shade': 0.5});
+        var cate_id = $('#idInput').val();
+        var name = $('#nameInput').val();
+        var description = $('#descriptionInput').val();
+        $.ajax({
+            url: location.pathname,
+            type: 'put',
+            dataType: 'json',
+            data: {
+                tag_id: cate_id,
+                name: name,
+                description: description
+            },
+            success: function(data){
+                var frameId = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(frameId);
+                parent.location.reload();
+            },
+            error: function(xml,err, exc){
+                try{
+                    layer.msg(JSON.parse(xml.responseText).msg);
+                }
+                catch(e){
+                    layer.msg('未知错误');
+                }
+            },
+            complete: function(){layer.close(loadLayer);}
+        })
+    })
+});
+});
+</script>
+{% endblock %}

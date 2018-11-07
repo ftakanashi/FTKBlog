@@ -35,7 +35,14 @@
                 <textarea style="display: none;">{{ post.content }}</textarea>
             </div>
             <div class="post-footer">
-                <!-- 一些文章相关的信息，还有微信QQ分享之类的东西放这里 -->
+                <div class="post-footer-toolbar">
+                    {% if request.user.is_superuser %}
+                    <a href="javascript:void(0);" id="edit-post" class="post-footer-btn pull-left">[编辑]</a>
+                    <a href="javascript:void(0);" id="delete-post" class="post-footer-btn pull-left">[删除]</a>
+                    {% endif %}
+                    <span class="pull-right post-footer-btn">
+                        <a href="javascript:void(0);" id="great-up"><i class="fa fa-thumbs-o-up"></i></a>(<span id="great-count">{{ post.greats }}</span>)</span>
+                </div>
             </div>
         </div>
     </div>
@@ -58,8 +65,7 @@
                     <div class="layui-colla-content layui-show">
                         <div class="comment-header">
                             <span class="comment-title">
-                                {{ comment.title }}
-                            {% if comment.reply_to %}<a href="javascript:void(0);" class="jump-to-comment" name="{{ comment.reply_to }}">[跳转]</a>{% endif %}
+                            {% if comment.reply_to %}{{ comment.title }}<a href="javascript:void(0);" class="jump-to-comment" name="{{ comment.reply_to }}">[跳转]</a>{% endif %}
                             </span>
                         </div>
                         <div class="comment-body" id="comment_{{ comment.comment_uuid }}">
@@ -107,17 +113,23 @@
     <script src="{% static 'comp/layer/layer.js' %}"></script>
     <script src="{% static 'comp/layer/layui.js' %}"></script>
     <script src="{% static 'comp/textSearch.js' %}"></script>
-    <script src="{% static 'ftk/blog/post.js' %}"></script>
-{#    <script src="{% static 'comp/showdown.min.js' %}"></script>#}
     <script>
         $(function() {
-
+            {% if request.user.is_superuser %}
+            // 编辑。删除按钮
+            $('#edit-post').click(function(event){
+                window.open('{% url 'post.manage' %}?pk=' + $('#post-uuid').val() + '&type=edit');
+            });
+            $('#delete-post').click(function(event){
+                window.open('{% url 'post.manage' %}?uuid=' + $('#post-uuid').val());
+            });
+            {% endif %}
             $('#addComment,.reply').click(function(event){
                 var preContent;
                 var replyFloor;
                 if($(this).hasClass('reply')){
                     replyFloor = $(this).parents('.layui-colla-item').find('.comment-floor').text();
-                    preContent = ' >#' + replyFloor + ' ' + $(this).parents('.layui-colla-item').find('.comment-author-name').text();
+                    preContent = '回复 >#' + replyFloor + ' ' + $(this).parents('.layui-colla-item').find('.comment-author-name').text();
                 }
                 var url = '{% url 'comment' %}?post_uuid=' + encodeURIComponent($('#post-uuid').val());
                 if (preContent){
@@ -150,5 +162,6 @@
 
         });
     </script>
+    <script src="{% static 'ftk/blog/post.js' %}"></script>
 
 {% endblock %}

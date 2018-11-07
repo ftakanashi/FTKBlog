@@ -1,3 +1,17 @@
+.my-crousel{
+    display: none;
+}
+.welcome-title{
+    width: 100%;
+    text-align:center;
+    color: white;
+    position: absolute;
+    top: 80%;
+    background: rgba(0,0,0,0.5);
+    padding: 15px;
+    font-size: 35px;
+    display: none;
+}
 .left-ground{
     top: 65px;
 }

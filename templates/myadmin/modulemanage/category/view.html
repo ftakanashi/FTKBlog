@@ -1,0 +1,129 @@
+{% extends 'myadmin/modulemanage/base/view.html' %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}">
+<style>
+    .table-responsive{
+        padding: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content-header-title %}<i class="fa fa-cubes"></i>管理分类模型{% endblock %}
+{% block content-header-description %}分类模型主要对文章进行分类{% endblock %}
+
+{% block script %}
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js' %}"></script>
+<script src="{% static 'comp/layer/layer.js' %}"></script>
+<script>
+$(function(){
+$(document).ready(function(){
+    $('#manageTable').bootstrapTable({
+        url: '{% url 'category.api' %}',
+        columns: [{
+            checkbox: true,
+            align: 'center'
+        },{
+            field: 'cate_id',
+            title: '分类ID',
+            sortable: true
+        },{
+            field: 'name',
+            title: '分类名',
+            sortable: true
+        },{
+            field: 'description',
+            title: '描述'
+        },{
+            field: 'create_time',
+            title: '创建时间',
+            sortable: true
+        },{
+            field: 'update_time',
+            title: '更新时间',
+            sortable: true
+        },{
+            field: 'in_category_posts',
+            title: '包括文章',
+            visible: false,
+            formatter: function(value, row, index){
+                var links = [];
+                for(var i=0;i<value.length;i++){
+                    links.push('<a href="/blog/'+value[i]+'">'+value[i]+'</a>');
+                }
+                return links.join('<br/>');
+            }
+        },{
+            field: 'operations',
+            title: '操作',
+            formatter: function(value, row, index){
+                return [
+                    '<button class="btn btn-xs btn-danger del-btn" name="'+ row.cate_id +'" alias="' + row.name + '"><i class="fa fa-trash"></i>删除</button>',
+                    '<button class="btn btn-xs btn-primary edit-btn" name="'+ row.cate_id +'"><i class="fa fa-edit"></i>编辑</button>'
+                ].join('&nbsp;');
+            }
+        }],
+        resizable: true,
+        pagination: true,
+        sidePagination: 'client',
+        pageNumber: 1,
+        pageSize: 5,
+        pageList: [5,10,'All'],
+        search: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true,
+        toolbar: '#toolbar'
+    }).on('click','.del-btn',function(event){
+        var target = $(this).attr('name');
+        var text = $(this).attr('alias');
+        layer.confirm('确定要删除分类 ['+ text +'] 吗?',{icon:3 ,title: '提示'}, function(index){
+            var loadLayer = layer.load('1');
+            $.ajax({
+                url: location.pathname,
+                type: 'delete',
+                dataType: 'json',
+                data: {
+                    target: target
+                },
+                success: function(data){
+                    location.reload();
+                },
+                error: function(xml ,err, exc){
+                    try{
+                        layer.msg(JSON.parse(xml.responseText).msg);
+                    }
+                    catch(e){
+                        layer.msg('未知错误');
+                    }
+                },
+                complete: function(){layer.close(loadLayer)}
+            });
+        });
+    }).on('click','.edit-btn',function(event){
+        var target = $(this).attr('name');
+        layer.open({
+            content: location.pathname + '?type=edit&pk=' + target,
+            type: 2,
+            area: ['75%','80%'],
+            title: '编辑分类'
+        });
+    });
+
+    $('#btn_add').click(function(event){
+        event.preventDefault();
+        layer.open({
+            content: location.pathname + '?type=add',
+            type: 2,
+            area: ['40%','50%'],
+            title: '新增分类'
+        });
+    });
+
+});
+});
+</script>
+{% endblock %}
