@@ -38,7 +38,9 @@
 
             if (editor.find("." + dialogName).length < 1)
             {
-                var guid   = (new Date).getTime();
+                // weiyz修改，主要是为了适配我的editormd中上传图片相关
+                var guid = $('#uuidInput').val();
+                var guid = guid ? guid : (new Date).getTime();
                 var action = settings.imageUploadURL + (settings.imageUploadURL.indexOf("?") >= 0 ? "&" : "?") + "guid=" + guid;
 
                 if (settings.crossDomainUpload)

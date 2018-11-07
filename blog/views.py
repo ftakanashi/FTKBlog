@@ -18,6 +18,7 @@ from .models import Post, Category, Tag, Comment, Dict
 import json
 import os
 import re
+import time
 import traceback
 
 redis = get_redis_connection('default')
@@ -75,7 +76,7 @@ class IndexView(View):
 
 class NewPostView(View):
     CACHE_KEY = settings.CACHE_KEY
-    CACHE_TTL = 600
+    CACHE_TTL = 3600
 
     @classmethod
     def markdown2text(cls, markdown):
@@ -97,7 +98,11 @@ class NewPostView(View):
         if act == 'save':
             try:
                 content = put.get('content')
-                cache.set(self.CACHE_KEY, content, self.CACHE_TTL)
+                post_uuid = put.get('post_uuid')
+                # cache.set(self.CACHE_KEY, content, self.CACHE_TTL)
+                redis.hset(self.CACHE_KEY,'content',content)
+                redis.hset(self.CACHE_KEY,'post_uuid',post_uuid)
+                redis.expire(self.CACHE_KEY,self.CACHE_TTL)
             except Exception, e:
                 print traceback.format_exc(e)
                 return JsonResponse({'msg': '自动保存失败'}, status=500)
@@ -105,18 +110,20 @@ class NewPostView(View):
                 return JsonResponse({'msg': '自动保存成功'})
         elif act == 'load':
             try:
-                fetch = cache.get(self.CACHE_KEY)
-                if fetch is None:
+                # fetch = cache.get(self.CACHE_KEY)
+                fetch = {'content': redis.hget(self.CACHE_KEY,'content'),'post_uuid': redis.hget(self.CACHE_KEY,'post_uuid')}
+                if fetch['content'] is None and fetch['post_uuid'] is None:
                     return JsonResponse({'msg': '抱歉，没有找到自动保存'}, status=404)
             except Exception, e:
                 print traceback.format_exc(e)
                 return JsonResponse({'msg': '获取缓存内容失败'}, status=500)
             else:
                 return JsonResponse(
-                        {'msg': '获取缓存内容成功', 'content': fetch,
-                         'time': self.CACHE_TTL - cache.ttl(self.CACHE_KEY)})
+                        {'msg': '获取缓存内容成功', 'content': fetch['content'],
+                         'post_uuid': fetch['post_uuid'],
+                         'time': self.CACHE_TTL - redis.ttl(self.CACHE_KEY)})
         elif act == 'clear':
-            cache.delete(self.CACHE_KEY)
+            redis.delete(self.CACHE_KEY)
 
     @method_decorator(login_required)
     def post(self, request):
@@ -124,6 +131,7 @@ class NewPostView(View):
         try:
             postInfo = {}
             postInfo['title'] = request.POST.get('title')
+            postInfo['post_uuid'] = request.POST.get('post_uuid')
             postInfo['content'] = request.POST.get('content')
             postInfo['category'] = Category.objects.get(cate_id=request.POST.get('category'))
             postInfo['abstract'] = self.markdown2text(postInfo['content'])[:150]
@@ -309,19 +317,33 @@ def editormd_upload(request):
             'success': 0,
             'message': '错误的请求方法'
         },status=500)
+
     fi_obj = request.FILES.get('editormd-image-file')
 
     if fi_obj is None:
         return JsonResponse({'success': 0,'message': '上传体未找到图片文件对象'})
 
     guid = request.GET.get('guid')
-    fi_name = '%s-%s' % (guid,fi_obj.name)
-    f = open(os.path.join(settings.IMG_UPLOAD_DIR,fi_name),'wb')
-    for chunk in fi_obj.chunks():
-        f.write(chunk)
-    f.close()
-    return JsonResponse({
-        'success': 1,
-        'msg': '上传成功',
-        'url': '/static/upload/%s' % fi_name
-    })
+    guid_dir = os.path.join(settings.IMG_UPLOAD_DIR,guid)
+    if not os.path.isdir(guid_dir):
+        os.mkdir(guid_dir)
+
+    fi_name = '%s-%s' % (str(int(time.time() * 1000)), fi_obj.name)
+    fi_path = os.path.join(guid_dir, fi_name)
+    if os.path.isfile(fi_name):
+        return JsonResponse({'success': 0, 'message': '服务器中已经存在同名文件'})
+    try:
+        f = open(fi_path,'wb')
+        for chunk in fi_obj.chunks():
+            f.write(chunk)
+        f.close()
+    except Exception,e:
+        return JsonResponse({'success': 0, 'message': '生成文件失败：%s' % unicode(e)})
+    try:
+        return JsonResponse({
+            'success': 1,
+            'msg': '上传成功',
+            'url': '/static/upload/post-image/%s/%s' % (guid,fi_name)
+        })
+    except Exception,e:
+        return JsonResponse({'success': 0, 'message': '上传失败...'})

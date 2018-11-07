@@ -19,6 +19,10 @@
             <input class="form-control" id="titleInput" placeholder="请输入文章标题..." />
         </div>
         <div class="form-group">
+            <label class="control-label" for="uuidInput">UUID</label>
+            <input class="form-control" id="uuidInput" disabled />
+        </div>
+        <div class="form-group">
             <label class="control-label">正文</label>
             <a id="restoreContent" href="javascript:void(0);" title="恢复自动保存内容"><i class="fa fa-refresh"></i></a>
             <div id="post-content-editor">
@@ -80,7 +84,8 @@
     <input type="hidden" value="{% static 'comp/editormd' %}" id="editor-md-root" />
     {% if type == 'edit' %}
 {#    <input type="hidden" value="{{ post.content }}" id="post-content" />#}
-    <input type="hidden" value="{{ post.post_uuid }}" id="post-uuid" />
+{#    <input type="hidden" value="{{ post.post_uuid }}" id="post-uuid" />#}
+    <input type="hidden" value="{% url 'editormd-upload' %}" id="upload-url" />
     {% endif %}
 {% endblock %}
 
@@ -99,6 +104,7 @@
     $(function(){
         $(document).ready(function(){
             $('#titleInput').val('{{ post.title }}');
+            $('#uuidInput').val('{{ post.post_uuid }}');
             $('#categorySelect').val('{{ post.category.cate_id }}').trigger('change');
             $('#isTopCheck').bootstrapSwitch('state',{% if post.is_top %}true{% else %}false{% endif %});
             $('#isReprintCheck').bootstrapSwitch('state', {% if post.is_reprint %}true{% else %}false{% endif %});

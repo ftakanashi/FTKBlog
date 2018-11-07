@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^tag', login_required(TagManage.as_view()),name='tag.manage'),
     url(r'^dict/', login_required(DictManage.as_view()), name='dict.manage'),
     url(r'^post/', login_required(PostManange.as_view()), name='post.manage'),
+    # url(r'^post/upload/$', editormd_upload, name='edit-editormd-upload'),
     url(r'^comment/', login_required(CommentManage.as_view()), name='comment.manage')
 ]

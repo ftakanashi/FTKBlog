@@ -85,7 +85,7 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '192.168.178.59:9200'
+        'hosts': '192.168.3.29:9200'
     },
 }
 ELASTICSEARCH_INDEX = 'ftkblog'
@@ -93,7 +93,7 @@ ELASTICSEARCH_INDEX = 'ftkblog'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.178.59:6379/1',
+        'LOCATION': 'redis://192.168.3.29:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'CONNECTION_POOL_KWARGS': {'max_connections': 100},
@@ -152,6 +152,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+# File upload setting
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 5
+
+# Pagination settings for pure_pagination
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,
@@ -171,7 +175,7 @@ CACHE_KEY = 'blog:post_cache'
 UNREAD_COMMENTS_KEY = 'blog:unread_comment_queue'
 UNREAD_MESSAGE_KEY = 'blog:unread_message_queue'
 
-IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload')
+IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload', 'post-image')
 
 ######## 自定义初始化 ##########
 # from scripts import *

@@ -58,12 +58,12 @@ $(document).ready(function(){
         sequenceDiagram: true,
         imageUpload: true,
         imageFormats: ['jpg','png','gif','jpeg','bmp'],
-        imageUploadUrl: location.pathname + 'upload/'
+        imageUploadURL: $('#upload-url').val().trim()
     });
 
     $.extend({
         loadCache: function(){
-            layer.msg('正在加载自动保存内容...',{offset: 't',icon: 0});
+            layer.msg('正在寻找自动保存内容...',{offset: 't',icon: 0});
             $.ajax({
                 url: location.pathname,
                 type: 'put',
@@ -74,6 +74,7 @@ $(document).ready(function(){
                 success: function(data){
                     layer.confirm('发现最近('+moment(Date.now() - 1000 * data.time).fromNow()+')自动保存的内容，是否恢复？',{icon:3,title:'提示'},function(index){
                         contentEditor.insertValue(data.content);
+                        $('#uuidInput').val(data.post_uuid);
                         layer.msg('恢复成功',{offset: 't',icon: 1});
                     });
                 },
@@ -118,11 +119,12 @@ $(document).ready(function(){
     $('#save,#submit').click(function(event){
         event.preventDefault();
         var loadLayer = layer.load('1',{shade: 0.7});
-        var uuid = $('#post-uuid').val();
         var title = $('#titleInput').val();
+        var uuid = $('#uuidInput').val();
         if (!title){
             $.scrollTo('titleInput');
             layer.tips('标题不能为空','#titleInput',{tips: [1,'darkred']});
+            layer.close(loadLayer);
             return;
         }
         var content = contentEditor.getMarkdown();
@@ -130,6 +132,7 @@ $(document).ready(function(){
         if (!category){
             $.scrollTo('categorySelect');
             layer.tips('请选择分类','#categorySelect',{tips: [1,'darkred']});
+            layer.close(loadLayer);
             return;
         }
         var isTop = $('#isTopCheck').is(':checked');
@@ -155,8 +158,8 @@ $(document).ready(function(){
             type: 'post',
             dataType: 'json',
             data: {
-                uuid: uuid,
                 title: title,
+                post_uuid: uuid,
                 content: content,
                 category: category,
                 is_top: isTop,
@@ -197,6 +200,7 @@ $(document).ready(function(){
     });
 
     function autoSave(){
+        var uuid = $('#uuidInput').val();
         var currentContent = contentEditor.getMarkdown();
         $.ajax({
             url: location.pathname,
@@ -204,7 +208,8 @@ $(document).ready(function(){
             dataType: 'json',
             data: {
                 act: 'save',
-                content: currentContent
+                content: currentContent,
+                post_uuid: uuid
             },
             beforeSend: function(xhr, settings){
                 layer.msg('自动保存中...',{offset: 'lb',icon:0});

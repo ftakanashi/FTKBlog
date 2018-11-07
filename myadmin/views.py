@@ -3,12 +3,15 @@ from __future__ import unicode_literals
 
 import collections
 import json
+import os
+import shutil
 import traceback
 
 from django.conf import settings
 from django.core.cache import cache
-from django.shortcuts import render,reverse
+from django.shortcuts import render,reverse, redirect
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.http import QueryDict,JsonResponse
 # from django.contrib.auth.decorators import login_required
 # from django.utils.decorators import method_decorator
@@ -293,10 +296,17 @@ class PostManange(View):
         except Exception,e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '删除失败'},status=500)
-        try:
+        try:    # 和Post关联但是没有反应到模型层中的数据，需要手动额外删除
+            # 删除redis中read_count缓存
             back = self.REDIS.hdel(self.READ_COUNT_KEY,post.post_uuid)
             if back is None:
                 raise Exception('No such key in redis found: %s' % self.READ_COUNT_KEY + post.post_uuid)
+
+            # 删除文章中上传的图片
+            postImgDir = os.path.join(settings.IMG_UPLOAD_DIR, str(post.post_uuid))
+            if os.path.isdir(postImgDir):
+                shutil.rmtree(postImgDir)
+
         except Exception,e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '文章相关数据删除失败'}, status=501)
@@ -306,7 +316,7 @@ class PostManange(View):
     def post(self, request):
 
         try:
-            post = Post.objects.get(post_uuid=request.POST.get('uuid'))
+            post = Post.objects.get(post_uuid=request.POST.get('post_uuid'))
         except Post.DoesNotExist,e:
             return JsonResponse({'msg': '没有找到相关文章'}, status=404)
 
@@ -368,3 +378,41 @@ class CommentManage(View):
             return JsonResponse({'msg': '删除失败'}, status=500)
         else:
             return JsonResponse({})
+# import time
+# @csrf_exempt
+# def editormd_upload(request):
+#     if request.method != 'POST':
+#         return JsonResponse({
+#             'success': 0,
+#             'message': '错误的请求方法'
+#         },status=500)
+#
+#     fi_obj = request.FILES.get('editormd-image-file')
+#
+#     if fi_obj is None:
+#         return JsonResponse({'success': 0,'message': '上传体未找到图片文件对象'})
+#
+#     guid = request.GET.get('guid')
+#     guid_dir = os.path.join(settings.IMG_UPLOAD_DIR,guid)
+#     if not os.path.isdir(guid_dir):
+#         os.mkdir(guid_dir)
+#
+#     fi_name = '%s-%s' % (str(int(time.time() * 1000)), fi_obj.name)
+#     fi_path = os.path.join(guid_dir, fi_name)
+#     if os.path.isfile(fi_name):
+#         return JsonResponse({'success': 0, 'message': '服务器中已经存在同名文件'})
+#     try:
+#         f = open(fi_path,'wb')
+#         for chunk in fi_obj.chunks():
+#             f.write(chunk)
+#         f.close()
+#     except Exception,e:
+#         return JsonResponse({'success': 0, 'message': '生成文件失败：%s' % unicode(e)})
+#     try:
+#         return JsonResponse({
+#             'success': 1,
+#             'msg': '上传成功',
+#             'url': '/static/upload/post-image/%s/%s' % (guid,fi_name)
+#         })
+#     except Exception,e:
+#         return JsonResponse({'success': 0, 'message': '上传失败...'})

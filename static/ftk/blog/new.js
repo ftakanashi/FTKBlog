@@ -74,6 +74,7 @@ $(document).ready(function(){
                 success: function(data){
                     layer.confirm('发现最近('+moment(Date.now() - 1000 * data.time).fromNow()+')自动保存的内容，是否恢复？',{icon:3,title:'提示'},function(index){
                         contentEditor.insertValue(data.content);
+                        $('#uuidInput').val(data.post_uuid);
                         layer.msg('恢复成功',{offset: 't',icon: 1});
                     });
                 },
@@ -98,20 +99,19 @@ $(document).ready(function(){
                     act: 'clear'
                 }
             })
+        },
+        getUUID: function(){
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+            });
         }
     });
     // 先验自动保存
     $.loadCache();
-    //if ($.cookie('autosave')){
-    //    var autoSavePre = JSON.parse($.cookie('autosave'));
-    //    if(autoSavePre && (Date.now() - autoSavePre.timestamp) < 1000 * 10 * 60){
-    //        layer.confirm('发现最近('+moment(autoSavePre.timestamp).fromNow()+')自动保存的内容，是否恢复？',{icon:3,title:'提示'},function(index){
-    //            contentEditor.insertValue(autoSavePre.content);
-    //            layer.msg('恢复成功',{offset: 'lb'});
-    //        });
-    //    }
-    //}
 
+    // 自动生成UUID
+    $('#uuidInput').val($.getUUID());
 
     // 点击重置按钮
     $('#reset').click(function(event){
@@ -129,9 +129,11 @@ $(document).ready(function(){
         event.preventDefault();
         var loadLayer = layer.load('1',{shade: 0.7});
         var title = $('#titleInput').val();
+        var uuid = $('#uuidInput').val();
         if (!title){
             $.scrollTo('titleInput');
             layer.tips('标题不能为空','#titleInput',{tips: [1,'darkred']});
+            layer.close(loadLayer);
             return;
         }
         var content = contentEditor.getMarkdown();
@@ -139,6 +141,7 @@ $(document).ready(function(){
         if (!category){
             $.scrollTo('categorySelect');
             layer.tips('请选择分类','#categorySelect',{tips: [1,'darkred']});
+            layer.close(loadLayer);
             return;
         }
         var isTop = $('#isTopCheck').is(':checked');
@@ -165,6 +168,7 @@ $(document).ready(function(){
             dataType: 'json',
             data: {
                 title: title,
+                post_uuid: uuid,
                 content: content,
                 category: category,
                 is_top: isTop,
@@ -204,8 +208,8 @@ $(document).ready(function(){
         $.loadCache();
     });
 
-    // todo 博文自动保存
     function autoSave(){
+        var uuid = $('#uuidInput').val();
         var currentContent = contentEditor.getMarkdown();
         $.ajax({
             url: location.pathname,
@@ -213,7 +217,8 @@ $(document).ready(function(){
             dataType: 'json',
             data: {
                 act: 'save',
-                content: currentContent
+                content: currentContent,
+                post_uuid: uuid
             },
             beforeSend: function(xhr, settings){
                 layer.msg('自动保存中...',{offset: 'lb',icon:0});
