@@ -38,7 +38,8 @@ class IndexView(View):
                 continue
             else:
                 urcInfo.append(comment)
-        ctx['access_count'] = cache.get(settings.ACCESS_COUNT_KEY,-1)
+        # ctx['access_count'] = cache.get(settings.ACCESS_COUNT_KEY,-1)
+        ctx['access_count'] = redis.get(settings.ACCESS_COUNT_KEY)
         ctx['urcInfo'] = urcInfo
         return render(request, 'myadmin/dashboard.html', ctx)
 

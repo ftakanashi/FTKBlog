@@ -17,7 +17,6 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.shortcuts import redirect, reverse, render
-from django.contrib.auth.decorators import permission_required
 
 def index(request):
     return redirect(reverse('index'))

@@ -24,7 +24,7 @@ def redis_init():
         r.set(settings.ACCESS_COUNT_KEY,0)
 
     if not r.exists(settings.UNREAD_COMMENTS_KEY):
-        r.rpush(settings.UNREAD_COMMENTS_KEY,'1')
+        r.rpush(settings.UNREAD_COMMENTS_KEY,'-1')
         # r.lpop(settings.UNREAD_COMMENTS_KEY)
 
     for key in (settings.READ_COUNT_KEY,settings.ACCESS_COUNT_KEY, settings.UNREAD_COMMENTS_KEY):

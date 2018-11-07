@@ -67,7 +67,8 @@ class IndexView(View):
         ctx['pageDictInfo'] = {q.key: q.value for q in Dict.objects.filter(category='index_page')}
         ctx['quickLinks'] = {q.key: q.value for q in Dict.objects.filter(category='quick_links')}
         if not request.user.is_superuser:
-            cache.incr(settings.ACCESS_COUNT_KEY)
+            # cache.incr(settings.ACCESS_COUNT_KEY)
+            redis.incr(settings.ACCESS_COUNT_KEY)
 
         return render(request, 'index.html', ctx)
 
