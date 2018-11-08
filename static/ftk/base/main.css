@@ -43,7 +43,7 @@ a:hover{
 }
 .left-ground{
     position: fixed;
-    top: 98px;
+    /*top: 98px;*/
     overflow-y: auto;
     padding: 10px;
     width: 15%;
@@ -162,7 +162,10 @@ a:hover{
     font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif
 }
 
-
+.sm-btn{
+    text-align: center;
+    padding: 10px;
+}
 
 .layui-layer-mybg{
     background: #256a88;

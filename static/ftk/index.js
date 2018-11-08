@@ -3,31 +3,26 @@
  */
 $(function(){
     $(document).ready(function(){
+
+        var slider = new SliderUnlock('.slideunlock-slider', {
+            labelTip: '>>>>>推动历史的行程>>>>>',
+            successLabelTip: '还是得看个人的奋斗'
+        }, function(){
+            $('.my-carousel').fadeOut(1200);
+            $.cookie('accessed', true, {path: '/'});
+        },function(){});
+        slider.init();
+
         var accessed = $.cookie('accessed');
         if (!accessed){
             $('body').fadeIn('slow');
             $('.welcome-title').fadeIn('slow');
-            setTimeout('$(\'.my-carousel\').fadeOut(\'slow\');',3000);
-            $('.my-carousel').click(function(event){
-                $(this).fadeOut('slow');
-            });
-            $.cookie('accessed',true,{expires: 1});
         }
         else{
             $('.my-carousel').hide();
             $('body').show();
         }
 
-
-        //layui.use('carousel',function(){
-        //    var carousel = layui.carousel;
-        //    carousel.render({
-        //        elem: '#test1',
-        //        width: '100%',
-        //        arrow: 'hover',
-        //        anim: 'fade'
-        //    });
-        //});
 
         //收放左边栏
         $('.navbar-brand').click(function(event){

@@ -1,6 +1,12 @@
 .my-crousel{
     display: none;
 }
+.slideunclock-wrapper{
+    position: absolute;
+    top: 40%;
+    width: 30%;
+    left: 35%;
+}
 .welcome-title{
     width: 100%;
     text-align:center;
@@ -12,9 +18,9 @@
     font-size: 35px;
     display: none;
 }
-.left-ground{
-    top: 65px;
-}
+/*.left-ground{*/
+    /*top: 65px;*/
+/*}*/
 .toolbar{
     display: none;
 }

@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^new/$',BlogView.NewPostView.as_view(), name='new_post'),
     url(r'^new/upload/$',BlogView.editormd_upload, name='editormd-upload'),
     url(r'^comment/$', BlogView.CommentView.as_view(),name='comment'),
+    url(r'^message/$', BlogView.MessageView.as_view(), name='message'),
     url(r'^(?P<uuid>.+?)/$', BlogView.PostView.as_view(), name='detail')
 ]

@@ -72,38 +72,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </li>
 
                         {% block message_menu %}
-                        {# 留言板提醒，先不用了吧 #}
-                        <li class="dropdown messages-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="留言板消息">
+                        {# 提示未读留言 #}
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="留言消息">
                                 <i class="fa fa-envelope-o"></i>
-                                <span class="label label-success">{{ messageInfo.currentMessage|default:"" }}</span>
+                                <span class="label label-warning">{{ urmInfo | length | default:"" }}</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">You have 4 messages</li>
+                                {% if urmInfo|length > 0 %}
+                                <li class="header">有{{ urmInfo | length }}条未读留言</li>
                                 <li>
                                     <ul class="menu">
-                                        <li><!-- start message -->
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <!-- User Image -->
-                                                    <img src="dist/img/user2-160x160.jpg" class="img-circle"
-                                                         alt="User Image">
-                                                </div>
-                                                <!-- Message title and timestamp -->
-                                                <h4>
-                                                    Support Team
-                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                                </h4>
-                                                <!-- The message -->
-                                                <p>Why not buy a new awesome theme?</p>
+                                        {% for urm in urmInfo %}
+                                        <li>
+                                            <a href="{% url 'message.manage' %}">
+                                                <i class="fa fa-users text-aqua"></i>{{ urm.content }}...
                                             </a>
                                         </li>
-                                        <!-- end message -->
+                                        {% endfor %}
                                     </ul>
-                                    <!-- /.menu -->
                                 </li>
-                                <li class="footer"><a href="#">See All Messages</a></li>
+                                <li class="footer"><a href="javascript:void(0);" class="ignore" id="ignore-urm">全部忽略</a></li>
+                                {% else %}
+                                <li class="header">没有未读留言</li>
+                                {% endif %}
                             </ul>
+
                         </li>
                         {% endblock %}
 
@@ -128,7 +122,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         {% endfor %}
                                     </ul>
                                 </li>
-                                <li class="footer"><a href="javascript:void(0);" id="ignore-urc">全部忽略</a></li>
+                                <li class="footer"><a href="javascript:void(0);" class="ignore" id="ignore-urc">全部忽略</a></li>
                                 {% else %}
                                 <li class="header">没有未读评论</li>
                                 {% endif %}
@@ -260,6 +254,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">博客数据管理</li>
                 <!-- Optionally, you can add icons to the links -->
+                <li><a href="{% url 'my_admin_index' %}"><i class="fa fa-dashboard"></i>后台主页</a></li>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-gear"></i><span>基础信息</span>
                         <span class="pull-right-container">
@@ -273,6 +268,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </ul>
                 </li>
                 <li><a href="{% url 'comment.manage' %}"><i class="fa fa-comment"></i><span>评论管理</span></a></li>
+                <li><a href="{% url 'message.manage' %}"><i class="fa fa-puzzle-piece"></i>消息管理</a></li>
                 <li><a href="{% url 'post.manage' %}"><i class="fa fa-file"></i><span>文章管理</span></a></li>
             </ul>
             {% endblock %}
@@ -426,12 +422,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     });
 $(function(){
 $(document).ready(function(){
-    $('#ignore-urc').click(function(event){
+    $('.ignore').click(function(event){
+        var act = $(this).attr('id');
         $.ajax({
             url: location.pathname,
             type: 'post',
             dataType: 'json',
-            data: {act: 'ignore_urc'},
+            data: {act: act},
             success: function(data){
                 location.reload();
             },

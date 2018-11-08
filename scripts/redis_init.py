@@ -18,14 +18,16 @@ def redis_init():
 
     if not r.exists(settings.READ_COUNT_KEY):
         r.hset(settings.READ_COUNT_KEY,'_',0)
-        r.hdel(settings.READ_COUNT_KEY,'_')
 
     if not r.exists(settings.ACCESS_COUNT_KEY):
         r.set(settings.ACCESS_COUNT_KEY,0)
 
     if not r.exists(settings.UNREAD_COMMENTS_KEY):
         r.rpush(settings.UNREAD_COMMENTS_KEY,'-1')
-        # r.lpop(settings.UNREAD_COMMENTS_KEY)
 
-    for key in (settings.READ_COUNT_KEY,settings.ACCESS_COUNT_KEY, settings.UNREAD_COMMENTS_KEY):
+    if not r.exists(settings.UNREAD_MESSAGE_KEY):
+        r.rpush(settings.UNREAD_MESSAGE_KEY, '-1')
+
+    for key in (settings.READ_COUNT_KEY,settings.ACCESS_COUNT_KEY, settings.UNREAD_COMMENTS_KEY,
+                settings.UNREAD_MESSAGE_KEY):
         r.persist(key)

@@ -1,0 +1,94 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block toolsbar %}{% endblock %}
+
+{% block style %}
+    <link href="{% static 'comp/select2/css/select2.min.css' %}" rel="stylesheet" />
+    <style>
+        .main-ground{
+            margin-top: 5%;
+            margin-bottom: 5%;
+            margin-left: 16%;
+            width: 80%;
+            background: white;
+            border: 1px solid darkgray;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block main_ground %}
+<div class="main-ground">
+    <div class="message-board-wrap">
+        <h2>留言板</h2>
+        <hr>
+        <div class="message-board-form">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group required">
+                        <label class="control-label" for="authorInput">您的昵称</label>
+                        <input class="form-control" id="authorInput" />
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="contactInput">您的联系方式</label>
+                        <input class="form-control" id="contactInput" placeholder="手机，邮箱，QQ，随便填" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="titleInput">留言标题</label>
+                        <input class="form-control" id="titleInput" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group required">
+                        <label class="control-label" for="contentInput">留言内容</label>
+                        <textarea class="form-control" id="contentInput" rows="8"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label class="control-label" for="relatePostCheck">
+                        <input type="checkbox" id="relatePostCheck" />
+                        是否针对某文章？
+                        </label>
+                    </div>
+                </div>
+                <div class="col-lg-4" style="display: none;">
+                    <div class="form-group">
+                        <label class="control-label" for="relatePostSelect">文章选择</label>
+                        <select class="form-control" id="relatePostSelect">
+                            <option value="" selected>--请选择--</option>
+                            {% for post in posts %}
+                                <option value="{{ post.post_uuid }}">{{ post.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="sm-btn">
+                <button class="btn btn-sm btn-primary" id="submit">提交</button>
+                <a class="btn btn-sm btn-default" role="button" href="{% url 'index' %}">返回</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'comp/layer/layer.js' %}"></script>
+    <script src="{% static 'comp/select2/js/select2.min.js' %}"></script>
+    <script src="{% static 'comp/select2/js/i18n/zh-CN.js' %}"></script>
+    <script src="{% static 'ftk/blog/message.js' %}"></script>
+{% endblock %}

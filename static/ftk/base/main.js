@@ -23,6 +23,8 @@ $(document).ready(function(event){
     $(window).scroll(function(event){
         $('div.navbar-inverse').css({top: $(window).scrollTop()});
     });
+    $('.ground-row').css({'min-height': $(window).height() - $('.footer').height() - $('.navbar').height()});
+    $('.left-ground').css({top: $('.navbar').height() + $('.toolbar').height()});
 
     // 各个固定按钮功能
     var mailAddr = $('#MailAddr').val();

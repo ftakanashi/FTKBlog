@@ -4,6 +4,7 @@
 {% block style %}
     <link href="{% static 'comp/layer/css/layui.css' %}" rel="stylesheet" />
     <link href="{% static 'comp/editormd/css/editormd.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/social-share/css/share.min.css' %}" rel="stylesheet" />
     <link href="{% static 'ftk/blog/post.css' %}" rel="stylesheet" />
 {% endblock %}
 
@@ -36,11 +37,14 @@
             </div>
             <div class="post-footer">
                 <div class="post-footer-toolbar">
-                    {% if request.user.is_superuser %}
-                    <a href="javascript:void(0);" id="edit-post" class="post-footer-btn pull-left">[编辑]</a>
-                    <a href="javascript:void(0);" id="delete-post" class="post-footer-btn pull-left">[删除]</a>
-                    {% endif %}
-                    <span class="pull-right post-footer-btn">
+                    <div>
+                        {% if request.user.is_superuser %}
+                        <a href="javascript:void(0);" id="edit-post" class="post-footer-btn">[编辑]</a>
+                        <a href="javascript:void(0);" id="delete-post" class="post-footer-btn">[删除]</a>
+                        {% endif %}
+                    </div>
+                    <div class="social-share"></div>
+                    <span class="post-footer-btn" style="font-size:20px;">
                         <a href="javascript:void(0);" id="great-up"><i class="fa fa-thumbs-o-up"></i></a>(<span id="great-count">{{ post.greats }}</span>)</span>
                 </div>
             </div>
@@ -58,8 +62,12 @@
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title">
                         <b>#<span class="comment-floor">{{ forloop.counter }}</span>&nbsp;
-                            {% if comment.author == '博主' %}<span class="comment-author-name" style="background: black; color: white; padding: 3px; border-radius: 3px;"><i class="fa fa-user"></i>{{ comment.author }}</span>
-                            {% else %}<span class="comment-author-name">{{ comment.author }}</span>
+                            {% if comment.author == '博主' %}
+                                <span class="profile-image"><img src="{% static 'image/profile/profile.jpg' %}" class="img-circle" style="width: 25px;"></span>
+                                <span class="comment-author-name">{{ comment.author }}</span>
+                            {% else %}
+                                <span class="profile-image"><img src="{% static 'image/profile/guest.jpg' %}" class="img-circle" style="width: 25px;height: 23px;" /></span>
+                                <span class="comment-author-name">{{ comment.author }}</span>
                             {% endif %}
                         </b>&nbsp;&nbsp;{{ comment.create_time }}</h2>
                     <div class="layui-colla-content layui-show">
@@ -82,9 +90,6 @@
             {% endfor %}
             </div>
         </div>
-    </div>
-    <div id="new-comment">
-
     </div>
     {% endif %}
 {% endblock %}
@@ -112,9 +117,11 @@
     <script src="{% static 'comp/editormd/editormd.min.js' %}"></script>
     <script src="{% static 'comp/layer/layer.js' %}"></script>
     <script src="{% static 'comp/layer/layui.js' %}"></script>
+    <script src="{% static 'comp/social-share/js/social-share.min.js' %}"></script>
     <script src="{% static 'comp/textSearch.js' %}"></script>
     <script>
         $(function() {
+
             {% if request.user.is_superuser %}
             // 编辑。删除按钮
             $('#edit-post').click(function(event){

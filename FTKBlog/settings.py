@@ -85,7 +85,7 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '192.168.3.29:9200'
+        'hosts': '192.168.178.59:9200'
     },
 }
 ELASTICSEARCH_INDEX = 'ftkblog'
@@ -93,7 +93,7 @@ ELASTICSEARCH_INDEX = 'ftkblog'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.3.29:6379/1',
+        'LOCATION': 'redis://192.168.178.59:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'CONNECTION_POOL_KWARGS': {'max_connections': 100},
@@ -124,9 +124,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CRONLOG = os.path.join(BASE_DIR, 'logs', 'cron', 'cron.log')
 CRONJOBS = [
-    ('0 */1 * * *', 'blog.cron.sync_read_count','>> %s' % os.path.join(BASE_DIR,'logs','cron','sync_read_count.log')),
-    ('0 0 * * *', 'blog.cron.refresh_today_access_count', '>> %s' % os.path.join(BASE_DIR,'logs','cron','refresh_today_access_count.log'))
+    ('0 */1 * * *', 'blog.cron.sync_read_count','>> %s' % CRONLOG),
+    ('0 0 * * *', 'blog.cron.refresh_today_access_count', '>> %s' % CRONLOG),
+    ('0 0 */2 * *', 'blog.cron.gc_post_image', '>> %s' % CRONLOG)
 ]
 
 # Internationalization
@@ -178,8 +180,8 @@ UNREAD_MESSAGE_KEY = 'blog:unread_message_queue'
 IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload', 'post-image')
 
 ######## 自定义初始化 ##########
-# from scripts import *
-# redis_init()
+from scripts import *
+redis_init()
 
 '''
 似乎django有个自动压缩前端所有需要比如css，js这些文件的组件

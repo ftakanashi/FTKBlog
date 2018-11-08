@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-import datetime
+import logging
 import os
 import shutil
 
@@ -10,15 +10,17 @@ from django.conf import settings
 from django_redis import get_redis_connection
 
 from blog.models import Post
-# todo 搞一个logger规范cron日志输出格式
 DATEFMT = '%Y-%m-%d %H:%M:%S'
+
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(filename)s [L.%(lineno)d] %(levelname)s  %(message)s',
+                    datefmt=DATEFMT)
 
 def sync_read_count():
     '''
     定期将redis中的数据同步到数据库中
     :return:
     '''
-    print '[%s]Start to sync read_count from redis to db...' % datetime.datetime.now().strftime(DATEFMT)
+    logging.info('Start to sync read_count from redis to db...')
     try:
         r = get_redis_connection('default')
         for post in Post.objects.all():
@@ -26,7 +28,7 @@ def sync_read_count():
             post.read_count = rc
             post.save()
     except Exception,e:
-        print '[%s]Failed to sync.' % datetime.datetime.now().strftime(DATEFMT)
+        logging.error('Failed to sync: %s' % unicode(e))
         raise
 
 def refresh_today_access_count():
@@ -34,18 +36,24 @@ def refresh_today_access_count():
     每天零点归零当天来访访客数
     :return:
     '''
-    r = get_redis_connection('default')
-    r.set(settings.ACCESS_COUNT_KEY,0)
+    logging.info('Reset access count to 0...')
+    try:
+        r = get_redis_connection('default')
+        r.set(settings.ACCESS_COUNT_KEY,0)
+    except Exception,e:
+        logging.error('Failed to reset access count: %s' % unicode(e))
 
 def gc_post_images():
     '''
     定期检查post-image上传目录中是否有无效的文章uuid情况，若有则直接删除之
     :return:
     '''
+    logging.info('Start to check invalid post-images..')
     for _post_uuid in os.listdir(settings.IMG_UPLOAD_DIR):
         try:
             post = Post.objects.get(post_uuid=_post_uuid)
         except Post.DoesNotExist,e:
+            logging.info('Deleting directory: %s' % os.path.join(_post_uuid))
             shutil.rmtree(os.path.join(settings.IMG_UPLOAD_DIR, _post_uuid))
         else:
             continue

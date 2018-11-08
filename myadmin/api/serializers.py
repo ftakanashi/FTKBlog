@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SlugRelatedField,StringRelatedField
 
-from blog.models import Category, Tag, Post, Comment
+from blog.models import Category, Tag, Post, Comment, Message
 
 class CategorySerializer(ModelSerializer):
     in_category_posts = SlugRelatedField(slug_field='post_uuid', read_only=True, many=True)
@@ -35,4 +35,11 @@ class CommentSerializer(ModelSerializer):
 
     class Meta:
         model = Comment
+        fields = '__all__'
+
+class MessageSerializer(ModelSerializer):
+    relate_post = SlugRelatedField(slug_field='title', read_only=True)
+
+    class Meta:
+        model = Message
         fields = '__all__'

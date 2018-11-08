@@ -1,8 +1,10 @@
 {% extends 'original/base.html' %}
 {% load static %}
+{% load ftkblog_tags %}
 
 {% block style %}
     {{ super }}
+    <link href="{% static 'comp/jquery/jquery.slideunlock.css' %}" rel="stylesheet" />
     <link href="{% static 'ftk/index.css' %}" rel="stylesheet" />
 {#    <link href="{% static 'comp/layer/css/layui.css' %}" rel="stylesheet" />#}
 {% endblock %}
@@ -10,9 +12,16 @@
 {% block carousel %}
     <div class="my-carousel" style="position:fixed;top:0;left:0;height:100%;width:100%;z-index:1001;
             background-image:url({% static 'image/bg/carousel.jpg' %});background-size: cover;">
+        <div class="slideunclock-wrapper">
+            <input type="hidden" value="" class="slideunlock-lockable" />
+            <div class="slideunlock-slider">
+                <span class="slideunlock-label"></span>
+                <span class="slideunlock-label-tip"></span>
+            </div>
+        </div>
         <div class="welcome-title">
-            <p>Welcome!</p>
-            <p>一个半路出家素人的自言自语</p>
+            <p>{% dictitem 'welcomeTitle' %}</p>
+            <p>{% dictitem 'welcomeText' %}</p>
         </div>
     </div>
 {% endblock %}
@@ -28,7 +37,7 @@
                 <p>{{ pageDictInfo.welcomeText | default:"一个半路出家素人的自言自语" }}</p>
             </div>
             <div class="auto-me">
-                <div class="me-avatar"><img src="{% static 'image/profile.jpg' %}"></div>
+                <div class="me-avatar"><img src="{% static 'image/profile/profile.jpg' %}"></div>
                 <div class="me-name"><h4>F. Takanashi</h4></div>
                 <div class="me-declaration">{{ pageDictInfo.profileDescription|default:"竜神の剣を喰らえ!" }}</div>
                 <div class="me-icon">
@@ -64,7 +73,7 @@
                 <ul class="category-list">
                 {% for name,link in quickLinks.items %}
                     <li class="category-name">
-                        <i class="fa fa-link"></i><a href="{{ link }}">{{ name }}</a>
+                        <i class="fa fa-link"></i><a target="_blank" href="{{ link }}">{{ name }}</a>
                     </li>
                 {% endfor %}
                 </ul>
@@ -143,5 +152,6 @@
 {% block script %}
     {{ block.super }}
 {#    <script src="{% static 'comp/layer/layui.js' %}"></script>#}
+    <script src="{% static 'comp/jquery/jquery.slideunlock.min.js' %}"></script>
     <script src="{% static 'ftk/index.js' %}"></script>
 {% endblock %}

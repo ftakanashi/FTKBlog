@@ -105,3 +105,24 @@ class Dict(models.Model):
 
     def __unicode__(self):
         return '<DictItem>%s:%s' % (self.key,self.value)
+
+class Message(models.Model):
+    message_id = models.AutoField(primary_key=True,verbose_name='留言ID')
+    author = models.CharField(max_length=64, verbose_name='作者昵称')
+    source_ip = models.GenericIPAddressField(verbose_name='来源IP')
+    contact = models.CharField(max_length=128, null=True, verbose_name='联系方式')
+    title = models.CharField(max_length=128,default='无题',verbose_name='标题')
+    content = models.TextField(max_length=1024,verbose_name='内容')
+    create_time = models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
+    relate_post = models.ForeignKey(
+        Post,
+        null=True,
+        blank=True,
+        related_name='relate_messages',
+        verbose_name='关联文章'
+    )
+
+    def __unicode__(self):
+        return '%s: <Message>%s via %s' % (self.message_id, self.title,self.author)
+
+

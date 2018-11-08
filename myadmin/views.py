@@ -17,7 +17,7 @@ from django.http import QueryDict,JsonResponse
 # from django.utils.decorators import method_decorator
 from django_redis import get_redis_connection
 
-from blog.models import Category, Tag, Dict, Post, Comment
+from blog.models import Category, Tag, Dict, Post, Comment, Message
 from blog.views import NewPostView
 # Create your views here.
 redis = get_redis_connection('default')
@@ -41,16 +41,31 @@ class IndexView(View):
                 continue
             else:
                 urcInfo.append(comment)
-        # ctx['access_count'] = cache.get(settings.ACCESS_COUNT_KEY,-1)
+
+        urmInfo = []
+        for mid in redis.lrange(settings.UNREAD_MESSAGE_KEY,0,-1):
+            try:
+                message = Message.objects.get(message_id=mid)
+            except Message.DoesNotExist,e:
+                redis.lrem(settings.UNREAD_MESSAGE_KEY,0,mid)
+                continue
+            else:
+                urmInfo.append(message)
+
         ctx['access_count'] = redis.get(settings.ACCESS_COUNT_KEY)
         ctx['urcInfo'] = urcInfo
+        ctx['urmInfo'] = urmInfo
         return render(request, 'myadmin/dashboard.html', ctx)
 
     def post(self, request):
         act = request.POST.get('act')
-        if act == 'ignore_urc':
+        if act == 'ignore-urc':
             while redis.llen(settings.UNREAD_COMMENTS_KEY) > 0:
                 redis.lpop(settings.UNREAD_COMMENTS_KEY)
+            return JsonResponse({})
+        elif act == 'ignore-urm':
+            while redis.llen(settings.UNREAD_MESSAGE_KEY) > 0:
+                redis.lpop(settings.UNREAD_MESSAGE_KEY)
             return JsonResponse({})
 
         return JsonResponse({'msg': '无效的申请动作'},status=500)
@@ -378,41 +393,23 @@ class CommentManage(View):
             return JsonResponse({'msg': '删除失败'}, status=500)
         else:
             return JsonResponse({})
-# import time
-# @csrf_exempt
-# def editormd_upload(request):
-#     if request.method != 'POST':
-#         return JsonResponse({
-#             'success': 0,
-#             'message': '错误的请求方法'
-#         },status=500)
-#
-#     fi_obj = request.FILES.get('editormd-image-file')
-#
-#     if fi_obj is None:
-#         return JsonResponse({'success': 0,'message': '上传体未找到图片文件对象'})
-#
-#     guid = request.GET.get('guid')
-#     guid_dir = os.path.join(settings.IMG_UPLOAD_DIR,guid)
-#     if not os.path.isdir(guid_dir):
-#         os.mkdir(guid_dir)
-#
-#     fi_name = '%s-%s' % (str(int(time.time() * 1000)), fi_obj.name)
-#     fi_path = os.path.join(guid_dir, fi_name)
-#     if os.path.isfile(fi_name):
-#         return JsonResponse({'success': 0, 'message': '服务器中已经存在同名文件'})
-#     try:
-#         f = open(fi_path,'wb')
-#         for chunk in fi_obj.chunks():
-#             f.write(chunk)
-#         f.close()
-#     except Exception,e:
-#         return JsonResponse({'success': 0, 'message': '生成文件失败：%s' % unicode(e)})
-#     try:
-#         return JsonResponse({
-#             'success': 1,
-#             'msg': '上传成功',
-#             'url': '/static/upload/post-image/%s/%s' % (guid,fi_name)
-#         })
-#     except Exception,e:
-#         return JsonResponse({'success': 0, 'message': '上传失败...'})
+
+class MessageManage(View):
+
+    def get(self, request):
+        ctx = {}
+        return render(request, 'myadmin/modulemanage/message/view.html', ctx)
+
+    def delete(self, request):
+        DELETE = QueryDict(request.body)
+        try:
+            message = Message.objects.get(message_id=DELETE.get('target'))
+        except Comment.DoesNotExist,e:
+            return JsonResponse({'msg': '没有找到相关留言'}, status=404)
+        try:
+            message.delete()
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '删除失败'}, status=500)
+        else:
+            return JsonResponse({})

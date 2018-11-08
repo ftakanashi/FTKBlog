@@ -41,7 +41,7 @@ def handler_404(request):
 
 urlpatterns = [
     url('^$', index),
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
     url(r'^my-admin/', include('myadmin.urls'),name='myadmin'),
     url(r'^blog/', include('blog.urls')),
     url(r'^user/',include('ftkuser.urls')),

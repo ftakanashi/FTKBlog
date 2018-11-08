@@ -9,11 +9,10 @@ from django.shortcuts import render, redirect, reverse
 from django.http.response import Http404, JsonResponse
 from django.http import QueryDict
 from django.views.generic import View
-from django.core.cache import cache
 from django.utils.decorators import method_decorator
 from pure_pagination import Paginator
 from ratelimit.decorators import ratelimit
-from .models import Post, Category, Tag, Comment, Dict
+from .models import Post, Category, Tag, Comment, Dict, Message
 
 import json
 import os
@@ -158,15 +157,11 @@ class NewPostView(View):
             if processFlag:
                 postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
                 redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)
-                # cache.set('read_count:%s' % post.post_uuid,0)
-                # cache.persist('read_count:%s' % post.post_uuid)
                 return JsonResponse({'msg': '添加文章成功，但是关联标签失败', 'next': postUrl})
             else:
                 return JsonResponse({'msg': '添加文章失败'}, status=500)
         else:
-            # cache.set('read_count:%s' % post.post_uuid,0)
-            # cache.persist('read_count:%s' % post.post_uuid)
-            redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)  # todo redis中记录要随着模型删除也删除（后台）2.搞个crontab让redis定期入库
+            redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)
             postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
             return JsonResponse({'next': postUrl})
 
@@ -309,6 +304,38 @@ class CommentView(View):
             if not request.user.is_superuser:
                 redis.rpush(settings.UNREAD_COMMENTS_KEY, comment.comment_id)
             return JsonResponse({})
+
+class MessageView(View):
+
+    def get(self, request):
+        ctx = {}
+        ctx['posts'] = Post.objects.filter(status='0')
+        return render(request, 'blog/message.html', ctx)
+
+    def post(self, request):
+        author = request.POST.get('author')
+        contact = request.POST.get('contact')
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        sourceIp = request.META.get('REMOTE_ADDR')
+        relatePostId = request.POST.get('relatePost')
+        try:
+            if relatePostId:
+                post = Post.objects.get(post_uuid=relatePostId)
+            else:
+                post = None
+        except Post.DoesNotExist,e:
+            return JsonResponse({'msg': '没有找到对应UUID的文章，可能已经被删除'}, status=404)
+        try:
+            message = Message(author=author,content=content,title=title,contact=contact,relate_post=post,source_ip=sourceIp)
+            message.save()
+            redis.rpush(settings.UNREAD_MESSAGE_KEY,message.message_id)
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '提交留言失败'},status=500)
+
+        return JsonResponse({})
+
 
 @csrf_exempt
 def editormd_upload(request):

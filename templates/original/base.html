@@ -53,6 +53,7 @@ background-attachment: fixed;
             <ul class="nav navbar-nav">
                 <li><a class="{% ifequal request.path '/blog/' %}active{% endifequal %}" href="{% url 'index' %}">首页</a></li>
                 <li><a class="{% ifequal request.path '/about/' %}active{% endifequal %}" href="{% url 'about' %}">关于</a></li>
+                <li><a class="{% ifequal request.path '/message/' %}active{% endifequal %}" href="{% url 'message' %}">留言板</a></li>
                 {% if request.user.is_active %}
                 <li><a href="{% url 'new_post' %}">新文章</a></li>
                 {% endif %}
@@ -195,7 +196,7 @@ background-attachment: fixed;
                 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=2389989722&auto=0&height=90"></iframe>
             </div>
             <div class="col-lg-4 col-sm-12 col-xs-12">
-                <img class="img-circle" src="{% static 'image/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />
+                <img class="img-circle" src="{% static 'image/profile/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />
             </div>
             <div class="col-lg-4 col-sm-12 col-xs-12">
                 <h5 class="footer-title">友情链接</h5>
