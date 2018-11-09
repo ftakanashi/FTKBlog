@@ -35,10 +35,20 @@ class UserLogin(View):
     @ratelimit(key='ip', rate='1/5s')
     def get(self, request):
         ctx = {}
-        try:
-            ac = AccessControl.objects.get(control_type='0',source_ip=request.META.get('REMOTE_ADDR'))
-        except AccessControl.DoesNotExist,e:
-            return render(request, 'error.html', {'error_msg': '抱歉，只有有授权的人才能尝试登录'})
+
+        auth_flag = False
+        src_ip = request.META.get('REMOTE_ADDR')
+        for ac in AccessControl.objects.filter(control_type='0', domain='root'):
+            if src_ip in ac.source_ip:
+                auth_flag = True
+                break
+
+        if not auth_flag:
+            return render(request, 'error.html', {'error_msg': '只有授权的人才能尝试登录ヾ(◍°∇°◍)ﾉﾞ'})
+        # try:
+        #     ac = AccessControl.objects.get(control_type='0',source_ip=request.META.get('REMOTE_ADDR'))
+        # except AccessControl.DoesNotExist,e:
+        #     return render(request, 'error.html', {'error_msg': '抱歉，只有有授权的人才能尝试登录'})
 
         if getattr(request, 'limited', False):
             return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})

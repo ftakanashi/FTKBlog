@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+
+import fields
 # Create your models here.
 
 class Slogan(models.Model):
@@ -15,7 +17,8 @@ class AccessControl(models.Model):
     CONTROL_TYPE = [('0','白名单'),('1','黑名单')]
 
     ac_id = models.AutoField(primary_key=True)
-    source_ip = models.GenericIPAddressField()
+    # source_ip = models.GenericIPAddressField()
+    source_ip = fields.IPyIPSegmentField()
     control_type = models.CharField(max_length=2, choices=CONTROL_TYPE)
     domain = models.CharField(max_length=32,default='root')
 

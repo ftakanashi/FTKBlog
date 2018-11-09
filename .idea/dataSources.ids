@@ -184,10 +184,12 @@
       <index name="django_session_expire_date_a5c62663" unique="true" columns="expire_date"/>
     </table>
     <table name="ftkuser_accesscontrol" schema="" catalog="" type="TABLE">
-      <column name="source_ip" sqlType="CHAR(39)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="control_type" sqlType="VARCHAR(2)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="domain" sqlType="VARCHAR(32)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <primary-key columns="source_ip"/>
+      <column name="ac_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="source_ip" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="ac_id"/>
+      <index name="ftkuser_accesscontrol_source_ip_control_type_domain_7eb9012b_uniq" unique="true" columns="source_ip,control_type,domain"/>
     </table>
     <table name="ftkuser_slogan" schema="" catalog="" type="TABLE">
       <column name="slogan_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -202,7 +204,6 @@
     <table name="sqlite_autoindex_blog_post_1" schema="" catalog="" type="TABLE"/>
     <table name="sqlite_autoindex_blog_tag_1" schema="" catalog="" type="TABLE"/>
     <table name="sqlite_autoindex_django_session_1" schema="" catalog="" type="TABLE"/>
-    <table name="sqlite_autoindex_ftkuser_accesscontrol_1" schema="" catalog="" type="TABLE"/>
     <table name="sqlite_sequence" schema="" catalog="" type="TABLE"/>
   </data-source>
 </component>

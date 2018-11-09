@@ -9,6 +9,7 @@ django-redis==4.9.0
 djangorestframework==3.9.0
 elasticsearch==5.5.3
 elasticsearch-dsl==5.4.0
+IPy==0.83
 python-dateutil==2.7.5
 pytz==2018.5
 redis==2.10.6
