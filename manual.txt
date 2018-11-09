@@ -1,0 +1,17 @@
+上线流程：
+    打包新程序
+    将服务器上的旧目录重命名为.old后缀
+
+    检查requirements.txt 看是否有新的依赖
+
+    替换migrations文件，upload文件
+
+    检查scripts中还有没有需手动执行的sql，python，shell等脚本
+
+    修改settings适配生产
+        包括debug，CACHE，DB等
+
+    刷新crontab
+
+    重启uwsgi
+    reload 一下nginx

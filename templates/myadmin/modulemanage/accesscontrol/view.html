@@ -1,0 +1,143 @@
+{% extends 'myadmin/modulemanage/base/view.html' %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}">
+<style>
+    .table-responsive{
+        padding: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content-header-title %}<i class="fa fa-cubes"></i>管理访问权限{% endblock %}
+{% block content-header-description %}分黑白名单控制访问权限{% endblock %}
+
+{% block toolbar-btn %}
+<div class="btn-group" id="toolbar">
+    <button id="btn_add" type="button" class="btn btn-sm btn-default" title="新增">
+        <span class="glyphicon glyphicon-plus"></span>
+    </button>
+    <button id="btn_wl" type="button" class="btn btn-sm btn-default" title="只显示白名单">
+        <span style="background: white; padding: 3px; font-weight: bold;">白</span>
+    </button>
+    <button id="btn_bl" type="button" class="btn btn-sm btn-default" title="只显示黑名单">
+        <span style="background: black; padding: 3px; font-weight: bold; color: white;">黑</span>
+    </button>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js' %}"></script>
+<script src="{% static 'comp/layer/layer.js' %}"></script>
+<script>
+$(function(){
+$(document).ready(function(){
+    $('#manageTable').bootstrapTable({
+        url: '{% url 'accesscontrol.api' %}',
+        columns: [{
+            checkbox: true,
+            align: 'center'
+        },{
+            field: 'ac_id',
+            title: '控制ID',
+            sortable: true,
+            visible: false
+        },{
+            field: 'control_type',
+            title: '控制类型',
+            sortable: true,
+            formatter: function(value,row,index){
+                switch(value){
+                    case '0': return '<span style="font-weight: bold; padding: 3px; border-radius: 3px; background-color: white;">白名单</span>';
+                    case '1': return '<span style="padding: 3px; border-radius: 3px; background: black; color: white; font-weight: bold;">黑名单</span>';
+                }
+            }
+        },{
+            field: 'source_ip',
+            title: 'IP',
+            sortable: true
+        },{
+            field: 'domain',
+            title: '域',
+            sortable: true
+        },{
+            field: 'operations',
+            title: '操作',
+            formatter: function(value, row, index){
+                return [
+                    '<button class="btn btn-xs btn-danger del-btn" name="'+ row.ac_id +'"><i class="fa fa-trash"></i>删除</button>',
+                    '<button class="btn btn-xs btn-primary edit-btn" name="'+ row.ac_id +'"><i class="fa fa-edit"></i>编辑</button>'
+                ].join('&nbsp;');
+            }
+        }],
+        resizable: true,
+        pagination: true,
+        sidePagination: 'client',
+        pageNumber: 1,
+        pageSize: 10,
+        pageList: [10,20,'All'],
+        search: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true,
+        toolbar: '#toolbar'
+    }).on('click','.del-btn',function(event){
+        var target = $(this).attr('name');
+        var text = $(this).attr('alias');
+        layer.confirm('确定要删除权限控制吗?',{icon:3 ,title: '提示'}, function(index){
+            var loadLayer = layer.load('1');
+            $.ajax({
+                url: location.pathname,
+                type: 'delete',
+                dataType: 'json',
+                data: {
+                    target: target
+                },
+                success: function(data){
+                    location.reload();
+                },
+                error: function(xml ,err, exc){
+                    try{
+                        layer.msg(JSON.parse(xml.responseText).msg);
+                    }
+                    catch(e){
+                        layer.msg('未知错误');
+                    }
+                },
+                complete: function(){layer.close(loadLayer)}
+            });
+        });
+    }).on('click','.edit-btn',function(event){
+        var target = $(this).attr('name');
+        layer.open({
+            content: location.pathname + '?type=edit&pk=' + target,
+            type: 2,
+            area: ['75%','80%'],
+            title: '编辑权限控制'
+        });
+    });
+
+    $('#btn_add').click(function(event){
+        event.preventDefault();
+        layer.open({
+            content: location.pathname + '?type=add',
+            type: 2,
+            area: ['40%','50%'],
+            title: '新增分类'
+        });
+    });
+
+    $('#btn_wl').click(function(event){
+        $('#manageTable').bootstrapTable('refresh',{url: '{% url 'accesscontrol.api' %}' + '?control_type=0'});
+    });
+    $('#btn_bl').click(function(event){
+        $('#manageTable').bootstrapTable('refresh',{url: '{% url 'accesscontrol.api' %}' + '?control_type=1'});
+    });
+
+});
+});
+</script>
+{% endblock %}

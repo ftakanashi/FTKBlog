@@ -12,6 +12,7 @@ from django.views.generic import View
 from django.utils.decorators import method_decorator
 from pure_pagination import Paginator
 from ratelimit.decorators import ratelimit
+from ratelimit.utils import is_ratelimited
 from .models import Post, Category, Tag, Comment, Dict, Message
 
 import json
@@ -26,12 +27,11 @@ redis = get_redis_connection('default')
 # Create your views here.
 
 class IndexView(View):
-    @ratelimit(key='ip', rate='1/1s')
+    @ratelimit(key='ip', rate='1/2s')
     def get(self, request):
 
-        was_limited = getattr(request, 'limited', False)
-        if was_limited:
-            return render(request, 'error.html', {'error_msg': '刷新太频繁啦！','error_title': '请稍候重试'})
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
 
         try:
             page = int(request.GET.get('page', '1'))
@@ -82,13 +82,11 @@ class NewPostView(View):
         p = re.compile('[\\\_\[\]\#\+\!]|[\`\*\-]{3,}|^>')
         return p.sub('', markdown)
 
-    @method_decorator(login_required)
     def get(self, request):
         categoryList = Category.objects.all()
         tagList = Tag.objects.all()
         return render(request, 'blog/new.html', locals())
 
-    @method_decorator(login_required)
     def put(self, request):
         put = QueryDict(request.body)
         act = put.get('act')
@@ -124,7 +122,6 @@ class NewPostView(View):
         elif act == 'clear':
             redis.delete(self.CACHE_KEY)
 
-    @method_decorator(login_required)
     def post(self, request):
         # ctx = {}
         try:
@@ -171,9 +168,8 @@ class PostView(View):
     def get(self, request, uuid):
         ctx = {}
 
-        was_limited = getattr(request, 'limited', False)
-        if was_limited:
-            return render(request, 'error.html', {'error_msg': '刷新太频繁啦！', 'error_title': '请稍候再试'})
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
 
         try:
             postId = int(uuid)
@@ -193,13 +189,8 @@ class PostView(View):
 
         return render(request, 'blog/post.html', ctx)
 
-    @ratelimit(key='ip', rate='1/5s')
+    @ratelimit(key='ip', rate='1/5s', block=True)
     def post(self, request, uuid):
-
-        was_limited = getattr(request, 'limited', False)
-        if was_limited:
-            return JsonResponse({'msg': '点赞过于频繁[滑稽]'}, status=500)
-
         act = request.POST.get('act')
         if act == 'great':
             post_uuid = uuid
@@ -214,14 +205,18 @@ class PostView(View):
             post.save()
             return JsonResponse({})
 
-        return JsonResponse({'msg': '无效的申请动作'}, status=500)
+        return JsonResponse({'msg': '你到底想要干什么呀？'}, status=500)
 
     @method_decorator(login_required)
+    @ratelimit(key='ip', rate='1/5s', block=True)
     def delete(self, request, uuid):
+        '''
+        在页面上删除的请求。需要指出target。其实后续可以直接整合到后台的视图中去
+        '''
         delete = QueryDict(request.body)
         target = delete.get('target')
-        if not request.user.is_superuser:
-            return JsonResponse({'msg': '你的IP已经被记录了，你想什么滴干活？！'}, status=500)
+        if not request.user.is_superuser:    # 拒绝非管理员的删除请求
+            return JsonResponse({'msg': '你想什么滴干活？！'}, status=500)
         if target == 'comment':
             comment_uuid = delete.get('uuid')
             try:
@@ -241,17 +236,19 @@ class PostView(View):
 
 
 class CommentView(View):
+    @ratelimit(key='ip', rate='1/s')
     def get(self, request):
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
 
         ctx = {}
 
         uuid = request.GET.get('post_uuid')
-
         try:
             if not uuid: raise Exception()
             post = Post.objects.get(post_uuid=uuid)
         except Exception:
-            return render(request, 'error.html', {'error_msg': '没有找到相关文章链接'})
+            return render(request, 'error.html', {'error_msg': '根本没有你想评论的文章啊(•̀へ •́ ╮ )'})
 
         try:
             pre = request.GET.get('pre')
@@ -268,13 +265,8 @@ class CommentView(View):
 
         return render(request, 'blog/comment.html', ctx)
 
-    @ratelimit(key='ip', rate='1/1s')
+    @ratelimit(key='ip', rate='1/s', block=True)
     def post(self, request):  # todo 给评论加上验证码，可以防御恶意刷评论
-
-        was_limited = getattr(request, 'limited', False)
-        if was_limited:
-            return JsonResponse({'msg': '请求过于频繁，请稍候再试'}, status=403)
-
         post_uuid = request.POST.get('pid')
         author = request.POST.get('author')
         email = request.POST.get('email')
@@ -306,12 +298,17 @@ class CommentView(View):
             return JsonResponse({})
 
 class MessageView(View):
-
+    @ratelimit(key='ip', rate='1/s')
     def get(self, request):
+
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
+
         ctx = {}
         ctx['posts'] = Post.objects.filter(status='0')
         return render(request, 'blog/message.html', ctx)
 
+    @ratelimit(key='ip', rate='1/m', block=True)
     def post(self, request):
         author = request.POST.get('author')
         contact = request.POST.get('contact')
@@ -325,7 +322,7 @@ class MessageView(View):
             else:
                 post = None
         except Post.DoesNotExist,e:
-            return JsonResponse({'msg': '没有找到对应UUID的文章，可能已经被删除'}, status=404)
+            return JsonResponse({'msg': '没有找到对应文章，可能已经被删除了o(╥﹏╥)o'}, status=404)
         try:
             message = Message(author=author,content=content,title=title,contact=contact,relate_post=post,source_ip=sourceIp)
             message.save()

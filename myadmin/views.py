@@ -9,24 +9,16 @@ import traceback
 
 from django.conf import settings
 from django.core.cache import cache
-from django.shortcuts import render,reverse, redirect
+from django.shortcuts import render,reverse
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.http import QueryDict,JsonResponse
-# from django.contrib.auth.decorators import login_required
-# from django.utils.decorators import method_decorator
+from django.http import QueryDict,JsonResponse,Http404
 from django_redis import get_redis_connection
 
 from blog.models import Category, Tag, Dict, Post, Comment, Message
 from blog.views import NewPostView
+from ftkuser.models import AccessControl
 # Create your views here.
 redis = get_redis_connection('default')
-
-# def index(request):
-#     ctx = {}
-#     ctx['urcInfo'] = [Comment.objects.get(comment_id=cid) for cid in redis.lrange(settings.UNREAD_COMMENTS_KEY,0,-1)]
-#     ctx['access_count'] = cache.get(settings.ACCESS_COUNT_KEY,-1)
-#     return render(request, 'myadmin/dashboard.html', ctx)
 
 class IndexView(View):
 
@@ -413,3 +405,67 @@ class MessageManage(View):
             return JsonResponse({'msg': '删除失败'}, status=500)
         else:
             return JsonResponse({})
+
+class AccessControlManage(View):
+
+    def get(self, request):
+        ctx = {}
+
+        if request.GET.get('type') == 'edit':
+            try:
+                ac = AccessControl.objects.get(ac_id=request.GET.get('pk'))
+            except AccessControl.DoesNotExist,e:
+                raise Http404
+
+            ctx['ac'] = ac
+            return render(request,'myadmin/modulemanage/accesscontrol/edit.html',ctx)
+        elif request.GET.get('type') == 'add':
+            return render(request, 'myadmin/modulemanage/accesscontrol/edit.html')
+
+        return render(request, 'myadmin/modulemanage/accesscontrol/view.html', ctx)
+
+    def delete(self, request):
+        DELETE = QueryDict(request.body)
+        try:
+            ac = AccessControl.objects.get(ac_id=DELETE.get('target'))
+        except AccessControl.DoesNotExist,e:
+            return JsonResponse({'msg': '没有找到相关权限记录'},status=404)
+        try:
+            ac.delete()
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '删除失败'},status=500)
+
+        return JsonResponse({})
+
+    def post(self, request):
+        try:
+            source_ip = request.POST.get('source_ip')
+            control_type = request.POST.get('control_type')
+            domain = request.POST.get('domain')
+            ac = AccessControl(source_ip=source_ip, control_type=control_type, domain=domain)
+            ac.save()
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '新增规则失败'},status=500)
+        else:
+            return JsonResponse({})
+
+    def put(self, request):
+        PUT = QueryDict(request.body)
+        try:
+            ac_id = PUT.get('ac_id')
+            ac = AccessControl.objects.get(ac_id=ac_id)
+        except AccessControl.DoesNotExist,e:
+            return JsonResponse({'msg': '没有找到相关的权限控制记录'},status=404)
+
+        try:
+            ac.source_ip = PUT.get('source_ip')
+            ac.control_type = PUT.get('control_type')
+            ac.domain = PUT.get('domain')
+            ac.save()
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '更新权限控制记录失败'},status=500)
+
+        return JsonResponse({})

@@ -256,6 +256,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Optionally, you can add icons to the links -->
                 <li><a href="{% url 'my_admin_index' %}"><i class="fa fa-dashboard"></i>后台主页</a></li>
                 <li class="treeview">
+                    <a href="#"><i class="fa fa-lock"></i><span>安全管理</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{% url 'accesscontrol.manage' %}"><i class="fa fa-user-secret"></i>黑白名单</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
                     <a href="#"><i class="fa fa-gear"></i><span>基础信息</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>

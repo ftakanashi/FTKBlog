@@ -10,7 +10,7 @@ import uuid
 
 class Category(models.Model):
     cate_id = models.AutoField(primary_key=True, verbose_name='分类ID')
-    name = models.CharField(max_length=64, verbose_name='分类名称')
+    name = models.CharField(max_length=64, verbose_name='分类名称', unique=True)
     description = models.CharField(max_length=512, verbose_name='分类描述')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')

@@ -1,0 +1,82 @@
+{% extends 'myadmin/modulemanage/base/edit.html' %}
+
+{% load static %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block form-content %}
+    {% if ac %}
+    <div class="form-group">
+        <label class="control-label" for="acidInput">AC_ID</label>
+        <input class="form-control" id="acidInput" value="{{ ac.ac_id }}" readonly />
+    </div>
+    {% endif %}
+    <div class="form-group">
+        <label class="control-label" for="sourceIpInput">来源IP</label>
+        <input class="form-control" id="sourceIpInput" {% if ac %}value="{{ ac.source_ip }}"{% endif %} />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="controlTypeSelect">控制类型</label>
+        <select class="form-control" id="controlTypeSelect">
+            <option value="0" {% ifequal ac.control_type '0' %}selected{% endifequal %}>白名单</option>
+            <option value="1" {% ifequal ac.control_type '1' %}selected{% endifequal %}>黑名单</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="domainInput">域</label>
+        <input id="domainInput" class="form-control" value="{% if ac %}{{ ac.domain }}{% else %}root{% endif %}" />
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(function(){
+$(document).ready(function(){
+    $('#controlTypeSelect').select2({
+        language: 'zh-CN',
+        width: '100%'
+    });
+
+    $('#submit').click(function(){
+        var loadLayer = layer.load('1',{shade: 0.5});
+        var source_ip = $('#sourceIpInput').val();
+        var control_type = $('#controlTypeSelect').val();
+        var domain = $('#domainInput').val();
+        var ac_id = $('#acidInput').val();
+        data = {
+            source_ip: source_ip,
+            control_type: control_type,
+            domain: domain,
+            ac_id: ac_id
+        };
+        $.ajax({
+            url: location.pathname,
+            {% if ac %}
+            type: 'put',
+            {% else %}
+            type: 'post',
+            {% endif %}
+            dataType: 'json',
+            data: data,
+            success: function(data){
+                var frameIndex = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(frameIndex);
+                parent.location.reload();
+            },
+            error: function(xml, err, exc){
+                try{
+                    layer.msg(JSON.parse(xml.responseText).msg);
+                }
+                catch(e){
+                    layer.msg('未知错误');
+                }
+            },
+            complete: function(){layer.close(loadLayer);}
+        });
+    });
+});
+});
+</script>
+{% endblock %}

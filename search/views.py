@@ -19,17 +19,18 @@ class SearchView(View):
     ES_CLIENT =  settings.ES_CLIENT
     PAGE_SIZE = 2
     REDIS = get_redis_connection('default')
+
     @ratelimit(key='ip',rate='1/5s')
     def get(self, request):
         ctx = {}
 
-        was_limited = getattr(request,'limited',False)
-        if was_limited:
+        kw = request.GET.get('kw')
+        logic = request.GET.get('logic')
+
+        if getattr(request,'limited',False) and (kw and logic):
             ctx['msg'] = '请求过于频繁，请稍候重试'
             return render(request, 'search/index.html',ctx)
 
-        kw = request.GET.get('kw')
-        logic = request.GET.get('logic')
         try:
             page = int(request.GET.get('page','1'))
         except Exception,e:

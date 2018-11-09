@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="{% static 'comp/bootstrap/css/bootstrap.min.css' %}" >
+    <link href="{% static 'comp/select2/css/select2.min.css' %}" rel="stylesheet" />
     <style>
         .submit-btns{
             text-align: center;
@@ -27,6 +28,8 @@
 <script src="{% static 'comp/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'comp/layer/layer.js' %}"></script>
 <script src="{% static 'comp/jquery/jquery.cookie.js' %}"></script>
+<script src="{% static 'comp/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'comp/select2/js/i18n/zh-CN.js' %}"></script>
 <script>
     $.ajaxSetup({
         data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},

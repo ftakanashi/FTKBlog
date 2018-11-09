@@ -8,7 +8,7 @@ from django.contrib.auth import logout, authenticate, login
 
 from ratelimit.decorators import ratelimit
 
-from .models import Slogan
+from .models import Slogan, AccessControl
 
 import random
 # Create your views here.
@@ -27,15 +27,27 @@ class UserLogout(View):
 
 class UserLogin(View):
 
+    TOLARENCE = 10
+
     def _randomGetSlogan(self):
         return random.choice(Slogan.objects.all())
 
+    @ratelimit(key='ip', rate='1/5s')
     def get(self, request):
         ctx = {}
+        try:
+            ac = AccessControl.objects.get(control_type='0',source_ip=request.META.get('REMOTE_ADDR'))
+        except AccessControl.DoesNotExist,e:
+            return render(request, 'error.html', {'error_msg': '抱歉，只有有授权的人才能尝试登录'})
+
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
+
+        next = request.GET.get('next', reverse('index'))
 
         # 如果已经登录了
         if request.user.is_active:
-            return redirect(reverse('index'))
+            return redirect(next)
 
         # slogan彩蛋
         if request.GET.get('changeslogan') == 'true':
@@ -50,8 +62,11 @@ class UserLogin(View):
     @ratelimit(key='ip', rate='3/m')
     def post(self, request):
 
-        was_limited = getattr(request, 'limited', False)
-        if was_limited:
+        if getattr(request, 'limited', False):
+            if getattr(request, 'limited_usage_count', -1) > self.TOLARENCE:
+                ac = AccessControl(control_type='1', source_ip=request.META.get('REMOTE_ADDR'))
+                ac.save()
+                return JsonResponse({'msg': '不好意思，你已经被拉黑。如果是误报，请联系管理员'})
             return JsonResponse({'msg': '您的登录尝试过于频繁，请稍后再试...'}, status=500)
 
         ctx = {}

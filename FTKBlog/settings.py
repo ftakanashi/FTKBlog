@@ -4,7 +4,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'ftkmiddleware.accesscontrol.AccessControlMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,7 +80,7 @@ WSGI_APPLICATION = 'FTKBlog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(PROJECT_ROOT, 'db', 'db.sqlite3'),
     }
 }
 
@@ -106,6 +107,17 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_COOKIE_AGE = 43200
 SESSION_CACHE_ALIAS = 'default'
 
+# API Restframework configuration
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
+
+# ratelimit configuration
+# RATELIMIT_USE_CACHE = 'default'
+
+
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -126,9 +138,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 CRONLOG = os.path.join(BASE_DIR, 'logs', 'cron', 'cron.log')
 CRONJOBS = [
-    ('0 */1 * * *', 'blog.cron.sync_read_count','>> %s' % CRONLOG),
-    ('0 0 * * *', 'blog.cron.refresh_today_access_count', '>> %s' % CRONLOG),
-    ('0 0 */2 * *', 'blog.cron.gc_post_image', '>> %s' % CRONLOG)
+    ('0 */1 * * *', 'blog.cron.sync_read_count'),
+    ('0 0 * * *', 'blog.cron.refresh_today_access_count'),
+    ('0 0 */2 * *', 'blog.cron.gc_post_image')
 ]
 
 # Internationalization
@@ -182,7 +194,7 @@ IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload', 'post-image')
 ######## 自定义初始化 ##########
 from scripts import *
 redis_init()
-
+# todo category和tag的description字段要用起来。
 '''
 似乎django有个自动压缩前端所有需要比如css，js这些文件的组件
 '''

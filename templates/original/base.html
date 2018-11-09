@@ -54,6 +54,7 @@ background-attachment: fixed;
                 <li><a class="{% ifequal request.path '/blog/' %}active{% endifequal %}" href="{% url 'index' %}">首页</a></li>
                 <li><a class="{% ifequal request.path '/about/' %}active{% endifequal %}" href="{% url 'about' %}">关于</a></li>
                 <li><a class="{% ifequal request.path '/message/' %}active{% endifequal %}" href="{% url 'message' %}">留言板</a></li>
+                <li><a href="{% url 'errortest' %}">小飞机</a></li>
                 {% if request.user.is_active %}
                 <li><a href="{% url 'new_post' %}">新文章</a></li>
                 {% endif %}
@@ -80,7 +81,7 @@ background-attachment: fixed;
                             <i class="fa fa-user-circle"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'login' %}"><i class="fa fa-send"></i>登录</a></li>
+                            <li><a href="{% url 'login' %}?next=" id="login"><i class="fa fa-send"></i>登录</a></li>
                         </ul>
                     </li>
                 {% endif %}
@@ -231,6 +232,8 @@ background-attachment: fixed;
     <script src="{% static 'comp/ios-clock/clock.js' %}"></script>
     <script src="{% static 'comp/ios-clock/shake.js' %}"></script>
     <script>
+        var loginBtn = $('#login');
+        $(loginBtn).attr('href',$(loginBtn).attr('href') + location.pathname);
         $.ajaxSetup({
             headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
             data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}

@@ -4,6 +4,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SlugRelatedField,StringRelatedField
 
 from blog.models import Category, Tag, Post, Comment, Message
+from ftkuser.models import AccessControl
 
 class CategorySerializer(ModelSerializer):
     in_category_posts = SlugRelatedField(slug_field='post_uuid', read_only=True, many=True)
@@ -42,4 +43,10 @@ class MessageSerializer(ModelSerializer):
 
     class Meta:
         model = Message
+        fields = '__all__'
+
+class AccessControlSerializer(ModelSerializer):
+
+    class Meta:
+        model = AccessControl
         fields = '__all__'

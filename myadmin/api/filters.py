@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django_filters import FilterSet
 
 from blog.models import Category, Tag, Post, Comment, Message
+from ftkuser.models import AccessControl
 
 
 class CategoryFilter(FilterSet):
@@ -68,4 +69,14 @@ class MessageFilter(FilterSet):
             'content': ['contains'],
             'contact': ['contains'],
             'source_ip': ['exact']
+        }
+
+class AccessControlFilter(FilterSet):
+    class Meta:
+        model = AccessControl
+        fields = {
+            'ac_id': ['exact'],
+            'source_ip': ['exact'],
+            'control_type': ['exact'],
+            'domain': ['exact']
         }

@@ -21,6 +21,14 @@
         <div class="post">
             <div class="post-header">
                 <h2>{{ post.title }}</h2>
+                {% if post.is_top %}<span class="label label-info">置顶</span>{% endif %}
+                {% if post.status == '1' %}<span class="label label-default">草稿</span>{% endif %}
+                {% if post.is_reprint %}
+                    <div>
+                        <span class="label label-danger">转载</span>
+                        <a href="{{ post.reprint_src }}">转载源</a>
+                    </div>
+                {% endif %}
                 <div class="post-info-wrap">
                     <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>创建时间 {{ post.create_time }}</span>
                     <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>更新时间 {{ post.update_time }}</span>

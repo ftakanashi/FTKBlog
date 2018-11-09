@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^post/', login_required(PostManange.as_view()), name='post.manage'),
     # url(r'^post/upload/$', editormd_upload, name='edit-editormd-upload'),
     url(r'^comment/', login_required(CommentManage.as_view()), name='comment.manage'),
-    url(r'^message/', login_required(MessageManage.as_view()), name='message.manage')
+    url(r'^message/', login_required(MessageManage.as_view()), name='message.manage'),
+    url(r'^accesscontrol', login_required(AccessControlManage.as_view()), name='accesscontrol.manage')
 ]

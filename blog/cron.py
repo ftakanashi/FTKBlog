@@ -11,9 +11,10 @@ from django_redis import get_redis_connection
 
 from blog.models import Post
 DATEFMT = '%Y-%m-%d %H:%M:%S'
+CRONLOG = os.path.join(settings.PROJECT_ROOT, 'logs', 'cron', 'cron.log')
 
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(filename)s [L.%(lineno)d] %(levelname)s  %(message)s',
-                    datefmt=DATEFMT)
+                    datefmt=DATEFMT, filename=CRONLOG)
 
 def sync_read_count():
     '''
@@ -30,6 +31,8 @@ def sync_read_count():
     except Exception,e:
         logging.error('Failed to sync: %s' % unicode(e))
         raise
+    else:
+        logging.info('read_count sync over.')
 
 def refresh_today_access_count():
     '''
@@ -42,6 +45,8 @@ def refresh_today_access_count():
         r.set(settings.ACCESS_COUNT_KEY,0)
     except Exception,e:
         logging.error('Failed to reset access count: %s' % unicode(e))
+    else:
+        logging.info('reset over')
 
 def gc_post_images():
     '''
@@ -49,11 +54,15 @@ def gc_post_images():
     :return:
     '''
     logging.info('Start to check invalid post-images..')
+    deleted_count = 0
     for _post_uuid in os.listdir(settings.IMG_UPLOAD_DIR):
         try:
             post = Post.objects.get(post_uuid=_post_uuid)
         except Post.DoesNotExist,e:
             logging.info('Deleting directory: %s' % os.path.join(_post_uuid))
             shutil.rmtree(os.path.join(settings.IMG_UPLOAD_DIR, _post_uuid))
+            deleted_count += 1
         else:
             continue
+
+    logging.info('Deleted %s directories' % deleted_count)

@@ -51,7 +51,7 @@
                 <ul class="category-list">
                 {% for category in categoryList %}
                     <li class="category-name">
-                        <a href="{% url 'index' %}?category={{ category.cate_id }}">{{ category.name }}</a>
+                        <a href="{% url 'index' %}?category={{ category.cate_id }}" title="{{ category.description }}">{{ category.name }}</a>
                         <span class="category-count">{{ category.count }}</span>
                     </li>
                 {% endfor %}
@@ -62,7 +62,7 @@
                 <ul class="category-list">
                 {% for tag in tagList %}
                     <li class="category-name">
-                        <a href="javascript:void(0);">{{ tag.name }}</a>
+                        <a href="javascript:void(0);" title="{{ tag.description }}">{{ tag.name }}</a>
                         <span class="category-count">{{ tag.count }}</span>
                     </li>
                 {% endfor %}

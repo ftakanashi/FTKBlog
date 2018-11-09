@@ -1,0 +1,2 @@
+INSERT INTO ftkuser_accesscontrol('source_ip','control_type','domain') VALUES('127.0.0.1', '0', 'root');
+INSERT INTO ftkuser_accesscontrol('source_ip','control_type','domain') VALUES('115.236.91.18', '0', 'root');
