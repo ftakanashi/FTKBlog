@@ -4,6 +4,8 @@
 $(function(){
     $(document).ready(function(){
 
+        $('body').trigger('loadTheme');
+
         $('.form-group.required').each(function(i,ele){
             $(ele).prepend('<span class="text-danger">*</span>');
         });

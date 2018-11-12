@@ -2,6 +2,7 @@
  * Created by weiyz18939 on 2018/10/30.
  */
 $(function(){
+
 $(document).ready(function(){
 
     // 离开界面提醒

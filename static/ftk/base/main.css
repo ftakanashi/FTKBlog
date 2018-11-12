@@ -5,11 +5,9 @@ a:hover{
     border: 0;
 }
 .navbar-inverse{
-    /*background-color: #256a88;*/
-    /*border-color: #256a88;*/
-    background-color: black;
-    border-color: black;
-    opacity: 0.7;
+    /*background-color: black;*/
+    /*border-color: black;*/
+    opacity: 0.9;
     height: 65px;
 }
 .navbar-brand-img .navbar-brand{
@@ -18,7 +16,6 @@ a:hover{
 }
 .navbar-brand:hover{
     cursor: pointer;
-    background: rgba(255,255,255,0.1);
 }
 .navbar-inverse .navbar-collapse{
     padding-left: 0;
@@ -31,9 +28,16 @@ a:hover{
     line-height: 34px;
 }
 .navbar-inverse .navbar-nav > li > a:hover{
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(0,0,0,0.1);
+    /*opacity: 0.1;*/
 }
 .navbar-inverse .navbar-nav > li > a.active{
+    background-color: rgba(0,0,0,0.3);
+    /*opacity: 0.3*/
+}
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:focus,
+.navbar-inverse .navbar-nav > .open > a:hover{
     background-color: rgba(255,255,255,0.3);
 }
 
@@ -145,13 +149,13 @@ a:hover{
     text-align: center;
 }
 .out-links span img{
-    width: 30%;
-    height: 30%;
-    max-height: 41px;
-    display: inline;
-    margin: 0 auto;
-    background-color: ghostwhite;
-    padding: 10px;
+    width: 80px;
+    /*height: 30%;*/
+    max-height: 30px;
+    display: block;
+    margin-top: 10px;
+    background-color: transparent;
+    /*padding: 10px;*/
 }
 .footer-copyright{
     margin: 0;

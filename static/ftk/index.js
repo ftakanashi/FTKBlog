@@ -4,9 +4,11 @@
 $(function(){
     $(document).ready(function(){
 
+        $('body').trigger('loadTheme');
+
         var slider = new SliderUnlock('.slideunlock-slider', {
             labelTip: '>>>>>推动历史的行程>>>>>',
-            successLabelTip: '还是得看个人的奋斗'
+            successLabelTip: '但是还要考虑历史的…行程'
         }, function(){
             $('.my-carousel').fadeOut(1200);
             $.cookie('accessed', true, {path: '/'});

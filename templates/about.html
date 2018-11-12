@@ -32,8 +32,8 @@
 {% endblock %}
 
 {% block carousel %}
-    <div class="my-carousel" style="position:fixed;top:0;left:0;height:100%;width:100%;z-index:1001;
-            background-image:url({% static 'image/bg/carousel.jpg' %});background-size: cover;">
+    <div class="my-carousel" style="position:fixed;top:0;left:0;height:100%;width:100%;
+            background-image:url({% static 'image/bg/main.jpg' %});background-size: cover;">
         <div class="slideunclock-wrapper">
             <input type="hidden" value="" class="slideunlock-lockable" />
             <div class="slideunlock-slider">
@@ -55,8 +55,17 @@
     <script>
     var slider = new SliderUnlock('.slideunlock-slider',{
         labelTip: '>>>>>推动历史行程>>>>>',
-        successLabelTip: '还是要看个人的奋斗'
+        successLabelTip: '但是还要考虑历史的…行程'
     }, function(){location.href = '/';},function(){});
     slider.init();
+
+    $(document).ready(function(){
+        $('body').trigger('loadTheme');
+        var theme = JSON.parse($.cookie('theme'));
+        var color = theme.colorMap[3];
+        $('.slideunlock-label').css({'background-color': color});
+        $('.welcome-title').css({background: 'rgba('+code2num(color).join(',')+',0.7)'});
+        $('.my-carousel').css({'background-image': 'url({% static 'image/bg' %}' + theme.bg + ')'});
+    });
     </script>
 {% endblock %}

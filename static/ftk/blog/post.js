@@ -4,6 +4,8 @@
 $(function(){
 $(document).ready(function(){
 
+    $('body').trigger('loadTheme');
+
     layui.use('element',function(){
         var element = layui.element;
     });

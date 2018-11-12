@@ -6,7 +6,7 @@
 {#    <meta name="viewport" #}
 {#          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">#}
 {#    <meta http-equiv="X-UA-Compatible" content="ie=edge">#}
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}F.Takanashi BLOG{% endblock %}</title>
 
     <!-- 下面的keywords和description主要用于给搜索引擎搜索 -->
     <meta name="keywords" content={% block keywords %}{% endblock %}>
@@ -53,7 +53,7 @@ background-attachment: fixed;
             <ul class="nav navbar-nav">
                 <li><a class="{% ifequal request.path '/blog/' %}active{% endifequal %}" href="{% url 'index' %}">首页</a></li>
                 <li><a class="{% ifequal request.path '/about/' %}active{% endifequal %}" href="{% url 'about' %}">关于</a></li>
-                <li><a class="{% ifequal request.path '/message/' %}active{% endifequal %}" href="{% url 'message' %}">留言板</a></li>
+                <li><a class="{% ifequal request.path '/blog/message/' %}active{% endifequal %}" href="{% url 'message' %}">留言板</a></li>
                 <li><a href="{% url 'errortest' %}">小飞机</a></li>
                 {% if request.user.is_active %}
                 <li><a href="{% url 'new_post' %}">新文章</a></li>
@@ -175,6 +175,9 @@ background-attachment: fixed;
     <div class="fix-tool">
         <div class="fix-tool-wrap">
             {% block fixtool_btn %}{% endblock %}
+            <div class="fix-tool-btn" id="refreshTheme" title="刷新主题">
+                <a href="javascript:void(0);"><i class="fa fa-refresh"></i></a>
+            </div>
             <div class="fix-tool-btn" id="sendMail" title="发送邮件给我">
                 <a href="javascript:void(0);"><i class="fa fa-envelope"></i></a>
             </div>
@@ -202,14 +205,17 @@ background-attachment: fixed;
             <div class="col-lg-4 col-sm-12 col-xs-12">
                 <h5 class="footer-title">友情链接</h5>
                 <div class="out-links">
-                    <span><a href="https://www.google.com/">
+                    <span><a target="_blank" href="https://www.google.com/">
                         <img src="{% static 'image/icon/google_logo.png' %}"/>
                     </a></span>
-                    <span><a href="https://www.baidu.com/">
+                    <span><a target="_blank" href="https://www.baidu.com/">
                         <img src="{% static 'image/icon/baidu_logo.png' %}" />
                     </a></span>
-                    <span><a href="https://www.github.com">
+                    <span><a target="_blank" href="https://www.github.com">
                         <img src="{% static 'image/icon/github_logo.png' %}" />
+                    </a></span>
+                    <span><a target="_blank" href="https://gmail.com">
+                        <img src="{% static 'image/icon/gmail_logo.png' %}" />
                     </a></span>
                 </div>
             </div>

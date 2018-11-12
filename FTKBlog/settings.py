@@ -87,6 +87,8 @@ DATABASES = {
 ELASTICSEARCH_DSL = {
     'default': {
         'hosts': '192.168.178.59:9200'
+        # 'hosts': '127.0.0.1:9200'
+        # 'hosts': '192.168.3.31:9200'
     },
 }
 ELASTICSEARCH_INDEX = 'ftkblog'
@@ -95,6 +97,8 @@ CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://192.168.178.59:6379/1',
+        # 'LOCATION': 'redis://127.0.0.1:6379/1',
+        # 'LOCATION': 'redis://192.168.3.31:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'CONNECTION_POOL_KWARGS': {'max_connections': 100},
@@ -140,7 +144,8 @@ CRONLOG = os.path.join(BASE_DIR, 'logs', 'cron', 'cron.log')
 CRONJOBS = [
     ('0 */1 * * *', 'blog.cron.sync_read_count'),
     ('0 0 * * *', 'blog.cron.refresh_today_access_count'),
-    ('0 0 */2 * *', 'blog.cron.gc_post_image')
+    ('0 0 */2 * *', 'blog.cron.gc_post_image'),
+    ('0 0 12 * *', 'FTKBlog.cron.db_backup')
 ]
 
 # Internationalization
@@ -194,7 +199,7 @@ IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload', 'post-image')
 ######## 自定义初始化 ##########
 from scripts import *
 redis_init()
-# todo category和tag的description字段要用起来。
+# todo editormd的onpaste自动黏贴图片
 '''
 似乎django有个自动压缩前端所有需要比如css，js这些文件的组件
 '''
