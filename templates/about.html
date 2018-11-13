@@ -61,11 +61,11 @@
 
     $(document).ready(function(){
         $('body').trigger('loadTheme');
-        var theme = JSON.parse($.cookie('theme'));
-        var color = theme.colorMap[3];
-        $('.slideunlock-label').css({'background-color': color});
-        $('.welcome-title').css({background: 'rgba('+code2num(color).join(',')+',0.7)'});
-        $('.my-carousel').css({'background-image': 'url({% static 'image/bg' %}' + theme.bg + ')'});
+{#        var theme = JSON.parse($.cookie('theme'));#}
+{#        var color = theme.colorMap[3];#}
+{#        $('.slideunlock-label').css({'background-color': color});#}
+{#        $('.welcome-title').css({background: 'rgba('+code2num(color).join(',')+',0.7)'});#}
+{#        $('.my-carousel').css({'background-image': 'url({% static 'image/bg' %}' + theme.bg + ')'});#}
     });
     </script>
 {% endblock %}

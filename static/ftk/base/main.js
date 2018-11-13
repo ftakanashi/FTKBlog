@@ -48,6 +48,10 @@ function changeTheme(theme){
     $('.footer-copyright').css({background: 'linear-gradient(180deg, rgba('+rgb.join(',')+',0.9) 60%, rgba('+darken(rgb,4).join(',')+',1) 100%)',color: oppo});
 
     $('body').css({'background-image': 'url('+bg+')'});
+
+    $('.slideunlock-label').css({'background-color': ass1});
+    $('.welcome-title').css({background: 'rgba('+code2num(ass1).join(',')+',0.7)'});
+    $('.my-carousel').css({'background-image': 'url('+ bg + ')'});
 }
 
 $(document).ready(function(event){
@@ -62,7 +66,11 @@ $(document).ready(function(event){
     $('body').on('themeChange',function(event){
         var themeSet = [
             {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: 'main.jpg'},
-            {colorMap: ['#C0C060','#3E1653','#E0E08C','#C0B060'], bg: 'main4.jpg'}
+            {colorMap: ['#C0C060','#3E1653','#E0E08C','#C0B060'], bg: 'main1.jpg'},
+            {colorMap: ['#FFF078','#7A5AAE','#F09060','#FFDA78'], bg: 'main2.jpg'},
+            {colorMap: ['#90C078','#F07860','#78A860','#FFF090'], bg: 'main3.jpg'},
+            {colorMap: ['#A89078','#D8D8D8','#D8C0A8','#907878'], bg: 'main4.jpg'},
+            {colorMap: ['#60A8C0','#000000','#60C0F0','#F0D8C0'], bg: 'main5.jpg'}
         ];
         theme = themeSet[Math.floor(Math.random() * themeSet.length)];
 

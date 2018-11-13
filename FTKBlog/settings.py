@@ -145,7 +145,7 @@ CRONJOBS = [
     ('0 */4 * * *', 'blog.cron.sync_read_count'),
     ('0 0 * * *', 'blog.cron.refresh_today_access_count'),
     ('0 0 */2 * *', 'blog.cron.gc_post_image'),
-    ('0 12 * * *', 'FTKBlog.cron.db_backup'),
+    ('30 14 * * *', 'FTKBlog.cron.db_backup'),
     ('0 1 */5 * *', 'FTKBlog.cron.upload_backup')
 ]
 
