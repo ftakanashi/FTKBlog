@@ -263,6 +263,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{% url 'accesscontrol.manage' %}"><i class="fa fa-user-secret"></i>黑白名单</a></li>
+                        <li><a href="javascript:void(0);" onclick="layer.open({type: 2,content: '{% url 'backupdownload.manage' %}',area: ['99%','90%']})"><i class="fa fa-download"></i>备份下载</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -425,6 +426,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="{% static 'AdminLTE/dist/js/adminlte.min.js' %}"></script>
 <script src="{% static 'comp/jquery/jquery.cookie.js' %}"></script>
+<script src="{% static 'comp/layer/layer.js' %}"></script>
 <script>
     $.ajaxSetup({
         data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
@@ -432,6 +434,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     });
 $(function(){
 $(document).ready(function(){
+
     $('.ignore').click(function(event){
         var act = $(this).attr('id');
         $.ajax({

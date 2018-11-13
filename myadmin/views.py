@@ -11,7 +11,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.shortcuts import render,reverse
 from django.views import View
-from django.http import QueryDict,JsonResponse,Http404
+from django.http import QueryDict,JsonResponse,Http404, StreamingHttpResponse
 from django_redis import get_redis_connection
 
 from blog.models import Category, Tag, Dict, Post, Comment, Message
@@ -469,3 +469,68 @@ class AccessControlManage(View):
             return JsonResponse({'msg': '更新权限控制记录失败'},status=500)
 
         return JsonResponse({})
+
+class BackupDownloadManage(View):
+
+    def _adaptSize(self, bytes):
+        k = round(bytes / 1024.0, 4)
+        if k < 1:
+            return '%sB' % bytes
+        m = round(k / 1024.0, 4)
+        if m < 1:
+            return '%sKB' % k
+        g = round(m / 1024.0, 4)
+        if g < 1:
+            return '%sMB' % m
+
+        return '%sGB' % g
+
+    def get(self, request):
+        ctx = {}
+        dbBackupDir = os.path.join(settings.PROJECT_ROOT, 'backup', 'db')
+        uploadBackupDir = os.path.join(settings.PROJECT_ROOT, 'backup', 'upload')
+        links = {'db': [], 'upload': []}
+        for dbback in os.listdir(dbBackupDir):
+            links['db'].append({
+                'link': 'db__' + dbback,
+                 'name': dbback,
+                 'size': self._adaptSize(os.stat(os.path.join(dbBackupDir, dbback)).st_size)
+            })
+        for uploadBack in os.listdir(uploadBackupDir):
+            links['upload'].append({
+                'link': 'upload__' + uploadBack,
+                'name': uploadBack,
+                'size': self._adaptSize(os.stat(os.path.join(uploadBackupDir, uploadBack)).st_size)
+            })
+
+        ctx['links'] = links
+        return render(request, 'myadmin/modulemanage/backupdownload.html', ctx)
+
+def backup_download(request, fn):
+
+    try:
+        type,filename = fn.split('__',1)
+        if not type or not filename or type not in ('db','upload'):
+            raise Exception('Invalid request')
+    except Exception,e:
+        return render(request, 'error.html', {'error_msg': '请求的URL似乎有错'})
+
+    d = os.path.join(settings.PROJECT_ROOT, 'backup', type)
+    filename = os.path.join(d, filename)
+    if not os.path.isfile(filename):
+        return render(request, 'error.html', {'error_msg': '没有找到相关文件'})
+
+    def file_iterator(filename, chunk_size=512):
+        with open(filename, 'rb') as f:
+            while True:
+                c = f.read(chunk_size)
+                if c:
+                    yield c
+                else:
+                    break
+
+    response = StreamingHttpResponse(file_iterator(filename))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(filename)
+
+    return response

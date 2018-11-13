@@ -43,5 +43,12 @@ $(function(){
                 $(mainG).animate({'margin-left':'15%'},'slow');
             }
         });
+
+        // 打开show-more
+        $('.show-more').click(function(event){
+            event.preventDefault();
+            $(this).fadeOut().parent().find('.category-hidden').fadeIn();
+        });
+
     });
 });

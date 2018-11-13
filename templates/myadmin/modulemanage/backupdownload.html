@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static 'comp/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">DB</h3>
+        </div>
+        <div class="panel-body">
+            {% for link in links.db %}
+                <div class="col-lg-6">
+                    <a href="{% url 'backupdownload.download' link.link %}" target="_blank" class="download-btn">{{ link.name }}({{ link.size }})</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">UPLOAD</h3>
+        </div>
+        <div class="panel-body">
+            {% for link in links.upload %}
+                <div class="col-lg-6">
+                    <a href="{{ link.link }}" target="_blank" class="download-btn">{{ link.name }}({{ link.size }})</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+<script src="{% static 'comp/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'comp/jquery/jquery.cookie.js' %}"></script>
+<script src="{% static 'comp/bootstrap/js/bootstrap.min.js' %}"></script>
+{#<script>#}
+{#    $(document).ready(function(){#}
+{#        $.ajaxSetup({#}
+{#            data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},#}
+{#            headers: {'X-CSRFTOKEN': $.cookie('csrftoken')}#}
+{#        });#}
+{##}
+{#        $('a.download-btn').click(function(event){#}
+{#            event.preventDefault();#}
+{#            var href = $(this).attr('name');#}
+{#            $.ajax({#}
+{#                url: location.pathname,#}
+{#                type: 'post',#}
+{#                data: {'link': href},#}
+{#                success: function(data){#}
+{#                    var frameIndex = parent.layer.getFrameIndex(window.name);#}
+{#                    parent.layer.close(frameIndex);#}
+{#                    parent.location.reload();#}
+{#                }#}
+{#            })#}
+{#        });#}
+{#    });#}
+{#</script>#}
+</body>
+</html>

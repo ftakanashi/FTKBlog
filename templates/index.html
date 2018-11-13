@@ -54,24 +54,46 @@
             <div class="category-list-wrap">
                 <h3>分类列表</h3>
                 <ul class="category-list">
-                {% for category in categoryList %}
+                {% for category in categoryList|slice:":5" %}
                     <li class="category-name">
                         <a href="{% url 'index' %}?category={{ category.cate_id }}" title="{{ category.description }}">{{ category.name }}</a>
                         <span class="category-count">{{ category.count }}</span>
                     </li>
                 {% endfor %}
+                {% for category in categoryList|slice:"5:" %}
+                    <li class="category-name category-hidden">
+                        <a href="{% url 'index' %}?category={{ category.cate_id }}" title="{{ category.description }}">{{ category.name }}</a>
+                        <span class="category-count">{{ category.count }}</span>
+                    </li>
+                {% endfor %}
                 </ul>
+                {% if categoryList|length > 5 %}
+                    <div class="show-more">
+                        <span class="caret"></span>
+                    </div>
+                {% endif %}
             </div>
             <div class="category-list-wrap">
                 <h3>标签列表</h3>
                 <ul class="category-list">
-                {% for tag in tagList %}
+                {% for tag in tagList|slice:":5" %}
                     <li class="category-name">
-                        <a href="javascript:void(0);" title="{{ tag.description }}">{{ tag.name }}</a>
+                        <a href="{% url 'index' %}?tag={{ tag.tag_id }}" title="{{ tag.description }}">{{ tag.name }}</a>
+                        <span class="category-count">{{ tag.count }}</span>
+                    </li>
+                {% endfor %}
+                {% for tag in tagList|slice:"5:" %}
+                    <li class="category-name category-hidden">
+                        <a href="{% url 'index' %}?tag={{ tag.tag_id }}" title="{{ tag.description }}">{{ tag.name }}</a>
                         <span class="category-count">{{ tag.count }}</span>
                     </li>
                 {% endfor %}
                 </ul>
+                {% if tagList|length > 5 %}
+                    <div class="show-more">
+                        <span class="caret"></span>
+                    </div>
+                {% endif %}
             </div>
             <div class="category-list-wrap">
                 <h3>最近常用站点</h3>

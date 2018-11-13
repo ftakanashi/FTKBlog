@@ -142,10 +142,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 CRONLOG = os.path.join(BASE_DIR, 'logs', 'cron', 'cron.log')
 CRONJOBS = [
-    ('0 */1 * * *', 'blog.cron.sync_read_count'),
+    ('0 */4 * * *', 'blog.cron.sync_read_count'),
     ('0 0 * * *', 'blog.cron.refresh_today_access_count'),
     ('0 0 */2 * *', 'blog.cron.gc_post_image'),
-    ('0 0 12 * *', 'FTKBlog.cron.db_backup')
+    ('0 12 * * *', 'FTKBlog.cron.db_backup'),
+    ('0 1 */5 * *', 'FTKBlog.cron.upload_backup')
 ]
 
 # Internationalization
@@ -182,19 +183,26 @@ PAGINATION_SETTINGS = {
 }
 
 ######## 一些自定义的配置 ########
+
+# ElasticSearch相关配置
 from elasticsearch import Elasticsearch
 es_host,es_port = ELASTICSEARCH_DSL.get('default').get('hosts').split(':')
 ES_CLIENT = Elasticsearch([
     {'host': es_host, 'port': es_port}
 ])
 
+# Redis中key的一些配置
 READ_COUNT_KEY = 'blog:read_count'
 ACCESS_COUNT_KEY = 'blog:access_count'
 CACHE_KEY = 'blog:post_cache'
 UNREAD_COMMENTS_KEY = 'blog:unread_comment_queue'
 UNREAD_MESSAGE_KEY = 'blog:unread_message_queue'
 
+# post中图片上传目录
 IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload', 'post-image')
+
+# 自动备份周期（天）
+BACKUP_PERIOD = 30
 
 ######## 自定义初始化 ##########
 from scripts import *

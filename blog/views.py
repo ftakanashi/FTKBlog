@@ -8,11 +8,11 @@ from django_redis import get_redis_connection
 from django.shortcuts import render, redirect, reverse
 from django.http.response import Http404, JsonResponse
 from django.http import QueryDict
+from django.db.models import QuerySet
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 from pure_pagination import Paginator
 from ratelimit.decorators import ratelimit
-from ratelimit.utils import is_ratelimited
 from .models import Post, Category, Tag, Comment, Dict, Message
 
 import json
@@ -20,6 +20,7 @@ import os
 import re
 import time
 import traceback
+from itertools import chain
 
 redis = get_redis_connection('default')
 
@@ -38,16 +39,27 @@ class IndexView(View):
         except Exception, e:
             page = 1
 
+        posts = Post.objects.filter(status=0)
         sCate = request.GET.get('category')
+        sTag = request.GET.get('tag')
+
         if sCate is not None:
-            posts = Post.objects.filter(category__cate_id=sCate).filter(status=0)
-        else:
-            posts = Post.objects.filter(status=0)
+            posts = posts.filter(category__cate_id=sCate)
+        elif sTag is not None:
+            try:
+                tag = Tag.objects.get(tag_id=sTag)
+            except Tag.DoesNotExist,e:
+                pass
+            else:
+                posts = tag.in_tag_posts.all()
+        # if sCate is not None:
+        #     posts = Post.objects.filter(category__cate_id=sCate).filter(status=0)
+        # else:
+        #     posts = Post.objects.filter(status=0)
 
         posts = posts.order_by('-is_top', '-update_time')
-        for post in posts:
-            # post.read_count = cache.hget('blog:read_count',post.post_uuid,-1)
-            post.read_count = redis.hget(settings.READ_COUNT_KEY, post.post_uuid) or -1
+        # for post in posts:
+        #     post.read_count = redis.hget(settings.READ_COUNT_KEY, post.post_uuid) or -1
 
         p = Paginator(posts, 10, request=request)
         paged_posts = p.page(page)
@@ -62,8 +74,8 @@ class IndexView(View):
 
         ctx = {}
         ctx['posts'] = paged_posts
-        ctx['categoryList'] = categories
-        ctx['tagList'] = tags
+        ctx['categoryList'] = sorted(categories, key=lambda x: x.count, reverse=True)
+        ctx['tagList'] = sorted(tags, key=lambda x: x.count, reverse=True)
         ctx['pageDictInfo'] = {q.key: q.value for q in Dict.objects.filter(category='index_page')}
         ctx['quickLinks'] = {q.key: q.value for q in Dict.objects.filter(category='quick_links')}
         if not request.user.is_superuser:
