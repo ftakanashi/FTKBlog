@@ -2,6 +2,32 @@
  * Created by weiyz18939 on 2018/11/8.
  */
 $(function(){
+    function refreshVeriCode(callback, complete){
+        var veriCodeInput = $('#veriCodeInput');
+        $.ajax({
+            url: $('#veri-code-url').val(),
+            type: 'get',
+            dataType: 'json',
+            data: {veri_code_uuid: $(veriCodeInput).attr('name')},
+            success: function(data){
+                $(veriCodeInput).attr('name',data.veri_code_uuid).
+                prev('img').attr('src', 'data:image/jpeg;base64,' + data.veri_code).
+                parent().show();
+                callback(0);
+            },
+            error: function(xml, err, exc){
+                try{
+                    layer.msg(JSON.parse(xml.responseText).msg);
+                }
+                catch(e){
+                    layer.msg('未知错误');
+                }
+                callback(1);
+            },
+            complete: complete
+        });
+    }
+
     $(document).ready(function(){
 
         $('body').trigger('loadTheme');
@@ -19,6 +45,20 @@ $(function(){
             width: '100%'
         });
 
+        //获取 & 刷新验证码
+        $('.refresh-veri-code').click(function(event){
+            var loadLayer = layer.load('2');
+            var btn = $(this);
+            var constant = $(this).hasClass('constant');
+            refreshVeriCode(function(status){
+                if (status === 0 && !constant){
+                    $(btn).parent().hide();
+                }
+            },function(){
+                layer.close(loadLayer);
+            });
+        });
+
         $('#submit').click(function(event){
             event.preventDefault();
             var loadLayer = layer.load('1',{shade: 0.6});
@@ -27,6 +67,8 @@ $(function(){
             var title = $('#titleInput').val();
             var content = $('#contentInput').val();
             var relatePost = $('#relatePostSelect').val();
+            var veriCode = $('#veriCodeInput').val();
+            var veriCodeUuid = $('#veriCodeInput').attr('name');
 
             if (!author){
                 layer.tips('请填写此项','#authorInput',{tips: [3,'red']});
@@ -50,7 +92,9 @@ $(function(){
                     contact: contact,
                     title: title,
                     content: content,
-                    relatePost: relatePost
+                    relatePost: relatePost,
+                    veriCode: veriCode,
+                    veriCodeUuid: veriCodeUuid
                 },
                 complete: function(){layer.close(loadLayer);},
                 success: function(data){
@@ -60,6 +104,9 @@ $(function(){
                 error: function(xml, err, exc){
                     try{
                         layer.msg(JSON.parse(xml.responseText).msg);
+                        if(xml.status === 502){
+                            $('.refresh-veri-code.constant').trigger('click');
+                        }
                     }
                     catch(e){
                         layer.msg('未知错误');

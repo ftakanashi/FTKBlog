@@ -5,6 +5,8 @@ $(function(){
 
 $(document).ready(function(){
 
+    $('body').trigger('loadTheme');
+
     // 离开界面提醒
     $(window).bind('beforeunload', function(event) {
         event.preventDefault();

@@ -7,7 +7,7 @@
     修改settings适配生产
         包括debug，CACHE，DB等
 
-    替换migrations文件，upload文件
+    替换migrations文件，upload文件(可借助手动执行crontab)
     进行migrate
 
     检查scripts中还有没有需手动执行的sql，python，shell等脚本

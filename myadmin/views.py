@@ -503,7 +503,7 @@ class BackupDownloadManage(View):
                 'size': self._adaptSize(os.stat(os.path.join(uploadBackupDir, uploadBack)).st_size)
             })
 
-        ctx['links'] = links
+        ctx['links'] = sorted(links,key=lambda x:x['name'])
         return render(request, 'myadmin/modulemanage/backupdownload.html', ctx)
 
 def backup_download(request, fn):

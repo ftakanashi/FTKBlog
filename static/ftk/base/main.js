@@ -33,7 +33,7 @@ function darken(color,ext){
 
 function changeTheme(theme){
     var colorSet = theme.colorMap;
-    var bg = '/static/image/bg/' + theme.bg;
+    var bg = '/static/image/bg/main/' + theme.bg;
     var main = colorSet[0];
     var oppo = colorSet[1];
     var ass1 = colorSet[2];
@@ -51,28 +51,35 @@ function changeTheme(theme){
 
     $('.slideunlock-label').css({'background-color': ass1});
     $('.welcome-title').css({background: 'rgba('+code2num(ass1).join(',')+',0.7)'});
-    $('.my-carousel').css({'background-image': 'url('+ bg + ')'});
+    $('.my-carousel').css({'background-image': 'url(' + bg + ')'});
 }
 
 $(document).ready(function(event){
-    //try{
-    //    var theme = JSON.parse($.cookie('theme'));
-    //}
-    //catch(e){
-        //theme = {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: 'main.jpg'};
-        //$.cookie('theme',JSON.stringify(theme),{path: '/'});
-    //}
 
     $('body').on('themeChange',function(event){
         var themeSet = [
-            {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: 'main.jpg'},
-            {colorMap: ['#C0C060','#3E1653','#E0E08C','#C0B060'], bg: 'main1.jpg'},
-            {colorMap: ['#FFF078','#7A5AAE','#F09060','#FFDA78'], bg: 'main2.jpg'},
-            {colorMap: ['#90C078','#F07860','#78A860','#FFF090'], bg: 'main3.jpg'},
-            {colorMap: ['#A89078','#D8D8D8','#D8C0A8','#907878'], bg: 'main4.jpg'},
-            {colorMap: ['#60A8C0','#000000','#60C0F0','#F0D8C0'], bg: 'main5.jpg'}
+            {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: '0.jpg'},
+            {colorMap: ['#C0C060','#3E1653','#E0E08C','#C0B060'], bg: '1.jpg'},
+            {colorMap: ['#FFF078','#7A5AAE','#F09060','#FFDA78'], bg: '2.jpg'},
+            {colorMap: ['#90C078','#F07860','#78A860','#FFF090'], bg: '3.jpg'},
+            {colorMap: ['#A89078','#D8D8D8','#D8C0A8','#907878'], bg: '4.jpg'},
+            {colorMap: ['#60A8C0','#000000','#60C0F0','#F0D8C0'], bg: '5.jpg'}
         ];
-        theme = themeSet[Math.floor(Math.random() * themeSet.length)];
+        currentTheme = $.cookie('theme');
+        if (!currentTheme){
+            theme = themeSet[Math.floor(Math.random() * themeSet.length)];
+        }
+        else{
+            var currIndex = -1;
+            currentTheme = JSON.parse(currentTheme);
+            for(var i=0;i<themeSet.length;i++){
+                if (themeSet[i].bg == currentTheme.bg){
+                    currIndex = i;
+                    break;
+                }
+            }
+            theme = themeSet[currIndex >= themeSet.length-1 || currIndex < 0 ? 0 : currIndex + 1];
+        }
 
         changeTheme(theme);
         $.cookie('theme',JSON.stringify(theme),{path: '/'});
@@ -81,7 +88,7 @@ $(document).ready(function(event){
             var theme = JSON.parse($.cookie('theme'));
         }
         catch(e){
-            var defaultTheme = {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: 'main.jpg'};
+            var defaultTheme = {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: '0.jpg'};
             theme = defaultTheme;
             $.cookie('theme',JSON.stringify(defaultTheme), {path: '/'});
         }
@@ -108,13 +115,6 @@ $(document).ready(function(event){
     });
     $('#refreshTheme').find('a').click(function(event){
         $('body').trigger('themeChange');
-        //var themeSet = [
-        //    {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: 'main.jpg'},
-        //    {colorMap: ['#C0C060','#3E1653','#E0E08C','#C0B060'], bg: 'main4.jpg'}
-        //];
-        //var theme = themeSet[Math.floor(Math.random() * themeSet.length)];
-        //$.cookie('theme', JSON.stringify(theme), {path: '/'});
-        //changeTheme(theme);
     });
 
     $.extend({

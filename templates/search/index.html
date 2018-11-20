@@ -235,6 +235,9 @@
     <script>
         $(function () {
             $(document).ready(function () {
+
+                $('body').trigger('loadTheme');
+
                 {% if msg %}
                     layer.closeAll();
                     layer.tips('{{ msg }}','#kw',{tips: [3]});

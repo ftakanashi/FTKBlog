@@ -14,13 +14,15 @@ from django.utils.decorators import method_decorator
 from pure_pagination import Paginator
 from ratelimit.decorators import ratelimit
 from .models import Post, Category, Tag, Comment, Dict, Message
+from .utils import CodeGenerator
 
 import json
 import os
 import re
 import time
 import traceback
-from itertools import chain
+
+from uuid import uuid4
 
 redis = get_redis_connection('default')
 
@@ -248,6 +250,10 @@ class PostView(View):
 
 
 class CommentView(View):
+
+    # VERI_CODE_EXPIRE = 60
+    VERI_CODE_KEY = settings.VERI_CODE_KEY
+
     @ratelimit(key='ip', rate='1/s')
     def get(self, request):
         if getattr(request, 'limited', False):
@@ -275,16 +281,40 @@ class CommentView(View):
         ctx['post_uuid'] = uuid
         ctx['reply_comment'] = replyComment
 
+        # codeGenerator = CodeGenerator()
+        # ctx['veri_code'] = codeGenerator.generateCode()
+        # veriCodeUuid = str(uuid4())
+        # ctx['veri_code_uuid'] = veriCodeUuid
+        # correctText = codeGenerator.getText()
+        # redis.set(self.VERI_CODE_KEY % veriCodeUuid, correctText)
+        # redis.expire(self.VERI_CODE_KEY % veriCodeUuid, self.VERI_CODE_EXPIRE)
+
         return render(request, 'blog/comment.html', ctx)
 
     @ratelimit(key='ip', rate='1/s', block=True)
-    def post(self, request):  # todo 给评论加上验证码，可以防御恶意刷评论
+    def post(self, request):
+
+        veri_code = request.POST.get('veri_code')
+        veri_code_uuid = request.POST.get('veri_code_uuid')
+        if not veri_code or not veri_code_uuid:
+            return JsonResponse({'msg': '是不是忘记输验证码了?'}, status=500)
+
+        correctText = redis.get(self.VERI_CODE_KEY % veri_code_uuid)
+        if not correctText:
+            return JsonResponse({'msg': '验证码过期咯'}, status=502)
+        if correctText.lower() != veri_code.lower():
+            redis.delete(self.VERI_CODE_KEY % veri_code_uuid)
+            return JsonResponse({'msg': '验证码输错啦'}, status=502)
+        else:
+            redis.delete(self.VERI_CODE_KEY % veri_code_uuid)
+
         post_uuid = request.POST.get('pid')
         author = request.POST.get('author')
         email = request.POST.get('email')
         title = request.POST.get('title')
         content = request.POST.get('content')
         source_ip = request.META.get('REMOTE_ADDR')
+
         if not author or not title or not content or not post_uuid:
             return JsonResponse({'msg': '别闹，填正确的信息'}, status=500)
         if author == '博主' and not request.user.is_active:
@@ -310,6 +340,9 @@ class CommentView(View):
             return JsonResponse({})
 
 class MessageView(View):
+
+    VERI_CODE_KEY = settings.VERI_CODE_KEY
+
     @ratelimit(key='ip', rate='1/s')
     def get(self, request):
 
@@ -318,10 +351,26 @@ class MessageView(View):
 
         ctx = {}
         ctx['posts'] = Post.objects.filter(status='0')
+
         return render(request, 'blog/message.html', ctx)
 
-    @ratelimit(key='ip', rate='1/m', block=True)
+    @ratelimit(key='ip', rate='1/5s', block=True)
     def post(self, request):
+
+        veriCode = request.POST.get('veriCode')
+        veriCodeUuid = request.POST.get('veriCodeUuid')
+        if not veriCode or not veriCodeUuid:
+            return JsonResponse({'msg': '是不是忘记输验证码了?'}, status=500)
+
+        correctText = redis.get(self.VERI_CODE_KEY % veriCodeUuid)
+        if not correctText:
+            return JsonResponse({'msg': '验证码过期咯'}, status=502)
+        if correctText.lower() != veriCode.lower():
+            redis.delete(self.VERI_CODE_KEY % veriCodeUuid)
+            return JsonResponse({'msg': '验证码输错啦'}, status=502)
+        else:
+            redis.delete(self.VERI_CODE_KEY % veriCodeUuid)
+
         author = request.POST.get('author')
         contact = request.POST.get('contact')
         title = request.POST.get('title')
@@ -345,6 +394,30 @@ class MessageView(View):
 
         return JsonResponse({})
 
+class VeriCodeView(View):
+
+    VERI_CODE_KEY = settings.VERI_CODE_KEY
+    VERI_CODE_EXPIRE = 60
+
+    @ratelimit(key='ip', rate='1/5s')
+    def get(self, request):
+
+        if getattr(request, 'limited', False):
+            return JsonResponse({'msg': '你点得太快了(╯‵□′)╯︵┻━┻'}, status=500)
+
+        ctx = {}
+
+        oldCodeUuid = request.GET.get('veri_code_uuid')
+        redis.delete(self.VERI_CODE_KEY % oldCodeUuid)
+
+        codeGenerator = CodeGenerator()
+        newCodeUuid = str(uuid4())
+        ctx['veri_code'] = codeGenerator.generateCode()
+        ctx['veri_code_uuid'] = newCodeUuid
+        redis.set(self.VERI_CODE_KEY % newCodeUuid, codeGenerator.getText())
+        redis.expire(self.VERI_CODE_KEY % newCodeUuid, self.VERI_CODE_EXPIRE)
+
+        return JsonResponse(ctx)
 
 @csrf_exempt
 def editormd_upload(request):

@@ -17,6 +17,9 @@
             border-radius: 10px;
             padding: 20px;
         }
+        .veri-code-wrap{
+            display: none;
+        }
     </style>
 {% endblock %}
 
@@ -75,6 +78,19 @@
                             {% endfor %}
                         </select>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <input type="hidden" value="{% url 'veri-code' %}" id="veri-code-url" />
+                    <a href="javascript:void(0);" class="refresh-veri-code">
+                        <i class="fa fa-refresh"></i>获取验证码
+                    </a>
+                </div>
+                <div class="col-lg-6 veri-code-wrap">
+                    <img src="" />
+                    <input id="veriCodeInput" placeholder="请输入验证码" name="" style="height:30px;" />
+                    <a href="javascript:void(0);" class="refresh-veri-code constant"><i class="fa fa-refresh"></i></a>
                 </div>
             </div>
             <div class="sm-btn">

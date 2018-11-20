@@ -88,7 +88,7 @@ ELASTICSEARCH_DSL = {
     'default': {
         'hosts': '192.168.178.59:9200'
         # 'hosts': '127.0.0.1:9200'
-        # 'hosts': '192.168.3.31:9200'
+        # 'hosts': '192.168.3.29:9200'
     },
 }
 ELASTICSEARCH_INDEX = 'ftkblog'
@@ -98,7 +98,7 @@ CACHES = {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://192.168.178.59:6379/1',
         # 'LOCATION': 'redis://127.0.0.1:6379/1',
-        # 'LOCATION': 'redis://192.168.3.31:6379/1',
+        # 'LOCATION': 'redis://192.168.3.29:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'CONNECTION_POOL_KWARGS': {'max_connections': 100},
@@ -142,11 +142,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 CRONLOG = os.path.join(BASE_DIR, 'logs', 'cron', 'cron.log')
 CRONJOBS = [
-    ('0 */4 * * *', 'blog.cron.sync_read_count'),
-    ('0 0 * * *', 'blog.cron.refresh_today_access_count'),
-    ('0 0 */2 * *', 'blog.cron.gc_post_image'),
-    ('30 14 * * *', 'FTKBlog.cron.db_backup'),
-    ('0 1 */5 * *', 'FTKBlog.cron.upload_backup')
+    ('0 */4 * * *', 'blog.cron.sync_read_count'),  # 每隔四小时同步redis中阅读数到库中
+    ('0 0 * * *', 'blog.cron.refresh_today_access_count'),  # 每天零时重置当天访问人数
+    ('0 0 */2 * *', 'blog.cron.gc_post_image'),  # 每两天清理一次无用的图片
+    ('40 9 * * *', 'FTKBlog.cron.db_backup'),  # 每天备份数据库数据
+    ('0 1 */5 * *', 'FTKBlog.cron.upload_backup')  # 每五天备份上传（图片）数据
 ]
 
 # Internationalization
@@ -197,6 +197,7 @@ ACCESS_COUNT_KEY = 'blog:access_count'
 CACHE_KEY = 'blog:post_cache'
 UNREAD_COMMENTS_KEY = 'blog:unread_comment_queue'
 UNREAD_MESSAGE_KEY = 'blog:unread_message_queue'
+VERI_CODE_KEY = 'blog:veri_code:%s'
 
 # post中图片上传目录
 IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload', 'post-image')
