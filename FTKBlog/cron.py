@@ -59,7 +59,7 @@ def upload_backup():
                 if (today - date).days >= settings.BACKUP_PERIOD:
                     os.remove(os.path.join(backup_dir, 'upload.zip.%s' % date.strftime('%Y%m%d')))
             except Exception,e:
-                if date in locals():
+                if 'date' in locals():
                     logging.warn('Failed to delete old image dir [upload.zip.%s]' % date.strftime('%Y%m%d'))
                 logging.warn('Failed to delete old image dir:\n' + traceback.format_exc(e))
     logging.info('Old image dirs deleted')
@@ -73,6 +73,39 @@ def upload_backup():
         logging.error('Failed to zip up upload dir:\n' + traceback.format_exc(e))
         raise
 
+def migration_backup():
+
+    backup_dir = os.path.join(settings.PROJECT_ROOT, 'backup', 'migration')
+    logging.info('Deleting old migrations...')
+    today = datetime.date.today()
+    for migration in os.listdir(backup_dir):
+        if migration.startswith('migration'):
+            try:
+                date = datetime.datetime.strptime(os.path.splitext(migration)[1][1:],'%Y%m%d')
+                if (today - date).days >= settings.BACKUP_PERIOD:
+                    os.remove(os.path.join(backup_dir, migration))
+            except Exception,e:
+                if 'date' in locals():
+                    logging.warn('Failed to delete old migration [migration.zip.%s]' % date.strftime('%Y%m%d'))
+                else:
+                    logging.warn('Failed to delete old migration:\n' + traceback.format_exc(e))
+
+    logging.info('Old migrations are deleted')
+
+    target_dirs = []
+    dest_dir = os.path.join(settings.PROJECT_ROOT, 'backup', 'migration')
+    for root,dirs,files in os.walk(settings.BASE_DIR):
+        if 'migrations' in dirs:
+            target_dirs.append(os.path.join(root,'migrations'))
+
+    for dir in target_dirs:
+        app = os.path.basename(os.path.dirname(dir))
+        logging.info('Zipping up migrations in [%s]' % app)
+        try:
+            zip_dir(dir, os.path.join(dest_dir,'%s.migrations.zip.%s' % (app, today.strftime('%Y%m%d'))))
+        except Exception,e:
+            logging.error('Failed to zip up migration dir:\n[%s]\n%s' % (dir, traceback.format_exc(e)))
+            raise
 
 def zip_dir(dirname,zipfilename):
     filelist = []
