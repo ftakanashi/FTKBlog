@@ -8,16 +8,15 @@ import zipfile
 
 from django.conf import settings
 
-DATEFMT = '%Y-%m-%d %H:%M:%S'
-CRONLOG = os.path.join(settings.PROJECT_ROOT, 'logs', 'cron', 'cron.log')
+logger = logging.getLogger('django.ftkblog.cron')
 
-logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(filename)s [L.%(lineno)d] %(levelname)s  %(message)s',
-                    datefmt=DATEFMT, filename=CRONLOG)
+# logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(filename)s [L.%(lineno)d] %(levelname)s  %(message)s',
+#                     datefmt=DATEFMT, filename=CRONLOG)
 
 def db_backup():
     backup_dir = os.path.join(settings.PROJECT_ROOT,'backup','db')
     today = datetime.date.today()
-    logging.info('Deleting old dbfiles...')
+    logger.info('Deleting old dbfiles...')
     for dbfile in os.listdir(backup_dir):
         if dbfile.startswith('db.sqlite3'):
             try:
@@ -26,32 +25,32 @@ def db_backup():
                     os.remove(os.path.join(backup_dir, 'db.sqlite3.%s' % date.strftime('%Y%m%d')))
             except Exception,e:
                 if 'date' in locals():
-                    logging.warn('Failed to delete old dbfile [db.sqlite3.%s]' % date.strftime('%Y%m%d'))
-                logging.warn('Failed to delete old dbfile:\n' + traceback.format_exc(e))
+                    logger.warn('Failed to delete old dbfile [db.sqlite3.%s]' % date.strftime('%Y%m%d'))
+                logger.warn('Failed to delete old dbfile:\n' + traceback.format_exc(e))
 
-    logging.info('Deleted old dbfiles')
+    logger.info('Deleted old dbfiles')
 
     src = os.path.join(settings.PROJECT_ROOT,'db','db.sqlite3')
-    logging.info('Try to copy dbfile.')
+    logger.info('Try to copy dbfile.')
     try:
         shutil.copy(src, backup_dir)
     except Exception,e:
-        logging.error('Failed to copy db.sqlite3:\n' + traceback.format_exc(e))
+        logger.error('Failed to copy db.sqlite3:\n' + traceback.format_exc(e))
         raise
     DATE = datetime.date.today().strftime('%Y%m%d')
-    logging.info('renaming dbfile...')
+    logger.info('renaming dbfile...')
     try:
         os.rename(os.path.join(backup_dir,'db.sqlite3'),os.path.join(backup_dir,'db.sqlite3.%s' % DATE))
     except Exception,e:
-        logging.error('Failed to rename dbfile\n' + traceback.format_exc(e))
+        logger.error('Failed to rename dbfile\n' + traceback.format_exc(e))
         raise
 
-    logging.info('Backup over to: ' + os.path.join(settings.PROJECT_ROOT, 'backup', 'db', 'db.sqlite3.%s' % DATE))
+    logger.info('Backup over to: ' + os.path.join(settings.PROJECT_ROOT, 'backup', 'db', 'db.sqlite3.%s' % DATE))
 
 def upload_backup():
     backup_dir = os.path.join(settings.PROJECT_ROOT, 'backup', 'upload')
     today = datetime.date.today()
-    logging.info('Deleting old images...')
+    logger.info('Deleting old images...')
     for upload_dir in os.listdir(backup_dir):
         if upload_dir.startswith('upload'):
             try:
@@ -60,23 +59,23 @@ def upload_backup():
                     os.remove(os.path.join(backup_dir, 'upload.zip.%s' % date.strftime('%Y%m%d')))
             except Exception,e:
                 if 'date' in locals():
-                    logging.warn('Failed to delete old image dir [upload.zip.%s]' % date.strftime('%Y%m%d'))
-                logging.warn('Failed to delete old image dir:\n' + traceback.format_exc(e))
-    logging.info('Old image dirs deleted')
+                    logger.warn('Failed to delete old image dir [upload.zip.%s]' % date.strftime('%Y%m%d'))
+                logger.warn('Failed to delete old image dir:\n' + traceback.format_exc(e))
+    logger.info('Old image dirs deleted')
 
     src_dir = os.path.join(settings.BASE_DIR, 'static', 'upload')
     dest_file = os.path.join(settings.PROJECT_ROOT, 'backup', 'upload', 'upload.zip.%s' % today.strftime('%Y%m%d'))
-    logging.info('Try to zip up image directory and copy it...')
+    logger.info('Try to zip up image directory and copy it...')
     try:
         zip_dir(src_dir, dest_file)
     except Exception,e:
-        logging.error('Failed to zip up upload dir:\n' + traceback.format_exc(e))
+        logger.error('Failed to zip up upload dir:\n' + traceback.format_exc(e))
         raise
 
 def migration_backup():
 
     backup_dir = os.path.join(settings.PROJECT_ROOT, 'backup', 'migration')
-    logging.info('Deleting old migrations...')
+    logger.info('Deleting old migrations...')
     today = datetime.date.today()
     for migration in os.listdir(backup_dir):
         if migration.startswith('migration'):
@@ -86,11 +85,11 @@ def migration_backup():
                     os.remove(os.path.join(backup_dir, migration))
             except Exception,e:
                 if 'date' in locals():
-                    logging.warn('Failed to delete old migration [migration.zip.%s]' % date.strftime('%Y%m%d'))
+                    logger.warn('Failed to delete old migration [migration.zip.%s]' % date.strftime('%Y%m%d'))
                 else:
-                    logging.warn('Failed to delete old migration:\n' + traceback.format_exc(e))
+                    logger.warn('Failed to delete old migration:\n' + traceback.format_exc(e))
 
-    logging.info('Old migrations are deleted')
+    logger.info('Old migrations are deleted')
 
     target_dirs = []
     dest_dir = os.path.join(settings.PROJECT_ROOT, 'backup', 'migration')
@@ -100,11 +99,11 @@ def migration_backup():
 
     for dir in target_dirs:
         app = os.path.basename(os.path.dirname(dir))
-        logging.info('Zipping up migrations in [%s]' % app)
+        logger.info('Zipping up migrations in [%s]' % app)
         try:
             zip_dir(dir, os.path.join(dest_dir,'%s.migrations.zip.%s' % (app, today.strftime('%Y%m%d'))))
         except Exception,e:
-            logging.error('Failed to zip up migration dir:\n[%s]\n%s' % (dir, traceback.format_exc(e)))
+            logger.error('Failed to zip up migration dir:\n[%s]\n%s' % (dir, traceback.format_exc(e)))
             raise
 
 def zip_dir(dirname,zipfilename):

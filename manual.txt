@@ -7,6 +7,7 @@
     修改settings适配生产
         包括debug，CACHE，DB等
 
+    !!!!!重要：确认old里的migration文件以及upload文件确实正确吗？这些文件非常重要，虽然有备份还是要谨慎!!!!!
     替换migrations文件，upload文件(可借助手动执行crontab)
     进行migrate
 

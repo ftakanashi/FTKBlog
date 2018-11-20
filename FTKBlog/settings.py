@@ -111,6 +111,40 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_COOKIE_AGE = 43200
 SESSION_CACHE_ALIAS = 'default'
 
+# Logging Configuration
+from logconf import *
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_logger': True,
+    'formatters': {
+        'standard': STANDARD_FORMATTER
+    },
+    'handlers': {
+        'null': {'level': 'DEBUG','class': 'logging.NullHandler'},
+        'root': {'level': 'INFO', 'class': 'logging.handlers.RotatingFileHandler', 'filename': os.path.join(PROJECT_ROOT, 'logs','django.log'),
+                 'maxBytes': 1024*1024*10, 'backupCount': 5, 'formatter': 'standard'},
+        'cron': dict(filename=os.path.join(PROJECT_ROOT, 'logs', 'cron', 'cron.log'),**STANDARD_ROTATE_HANDLER),
+        'elasticsearch': dict(filename=os.path.join(PROJECT_ROOT, 'logs', 'elasticsearch.log'), **STANDARD_ROTATE_HANDLER)
+    },
+    'loggers': {
+        'django':{
+            'handlers': ['root'],
+            'level': 'INFO'
+        },
+        'django.ftkblog.cron': {
+            'handlers': ['cron'],
+            'level': 'INFO',
+            'propagate': True
+        },
+        'elasticsearch': {
+            'handlers': ['elasticsearch'],
+            'level': 'INFO',
+            'propagate': True
+        }
+    }
+}
+
 # API Restframework configuration
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
@@ -146,8 +180,8 @@ CRONJOBS = [
     ('0 0 * * *', 'blog.cron.refresh_today_access_count'),  # 每天零时重置当天访问人数
     ('0 0 */2 * *', 'blog.cron.gc_post_image'),  # 每两天清理一次无用的图片
     ('40 9 * * *', 'FTKBlog.cron.db_backup'),  # 每天备份数据库数据
-    ('0 1 */5 * *', 'FTKBlog.cron.upload_backup'),  # 每五天备份上传（图片）数据
-    ('0 2 */5 * *', 'FTKBlog.cron.migration_backup')  # 每五天备份migration记录
+    ('0 1 * * *', 'FTKBlog.cron.upload_backup'),  # 每天备份上传（图片）数据
+    ('0 2 * * *', 'FTKBlog.cron.migration_backup')  # 每天备份migration记录
 ]
 
 # Internationalization
