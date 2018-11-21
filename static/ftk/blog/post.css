@@ -1,7 +1,11 @@
 .highlight{
-    background: #ffab3e;
+    background: yellow;
     padding: 0;
     font-weight: bold;
+}
+.highlight.current{
+    background: #ffab3e;
+    color: red;
 }
 .toolbar{
     height: 30px;
@@ -16,13 +20,25 @@
     width: 100%;
     height: 100%;
 }
+.intern-search-jump{
+    display: none;
+    background: ghostwhite;
+    padding: 6px 2px;
+}
+.intern-search-jump i{
+    cursor: pointer;
+}
+.intern-search-jump i:hover{
+    color: darkgray;
+}
 .intern-search input{
     height: 30px;
-    width: calc(100% - 25px);
+    /*width: calc(100% - 100px);*/
+    width: 60%;
     border: 0;
 }
 .intern-search input:focus{
-    border: 1px dashed rgba(0,0,0,0.4);
+    border-left: 1px dashed rgba(0,0,0,0.4);
 }
 /*.left-ground{*/
     /*top: 95px;*/
@@ -81,6 +97,7 @@
 }
 .alt-tag-wrap{
     margin-top: 10px;
+    text-align: center;
 }
 .alt-tag{
     color: darkgray;

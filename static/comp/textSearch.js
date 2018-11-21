@@ -55,6 +55,18 @@
             });
             return s;
         };
+
+        // weiyz修改 增加查找所有子字符串位置的函数
+        $.allIndexOf = function(str,substr){
+            var indices = [];
+            var index = str.indexOf(substr);
+            while(index != -1){
+                indices.push(index);
+                index = str.indexOf(substr, index + substr.length);
+            }
+            return indices;
+        };
+
         $(this).each(function(){
             var t = $(this);
             str = $.trim(str);
@@ -76,19 +88,27 @@
             //将HTML代码支离为HTML片段和文字片段，其中文字片段用于正则替换处理，而HTML片段置之不理
             var tags = /[^<>]+|<(\/?)([A-Za-z]+)([^<>]*)>/g;
             var a = v_html.match(tags), test = 0;
+            var foundCount = 0;
             $.each(a, function(i, c){
                 if(!/<(?:.|\s)*?>/.test(c)){//非标签
                     //开始执行替换
                     $.each(arr,function(index, con){
                         if(con === ""){return;}
-                        var reg = new RegExp($.regTrim(con), "g");
+                        //weiyz 适配多查询
+                        var reg = new RegExp('(?!♂)' + $.regTrim(con) + '(?!♀)');
                         if(reg.test(c)){
                             //正则替换
-                            c = c.replace(reg,"♂"+con+"♀");
+                            // weiyz修改 深入每行文字的替换
+                            var founds = $.allIndexOf(c,con);
+                            for(_ in founds){
+                                foundCount ++;
+                                c = c.replace(reg, "♂"+foundCount.toString()+"♂"+con+"♀");
+                            }
                             test = 1;
                         }
                     });
-                    c = c.replace(/♂/g,"<mark "+clStr+">").replace(/♀/g,"</mark>");
+                    // weiyz修改，给每个mark加上id方便跳转
+                    c = c.replace(/♂(\d+?)♂/g,"<mark "+clStr+" id=\"textsearch_$1\">").replace(/♀/g,"</mark>");
                     a[i] = c;
                 }
             });
@@ -102,7 +122,7 @@
             }
 
             //执行回调函数
-            sets.callback();
+            sets.callback(foundCount);
         });
     };
 })(jQuery);

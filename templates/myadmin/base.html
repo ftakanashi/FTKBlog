@@ -254,7 +254,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">博客数据管理</li>
                 <!-- Optionally, you can add icons to the links -->
-                <li><a href="{% url 'my_admin_index' %}"><i class="fa fa-dashboard"></i>后台主页</a></li>
+                <li><a href="{% url 'my_admin_index' %}"><i class="fa fa-dashboard"></i><span>后台主页</span></a></li>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-lock"></i><span>安全管理</span>
                         <span class="pull-right-container">
@@ -279,7 +279,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </ul>
                 </li>
                 <li><a href="{% url 'comment.manage' %}"><i class="fa fa-comment"></i><span>评论管理</span></a></li>
-                <li><a href="{% url 'message.manage' %}"><i class="fa fa-puzzle-piece"></i>消息管理</a></li>
+                <li><a href="{% url 'message.manage' %}"><i class="fa fa-puzzle-piece"></i><span>消息管理</span></a></li>
                 <li><a href="{% url 'post.manage' %}"><i class="fa fa-file"></i><span>文章管理</span></a></li>
             </ul>
             {% endblock %}

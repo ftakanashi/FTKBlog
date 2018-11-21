@@ -10,10 +10,9 @@ $(document).ready(function(){
         var element = layui.element;
     });
 
+    // 图片alt居中处理
     $('.post-body').find('img.post-image').each(function(i,ele){
         var size = [$(ele).width(),$(ele).height()];
-        console.log(size);
-        console.log($(ele).offset());
         var altText = $(ele).attr('alt');
         $(ele).parent('p').css('text-align', 'center').append('<div class="alt-tag-wrap"><span class="alt-tag">' + altText + '</span></div>');
         if (size[0] >= 800){  // 过大的图片的显示优化
@@ -34,7 +33,7 @@ $(document).ready(function(){
         var mainGround = $('.main-ground');
         var internSearch = $('#intern-search-input');
         if ($(leftGround).css('display') === 'none'){
-            $(internSearch).css({width: 'calc(85% - 25px)'});
+            //$(internSearch).css({width: 'calc(85% - 100px)'});
             $(toggle).animate({width: '15%'},'slow');
             $(leftGround).fadeIn('fast');
             $(mainGround).animate({width: '70%','margin-left': '18%'});
@@ -57,8 +56,41 @@ $(document).ready(function(){
         var kw = $(this).val();
         $('#postContent').textSearch(kw,{
             markClass: 'highlight',
-            divStr: '|'
+            divStr: '|',
+            callback: function(foundCount){
+                layer.msg('一共找到了 ' + foundCount + ' 处文字');
+                if (foundCount > 0){
+                    $('.intern-search-jump').show().find('span').text('0');
+                }
+            }
         });
+    });
+
+    $('.intern-search-jump-go').click(function(event){
+        var guideIndex = $(this).parent().find('span');
+        var index = parseInt($(guideIndex).text());
+        if($(this).hasClass('prev')){
+            index --;
+            if (index === 0){
+                layer.msg('已经到最上面了');
+                return;
+            }
+            $(guideIndex).text(index.toString());
+            $.scrollTo('#textsearch_' + index);
+            $('.highlight').removeClass('current');
+            $('#textsearch_'+index).addClass('current');
+        }
+        else if($(this).hasClass('next')){
+            index ++;
+            if ($('#textsearch_' + index).length === 0){
+                layer.msg('已经到最下面了');
+                return;
+            }
+            $(guideIndex).text(index.toString());
+            $.scrollTo('#textsearch_' + index);
+            $('.highlight').removeClass('current');
+            $('#textsearch_'+index).addClass('current');
+        }
     });
 
     // 点赞
