@@ -54,13 +54,20 @@ $(document).ready(function(){
             return;
         }
         var kw = $(this).val();
-        $('#postContent').textSearch(kw,{
+        var found = $('#postContent').textSearch(kw,{
             markClass: 'highlight',
             divStr: '|',
+            nullReport: false,
             callback: function(foundCount){
-                layer.msg('一共找到了 ' + foundCount + ' 处文字');
                 if (foundCount > 0){
-                    $('.intern-search-jump').show().find('span').text('0');
+                    layer.msg('一共找到了 ' + foundCount + ' 处文字');
+                    $('.intern-search-jump').show().find('span').text('1');
+                    $('#textsearch_1').addClass('current');
+                    $.scrollTo('#textsearch_1');
+                }
+                else{
+                    layer.msg('没有找到相关文字');
+                    $('.intern-search-jump').hide();
                 }
             }
         });
@@ -70,11 +77,11 @@ $(document).ready(function(){
         var guideIndex = $(this).parent().find('span');
         var index = parseInt($(guideIndex).text());
         if($(this).hasClass('prev')){
-            index --;
-            if (index === 0){
+            if (index <= 1){
                 layer.msg('已经到最上面了');
                 return;
             }
+            index --;
             $(guideIndex).text(index.toString());
             $.scrollTo('#textsearch_' + index);
             $('.highlight').removeClass('current');

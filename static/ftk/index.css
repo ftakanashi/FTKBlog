@@ -31,12 +31,12 @@ span.post-info{
 }
 .post-info a{
     text-decoration: none;
-    /*color: #256a88;*/
+    color: #256a88;
 }
 .post-info a:hover{
     padding: 3px;
     border-radius: 3px;
-    /*background-color: #256a88;*/
+    background-color: #256a88;
     margin-left: 2px;
     color: white;
 }

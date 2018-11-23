@@ -123,6 +123,9 @@
 
             //执行回调函数
             sets.callback(foundCount);
+
         });
+
+        return true
     };
 })(jQuery);
