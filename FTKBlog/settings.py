@@ -132,6 +132,10 @@ LOGGING = {
             'handlers': ['root'],
             'level': 'INFO'
         },
+        'django_crontab.crontab': {
+            'handlers': ['cron'],
+            'level': 'INFO'
+        },
         'django.ftkblog.cron': {
             'handlers': ['cron'],
             'level': 'INFO',
@@ -181,7 +185,7 @@ CRONJOBS = [
     ('0 0 */2 * *', 'blog.cron.gc_post_image'),  # 每两天清理一次无用的图片
     ('40 9 * * *', 'FTKBlog.cron.db_backup'),  # 每天备份数据库数据
     ('0 1 * * *', 'FTKBlog.cron.upload_backup'),  # 每天备份上传（图片）数据
-    ('0 2 * * *', 'FTKBlog.cron.migration_backup')  # 每天备份migration记录
+    ('0 2 */3 * *', 'FTKBlog.cron.migration_backup')  # 每天备份migration记录
 ]
 
 # Internationalization

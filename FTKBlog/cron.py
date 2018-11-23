@@ -19,7 +19,7 @@ def get_hash(file):
 
 def check_newest(backup_dir, dest_file):
     logger.info('Checking newest files. Deleting identical backup...')
-    for file in sorted(os.listdir(backup_dir), key=lambda x: os.stat(x).st_mtime, reverse=True)[:5]:
+    for file in sorted(os.listdir(backup_dir), key=lambda x: os.stat(os.path.join(backup_dir, x)).st_mtime, reverse=True)[:5]:
         full_path = os.path.join(backup_dir, file)
         if full_path == dest_file: continue
         if get_hash(full_path) == get_hash(dest_file):

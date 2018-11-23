@@ -6,7 +6,7 @@ STANDARD_FORMATTER = {
 }
 
 STANDARD_ROTATE_HANDLER = {
-    'level': 'INFO',
+    'level': 'DEBUG',
     'class': 'logging.handlers.RotatingFileHandler',
     'maxBytes': 1024 ** 2,
     'backupCount': 5,
