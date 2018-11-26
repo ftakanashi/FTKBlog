@@ -256,8 +256,8 @@ class PostManange(View):
             post.tags = ' '.join([a.name for a in post.tag.all()])
             ctx['post'] = post
             ctx['type'] = 'edit'
-            ctx['categoryList'] = Category.objects.all()
-            ctx['tagList'] = Tag.objects.all()
+            ctx['categoryList'] = Category.objects.all().order_by('name')
+            ctx['tagList'] = Tag.objects.all().order_by('name')
             return render(request, 'blog/new.html', ctx)
 
         return render(request, 'myadmin/modulemanage/post/view.html', ctx)

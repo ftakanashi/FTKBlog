@@ -224,10 +224,10 @@ $(document).ready(function(){
                 post_uuid: uuid
             },
             beforeSend: function(xhr, settings){
-                layer.msg('自动保存中...',{offset: 'lb',icon:0});
+                layer.msg('自动保存中...',{offset: 'rb',icon:0});
             },
             success: function(data){
-                layer.msg(data.msg,{offset: 'lb',icon: 1});
+                layer.msg(data.msg,{offset: 'rb',icon: 1});
             },
             error: function(xml,err,exc){
                 var msg;
@@ -237,11 +237,11 @@ $(document).ready(function(){
                 catch(e){
                     msg = '未知错误';
                 }
-                layer.msg(msg,{offset: 'lb',icon: 2});
+                layer.msg(msg,{offset: 'rb',icon: 2});
             }
         })
     }
-    setInterval(autoSave,3 * 60 * 1000);
+    setInterval(autoSave,5 * 60 * 1000);
     //setInterval(autoSave, 10 * 1000);
 
 });

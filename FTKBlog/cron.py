@@ -83,7 +83,7 @@ def upload_backup():
                 if 'date' in locals():
                     logger.warn('Failed to delete old image dir [upload.zip.%s]' % date.strftime('%Y%m%d'))
                 logger.warn('Failed to delete old image dir:\n' + traceback.format_exc(e))
-    logger.info('Old image dirs deleted')
+    logger.info('Old image files deleted')
 
     src_dir = os.path.join(settings.BASE_DIR, 'static', 'upload')
     dest_file = os.path.join(backup_dir, 'upload.zip.%s' % today.strftime('%Y%m%d'))
