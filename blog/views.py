@@ -54,14 +54,8 @@ class IndexView(View):
                 pass
             else:
                 posts = tag.in_tag_posts.all()
-        # if sCate is not None:
-        #     posts = Post.objects.filter(category__cate_id=sCate).filter(status=0)
-        # else:
-        #     posts = Post.objects.filter(status=0)
 
-        posts = posts.order_by('-is_top', '-update_time')
-        # for post in posts:
-        #     post.read_count = redis.hget(settings.READ_COUNT_KEY, post.post_uuid) or -1
+        posts = posts.order_by('-is_top', '-edit_time')
 
         p = Paginator(posts, 10, request=request)
         paged_posts = p.page(page)
@@ -80,8 +74,9 @@ class IndexView(View):
         ctx['tagList'] = sorted(tags, key=lambda x: x.count, reverse=True)
         ctx['pageDictInfo'] = {q.key: q.value for q in Dict.objects.filter(category='index_page')}
         ctx['quickLinks'] = {q.key: q.value for q in Dict.objects.filter(category='quick_links')}
+        ctx['ontdsk'] = Dict.objects.get(key='欧尼酱大好き')
+        ctx['showEmotion'] = Dict.objects.get(key='showEmotion')
         if not request.user.is_superuser:
-            # cache.incr(settings.ACCESS_COUNT_KEY)
             redis.incr(settings.ACCESS_COUNT_KEY)
 
         return render(request, 'index.html', ctx)

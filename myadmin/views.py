@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import collections
+import datetime
 import json
 import os
 import shutil
@@ -24,6 +25,7 @@ class IndexView(View):
 
     def get(self, request):
         ctx = {}
+
         urcInfo = []
         for cid in redis.lrange(settings.UNREAD_COMMENTS_KEY,0,-1):
             try:
@@ -45,6 +47,7 @@ class IndexView(View):
                 urmInfo.append(message)
 
         ctx['access_count'] = redis.get(settings.ACCESS_COUNT_KEY)
+        ctx['site_switches'] = Dict.objects.filter(category='site_switch')
         ctx['urcInfo'] = urcInfo
         ctx['urmInfo'] = urmInfo
         return render(request, 'myadmin/dashboard.html', ctx)
@@ -59,6 +62,20 @@ class IndexView(View):
             while redis.llen(settings.UNREAD_MESSAGE_KEY) > 0:
                 redis.lpop(settings.UNREAD_MESSAGE_KEY)
             return JsonResponse({})
+        elif act == 'site-switch':
+            switchName = request.POST.get('name')
+            switchTo = request.POST.get('value')
+            try:
+                item = Dict.objects.get(key=switchName)
+                item.value = str(switchTo)
+                item.save()
+            except Dict.DoesNotExist,e:
+                return JsonResponse({'msg': '没有找到相关开关'}, status=404)
+            except Exception,e:
+                print traceback.format_exc(e)
+                return JsonResponse({'msg': '设置开关失败'}, status=500)
+            else:
+                return JsonResponse({})
 
         return JsonResponse({'msg': '无效的申请动作'},status=500)
 
@@ -333,6 +350,7 @@ class PostManange(View):
             post.is_top = request.POST.get('is_top') == 'true'
             post.is_reprint = request.POST.get('is_reprint') == 'true'
             post.reprint_src = request.POST.get('reprint_src')
+            post.edit_time = datetime.datetime.now()
 
             if request.POST.get('is_publish') == 'true':
                 post.status = '0'

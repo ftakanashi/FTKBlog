@@ -58,12 +58,13 @@ $(document).ready(function(event){
 
     $('body').on('themeChange',function(event){
         var themeSet = [
-            {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: '0.jpg'},
-            {colorMap: ['#C0C060','#3E1653','#E0E08C','#C0B060'], bg: '1.jpg'},
-            {colorMap: ['#FFF078','#7A5AAE','#F09060','#FFDA78'], bg: '2.jpg'},
-            {colorMap: ['#90C078','#F07860','#78A860','#FFF090'], bg: '3.jpg'},
-            {colorMap: ['#A89078','#D8D8D8','#D8C0A8','#907878'], bg: '4.jpg'},
-            {colorMap: ['#60A8C0','#000000','#60C0F0','#F0D8C0'], bg: '5.jpg'}
+            {colorMap: ['#000000','#808080','#000000','#000000'], bg: '0.jpg'},
+            {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: '1.jpg'},
+            {colorMap: ['#C0C060','#3E1653','#E0E08C','#C0B060'], bg: '2.jpg'},
+            {colorMap: ['#FFF078','#7A5AAE','#F09060','#FFDA78'], bg: '3.jpg'},
+            {colorMap: ['#90C078','#F07860','#78A860','#FFF090'], bg: '4.jpg'},
+            {colorMap: ['#A89078','#D8D8D8','#D8C0A8','#907878'], bg: '5.jpg'},
+            {colorMap: ['#60A8C0','#000000','#60C0F0','#F0D8C0'], bg: '6.jpg'}
         ];
         currentTheme = $.cookie('theme');
         if (!currentTheme){
@@ -86,9 +87,12 @@ $(document).ready(function(event){
     }).on('loadTheme', function(event){
         try{
             var theme = JSON.parse($.cookie('theme'));
+            if ($('#refreshTheme').length == 0){
+                throw('No refresh theme found');
+            }
         }
         catch(e){
-            var defaultTheme = {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: '0.jpg'};
+            var defaultTheme = {colorMap: ['#000000','#808080','#000000','#000000'], bg: '0.jpg'};
             theme = defaultTheme;
             $.cookie('theme',JSON.stringify(defaultTheme), {path: '/'});
         }

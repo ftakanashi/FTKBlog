@@ -1,4 +1,5 @@
 {% load static %}
+{% load ftkblog_tags %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -174,9 +175,9 @@ background-attachment: fixed;
     <div class="fix-tool">
         <div class="fix-tool-wrap">
             {% block fixtool_btn %}{% endblock %}
-            <div class="fix-tool-btn" id="refreshTheme" title="刷新主题">
-                <a href="javascript:void(0);"><i class="fa fa-refresh"></i></a>
-            </div>
+
+            {% load_theme_change %}
+
             <div class="fix-tool-btn" id="sendMail" title="发送邮件给我">
                 <a href="javascript:void(0);"><i class="fa fa-envelope"></i></a>
             </div>
@@ -195,8 +196,7 @@ background-attachment: fixed;
     <div class="footer">
         <div class="row page-footer">
             <div class="col-lg-4 col-sm-12 col-xs-12">
-                <h5 class="footer-title">BGM</h5>
-                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=2389989722&auto=0&height=90"></iframe>
+                {% load_bgm %}
             </div>
             <div class="col-lg-4 col-sm-12 col-xs-12">
                 <img class="img-circle" src="{% static 'image/profile/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />
@@ -244,7 +244,6 @@ background-attachment: fixed;
             data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}
         });
     </script>
-{#    <script src="{% static 'comp/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js' %}"></script>#}
     {% block script %}
     {% endblock %}
 </body>

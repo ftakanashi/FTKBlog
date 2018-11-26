@@ -38,13 +38,13 @@
                 {% endif %}
                 <div class="post-info-wrap">
                     <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>创建时间 {{ post.create_time }}</span>
-                    <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>更新时间 {{ post.update_time }}</span>
+                    <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>更新时间 {{ post.edit_time }}</span>
                 </div>
                 <div class="post-info-wrap">
                     <span class="post-info"><i class="fa fa-bookmark"></i>阅读量 ({{ read_count }})</span>
                 </div>
                 <div class="post-info-wrap">
-                    <span class="post-info"><i class="fa fa-tags"></i>分类 {{ post.category.name }}</span>
+                    <span class="post-info"><i class="fa fa-tags"></i><span><a href="{% url 'index' %}?category={{ post.category_id }}">{{ post.category.name }}</a></span></span>
                 </div>
             </div>
             <div id="postContent" class="post-body">

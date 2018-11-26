@@ -69,7 +69,12 @@ $(document).ready(function(){
             sortable: true
         },{
             field: 'update_time',
-            title: '更新时间',
+            title: '自动更新时间',
+            sortable: true,
+            visible: false
+        },{
+            field: 'edit_time',
+            title: '编辑更新时间',
             sortable: true
         },{
             field: 'status',
@@ -110,8 +115,8 @@ $(document).ready(function(){
         pagination: true,
         sidePagination: 'client',
         pageNumber: 1,
-        pageSize: 5,
-        pageList: [5,10,'All'],
+        pageSize: 20,
+        pageList: [10,20,50,'All'],
         search: true,
         showRefresh: true,
         showToggle: true,

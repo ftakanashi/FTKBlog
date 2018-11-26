@@ -1,5 +1,8 @@
 {% extends 'myadmin/base.html' %}
 
+{% load static%}
+{% load ftkblog_tags %}
+
 {% block breadcrumb %}{% endblock %}
 {% block task_menu %}{% endblock %}
 {% block control-sidebar-toggle %}{% endblock %}
@@ -9,9 +12,67 @@
 {% block content-header-title %}后台总览{% endblock %}
 {% block content-header-description %}{% endblock %}
 
+{% block style %}
+    <link href="{% static 'comp/bootstrap-switch/css/bootstrap-switch.min.css' %}" rel="stylesheet" />
+{% endblock %}
+
 {% block main-content %}
 <section class="content container-fluid">
     <h4>今日总访客数：{{ access_count }} 人次</h4>
     <hr>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">站点开关</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                {% for switch in site_switches %}
+                <div class="col-lg-4 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label">{{ switch.key }}</label>
+                        <input type="checkbox" name="{{ switch.key }}" class="site-switch" {% if switch.value == '1' %}checked{% endif %} />
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </section>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'comp/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+    <script>
+    $(document).ready(function(){
+    $('.site-switch').bootstrapSwitch({
+        size: 'small',
+        onText: 'on',
+        offText: 'off'
+    }).bootstrapSwitch('onSwitchChange', function(event,data){
+        var loadLayer = layer.load('3');
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                act: 'site-switch',
+                name: $(this).attr('name'),
+                value: data ? '1' : '0'
+            },
+            success: function(data){
+                layer.msg('开关设置成功');
+            },
+            error: function(xml, err, exc){
+                try{
+                    layer.msg(JSON.parse(xml.responseText).msg);
+                }
+                catch(e){
+                    layer.msg('未知错误');
+                }
+            },
+            complete: function(){layer.close(loadLayer);}
+        });
+    });
+    });
+    </script>
 {% endblock %}
