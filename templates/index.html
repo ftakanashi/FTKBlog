@@ -185,10 +185,15 @@
             </ul>
         </div>
     </div>
-    {% if ontdsk %}
+    {% if site_switch__ontdsk %}
     <audio id="oniityann-daisuki" src="{% static 'audio/oniityann.mp3' %}" autoplay></audio>
     {% endif %}
 
+{% endblock %}
+
+{% block hidden_inputs %}
+    {{ block.super }}
+    <input type="hidden" id="showCarousel" value="{% if site_switch__slideToUnlock %}True{% else %}False{% endif %}" />
 {% endblock %}
 
 {% block script %}

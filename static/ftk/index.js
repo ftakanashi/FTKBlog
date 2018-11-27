@@ -16,7 +16,8 @@ $(function(){
         slider.init();
 
         var accessed = $.cookie('accessed');
-        if (!accessed){
+        var show = $('#showCarousel').val() === 'True';
+        if (show && !accessed){
             $('body').fadeIn('slow');
             $('.welcome-title').fadeIn('slow');
         }

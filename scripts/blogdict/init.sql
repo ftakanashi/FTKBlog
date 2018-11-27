@@ -7,6 +7,7 @@ INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('showEmotion
 INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('showAutoMe', '1', 'site_switch', '展示自我介绍界面');
 INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('showAlias', '1', 'site_switch', '使用裏の名');
 INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('showAutosaveMsg', '1', 'site_switch', '显示自动保存信息');
+INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('slideToUnlock', '1', 'site_switch', '滑动解锁');
 
 INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('传图识色','http://tool.chinaz.com/tools/img','quick_links','');
 INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('配色工具','http://www.peise.net/tools/web/','quick_links','');
