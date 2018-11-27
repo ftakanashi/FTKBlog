@@ -176,6 +176,7 @@ $(document).ready(function(){
                 $.clearCache();
                 setTimeout('location.href = "' + next + '"', 3000);
                 layer.load('1',{shade: 0.5});
+                window.clearInterval(autoSaveInterval);
                 layer.msg(msg?msg:'' + '  3秒后跳转到新文章界面');
             },
             error: function(xml, err, exc){
@@ -204,6 +205,7 @@ $(document).ready(function(){
     function autoSave(){
         var uuid = $('#uuidInput').val();
         var currentContent = contentEditor.getMarkdown();
+        var showMsg = $('#showAutosaveMsg').val() === 'True';
         $.ajax({
             url: location.pathname,
             type: 'put',
@@ -214,10 +216,20 @@ $(document).ready(function(){
                 post_uuid: uuid
             },
             beforeSend: function(xhr, settings){
-                layer.msg('自动保存中...',{offset: 'rb',icon:0});
+                if (showMsg){
+                    layer.msg('自动保存中...',{offset: 'rb',icon:0});
+                }
+                else{
+                    console.log('自动保存中...');
+                }
             },
             success: function(data){
-                layer.msg(data.msg,{offset: 'rb',icon: 1});
+                if (showMsg){
+                    layer.msg(data.msg,{offset: 'rb',icon: 1});
+                }
+                else{
+                    console.log(data.msg);
+                }
             },
             error: function(xml,err,exc){
                 var msg;
@@ -227,11 +239,23 @@ $(document).ready(function(){
                 catch(e){
                     msg = '未知错误';
                 }
-                layer.msg(msg,{offset: 'rb',icon: 2});
+                if (showMsg){
+                    layer.msg(msg,{offset: 'rb',icon: 1});
+                }
+                else{
+                    console.log(msg);
+                }
             }
         })
     }
-    setInterval(autoSave,5 * 60 * 1000);
+    var autosaveIntervalNum;
+    try{
+        autosaveIntervalNum = parseInt($('#autosaveIntervalNum').val());
+    }
+    catch(e){
+        autosaveIntervalNum = 5;
+    }
+    setInterval(autoSave,autosaveIntervalNum * 60 * 1000);
     //setInterval(autoSave,10 * 1000);
 
 });

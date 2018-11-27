@@ -103,6 +103,7 @@ class Dict(models.Model):
     key = models.CharField(max_length=128,primary_key=True,verbose_name='数据字典键')
     value = models.CharField(max_length=1024,verbose_name='数据字典值')
     category = models.CharField(max_length=16, default='default', verbose_name='项分类')
+    comment = models.CharField(max_length=256, default='', verbose_name='备注')
 
     def __unicode__(self):
         return '<DictItem>%s:%s' % (self.key,self.value)

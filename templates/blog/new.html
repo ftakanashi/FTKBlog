@@ -82,6 +82,8 @@
 {% block hidden_inputs %}
     {{ super.block }}
     <input type="hidden" value="{% static 'comp/editormd' %}" id="editor-md-root" />
+    <input type="hidden" value="{% if site_switch__showAutosaveMsg %}True{% else %}False{% endif %}" id="showAutosaveMsg" />
+    <input type="hidden" value="{{ autosave_interval | default:"5" }}" id="autosaveIntervalNum" />
     {% if type == 'edit' %}
 {#    <input type="hidden" value="{{ post.content }}" id="post-content" />#}
 {#    <input type="hidden" value="{{ post.post_uuid }}" id="post-uuid" />#}

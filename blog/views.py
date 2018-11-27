@@ -74,8 +74,7 @@ class IndexView(View):
         ctx['tagList'] = sorted(tags, key=lambda x: x.count, reverse=True)
         ctx['pageDictInfo'] = {q.key: q.value for q in Dict.objects.filter(category='index_page')}
         ctx['quickLinks'] = {q.key: q.value for q in Dict.objects.filter(category='quick_links')}
-        ctx['ontdsk'] = Dict.objects.get(key='欧尼酱大好き')
-        ctx['showEmotion'] = Dict.objects.get(key='showEmotion')
+
         if not request.user.is_superuser:
             redis.incr(settings.ACCESS_COUNT_KEY)
 
@@ -92,6 +91,10 @@ class NewPostView(View):
         return p.sub('', markdown)
 
     def get(self, request):
+        try:
+            autosave_interval = Dict.objects.get(key='autosaveInterval').value
+        except Exception,e:
+            pass
         categoryList = Category.objects.all()
         tagList = Tag.objects.all()
         return render(request, 'blog/new.html', locals())

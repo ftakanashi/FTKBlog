@@ -206,7 +206,7 @@ class DictManage(View):
             return render(request, 'myadmin/modulemanage/dict/add.html', ctx)
 
         dictInfo = collections.defaultdict(dict)
-        for item in Dict.objects.all():
+        for item in Dict.objects.exclude(category__in=('site_switch',)):
             dictInfo[item.category][item.key] = item.value
 
         ctx['dictInfo'] = dict(dictInfo)
@@ -264,6 +264,12 @@ class PostManange(View):
         ctx = {}
         ctx['uuid'] = request.GET.get('uuid')
         if request.GET.get('type') == 'edit':
+
+            try:
+                ctx['autosave_interval'] = Dict.objects.get(key='autosaveInterval').value
+            except Exception,e:
+                pass
+
             post_uuid = request.GET.get('pk')
             try:
                 post = Post.objects.get(post_uuid=post_uuid)

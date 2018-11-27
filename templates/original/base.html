@@ -7,7 +7,15 @@
 {#    <meta name="viewport" #}
 {#          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">#}
 {#    <meta http-equiv="X-UA-Compatible" content="ie=edge">#}
-    <title>{% block title %}F.Takanashi BLOG{% endblock %}</title>
+    <title>
+        {% block title %}
+        {% if site_switch__showAlias %}
+            F.Takanashi BLOG
+        {% else %}
+            WYZYPA BLOG
+        {% endif %}
+        {% endblock %}
+    </title>
 
     <!-- 下面的keywords和description主要用于给搜索引擎搜索 -->
     <meta name="keywords" content={% block keywords %}{% endblock %}>
@@ -40,7 +48,11 @@ background-attachment: fixed;
     {% block carousel %}{% endblock %}
     <div class="navbar navbar-inverse" role="navigation" style="border-radius:0;z-index: 999;">
         <div class="navbar-brand-img">
+            {% if site_switch__showAlias %}
             <img src="{% static 'image/site_logo.png' %}" class="navbar-brand" />
+            {% else %}
+            <img src="{% static 'image/site_logo_omote.png' %}" class="navbar-brand" />
+            {% endif %}
         </div>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-toggle-menu">
@@ -175,9 +187,11 @@ background-attachment: fixed;
     <div class="fix-tool">
         <div class="fix-tool-wrap">
             {% block fixtool_btn %}{% endblock %}
-
-            {% load_theme_change %}
-
+            {% if site_switch__themeChange %}
+            <div class="fix-tool-btn" id="refreshTheme" title="刷新主题">
+                <a href="javascript:void(0);"><i class="fa fa-refresh"></i></a>
+            </div>
+            {% endif %}
             <div class="fix-tool-btn" id="sendMail" title="发送邮件给我">
                 <a href="javascript:void(0);"><i class="fa fa-envelope"></i></a>
             </div>
@@ -196,7 +210,10 @@ background-attachment: fixed;
     <div class="footer">
         <div class="row page-footer">
             <div class="col-lg-4 col-sm-12 col-xs-12">
-                {% load_bgm %}
+                {% if site_switch__bgmSwitch %}
+                <h5 class="footer-title">BGM</h5>
+                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=2389989722&auto=0&height=90"></iframe>
+                {% endif %}
             </div>
             <div class="col-lg-4 col-sm-12 col-xs-12">
                 <img class="img-circle" src="{% static 'image/profile/profile.jpg' %}" alt="这是谁的照片？" style="width: 150px; height: 150px;" />

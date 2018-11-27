@@ -79,7 +79,7 @@ $(document).ready(function(event){
                     break;
                 }
             }
-            theme = themeSet[currIndex >= themeSet.length-1 || currIndex < 0 ? 0 : currIndex + 1];
+            theme = themeSet[(currIndex >= themeSet.length-1 || currIndex < 0) ? 0 : currIndex + 1];
         }
 
         changeTheme(theme);
@@ -87,9 +87,9 @@ $(document).ready(function(event){
     }).on('loadTheme', function(event){
         try{
             var theme = JSON.parse($.cookie('theme'));
-            if ($('#refreshTheme').length == 0){
-                throw('No refresh theme found');
-            }
+            //if ($('#refreshTheme').length == 0){
+            //    throw('No refresh theme found');
+            //}
         }
         catch(e){
             var defaultTheme = {colorMap: ['#000000','#808080','#000000','#000000'], bg: '0.jpg'};

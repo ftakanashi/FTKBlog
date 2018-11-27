@@ -51,6 +51,12 @@ $(document).ready(function(){
         layer.tips('输入文本回车可以在页面搜索，多个关键词之间可以用|隔开。',this,{tips: 3, time: 1000});
     }).keyup(function(event){
         if (event.keyCode != 13){
+            if (event.keyCode == 38){
+                $('.intern-search-jump-go.prev').trigger('click');
+            }
+            else if (event.keyCode == 40){
+                $('.intern-search-jump-go.next').trigger('click');
+            }
             return;
         }
         var kw = $(this).val();
