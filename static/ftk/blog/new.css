@@ -1,3 +1,12 @@
+.CodeMirror-code{
+    background: #cce8cf;
+}
+.editormd-preview-container{
+    background: #cce8cf;
+}
+.editormd-preview-container hr{
+    border-top: 1px solid #bbb;
+}
 .main-ground{
     margin-top: 5%;
     margin-bottom: 5%;

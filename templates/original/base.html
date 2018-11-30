@@ -106,8 +106,14 @@ background-attachment: fixed;
     {% block toolsbar %}
     <div class="toolbar">
         {% block left_ground_toggle %}
-        <span class="left-ground-toggle">
-            <a href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+        <span class="left-ground-toggle" id="left-ground-toggle">
+            <a href="javascript:void(0);" title="开关左边栏"><i class="fa fa-bars"></i></a>
+        </span>
+        <span class="left-ground-toggle" id="fold-code-all">
+            <a href="javascript:void(0);" title="折叠所有代码"><i class="fa fa-level-up"></i></a>
+        </span>
+        <span class="left-ground-toggle" id="light-toggle">
+            <a href="javascript:void(0);" title="豆绿开关"><i class="fa fa-lightbulb-o"></i></a>
         </span>
         {% endblock %}
         {% block toolbar-items %}
@@ -164,7 +170,7 @@ background-attachment: fixed;
             </div>
 
             <div class="widget">
-                <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=4" width="160" height="200" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" ></iframe>
+                <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=4" width="160" height="200" frameborder="0" marginwidth="0" marginheight="0" scrolling="yes" ></iframe>
             </div>
 
             <div class="widget">

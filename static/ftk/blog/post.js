@@ -25,15 +25,34 @@ $(document).ready(function(){
         }
     });
 
+    // 代码折叠
+    $('pre.prettyprinted').each(function(i,ele){
+        var codeLineNum = $(ele).find('ol li').length;
+        if (codeLineNum >= 2){
+            $(ele).wrap('<div class="code-area"></div>').prepend('<button class="btn btn-xs btn-default code-fold-toggle">折叠</button>');
+            if (codeLineNum >= 50){
+                $(ele).find('ol').hide();
+                $(ele).find('button').text('展开');
+            }
+        }
+    });
+    $('.code-fold-toggle').click(function(event){
+        $(this).next('ol').slideToggle();
+        if ($(this).text() == '折叠'){
+            $(this).text('展开');
+        }
+        else{
+            $(this).text('折叠');
+        }
+    });
+
     // 开关边栏动画
-    $('.left-ground-toggle a').click(function(event){
+    $('#left-ground-toggle').click(function(event){
         event.preventDefault();
-        var toggle = $(this).parent('.left-ground-toggle');
+        var toggle = $(this);
         var leftGround = $('.left-ground');
         var mainGround = $('.main-ground');
-        var internSearch = $('#intern-search-input');
         if ($(leftGround).css('display') === 'none'){
-            //$(internSearch).css({width: 'calc(85% - 100px)'});
             $(toggle).animate({width: '15%'},'slow');
             $(leftGround).fadeIn('fast');
             $(mainGround).animate({width: '70%','margin-left': '18%'});
@@ -42,6 +61,39 @@ $(document).ready(function(){
             $(toggle).animate({width: '25px'},'slow');
             $(leftGround).fadeOut();
             $(mainGround).animate({width: '90%','margin-left': '5%'});
+        }
+    });
+
+    // 折叠全部代码
+    $('#fold-code-all').click(function(event){
+        var i = $(this).find('i');
+        if ($(i).hasClass('fa-level-up')){
+            $('.code-fold-toggle').each(function(i, ele){
+                if ($(ele).text() == '折叠'){
+                    $(ele).trigger('click');
+                }
+            });
+            $(i).removeClass('fa-level-up').addClass('fa-level-down');
+        }
+        else{
+            $('.code-fold-toggle').each(function(i, ele){
+                if ($(ele).text() === '展开'){
+                    $(ele).trigger('click');
+                }
+            });
+            $(i).removeClass('fa-level-down').addClass('fa-level-up');
+        }
+    });
+
+    // 开关灯
+    $('#light-toggle').click(function(event){
+        var post = $('.post');
+        var currentBg = $(post).css('background-color');
+        if (currentBg === 'white' || currentBg === 'rgb(255, 255, 255)' || currentBg === '#ffffff'){
+            $(post).css({'background-color': '#cce8cf'});
+        }
+        else{
+            $(post).css({'background-color': 'white'});
         }
     });
 

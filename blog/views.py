@@ -96,7 +96,7 @@ class NewPostView(View):
         except Exception,e:
             pass
         categoryList = Category.objects.all()
-        tagList = Tag.objects.all()
+        tagList = Tag.objects.all().order_by('name')
         return render(request, 'blog/new.html', locals())
 
     def put(self, request):
@@ -133,6 +133,8 @@ class NewPostView(View):
                          'time': self.CACHE_TTL - redis.ttl(self.CACHE_KEY)})
         elif act == 'clear':
             redis.delete(self.CACHE_KEY)
+
+        return JsonResponse({})
 
     def post(self, request):
         # ctx = {}

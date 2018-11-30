@@ -15,6 +15,5 @@ INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('配色工�
 INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('profileDescription', '很惭愧 只做了一点微小的工作','index_page','');
 INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('welcomeTitle', '一个人的命运','index_page','');
 INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('welcomeText', '当然要看自我的奋斗','index_page','');
-INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('recentEmotion', '超级浪费时间…','index_page','');
 
 INSERT INTO blog_dict('key', 'value', 'category', 'comment') VALUES('autosaveInterval','5','post_edit','');
