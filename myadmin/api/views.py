@@ -36,7 +36,7 @@ class TagListView(generics.ListCreateAPIView):
     filter_class = TagFilter
 
 class PostListView(generics.ListCreateAPIView):
-    queryset = Post.objects.all().order_by('-update_time')
+    queryset = Post.objects.all().order_by('-edit_time')
     serializer_class = PostSerializer
     permission_classes = (IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
