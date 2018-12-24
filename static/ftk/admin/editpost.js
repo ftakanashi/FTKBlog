@@ -174,10 +174,10 @@ $(document).ready(function(){
                 var next = data.next;
                 var msg = data.msg;
                 $.clearCache();
-                setTimeout('location.href = "' + next + '"', 3000);
+                setTimeout('window.close();', 3000);
                 layer.load('1',{shade: 0.5});
                 window.clearInterval(autoSaveInterval);
-                layer.msg(msg?msg:'' + '  3秒后跳转到新文章界面');
+                layer.msg(msg?msg:'' + '  3秒后关闭界面');
             },
             error: function(xml, err, exc){
                 try{
@@ -255,8 +255,22 @@ $(document).ready(function(){
     catch(e){
         autosaveIntervalNum = 5;
     }
-    setInterval(autoSave,autosaveIntervalNum * 60 * 1000);
+    var autoSaveInterval = setInterval(autoSave,autosaveIntervalNum * 60 * 1000);
     //setInterval(autoSave,10 * 1000);
+
+    $('#autoSaveToggle').click(function(event){
+        event.preventDefault();
+        var status = $(this).text().indexOf('开启') != -1;
+        if (status){
+            clearInterval(autoSaveInterval);
+            $(this).text('自动保存 | 关闭');
+        }
+        else{
+            autoSaveInterval = setInterval(autoSave, autosaveIntervalNum * 60 * 1000);
+            $(this).text('自动保存 | 开启');
+        }
+        $(this).toggleClass('btn-success').toggleClass('btn-danger');
+    });
 
 });
 });

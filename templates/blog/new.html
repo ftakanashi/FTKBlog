@@ -25,6 +25,7 @@
         <div class="form-group">
             <label class="control-label">正文</label>
             <a id="restoreContent" href="javascript:void(0);" title="恢复自动保存内容"><i class="fa fa-refresh"></i></a>
+            <button class="btn btn-xs btn-success" id="autoSaveToggle">自动保存 | 开启</button>
             <div id="post-content-editor">
                 <textarea id="post-content-editor-markdown-doc" name="post-content-editor-markdown-doc" style="display:none;">{% if type == 'edit' %}{{ post.content }}{% endif %}</textarea>
                 <textarea id="post-content-editor-html-code" name="post-content-editor-html-code" style="display: none;"></textarea>
@@ -85,8 +86,6 @@
     <input type="hidden" value="{% if site_switch__showAutosaveMsg %}True{% else %}False{% endif %}" id="showAutosaveMsg" />
     <input type="hidden" value="{{ autosave_interval | default:"5" }}" id="autosaveIntervalNum" />
     {% if type == 'edit' %}
-{#    <input type="hidden" value="{{ post.content }}" id="post-content" />#}
-{#    <input type="hidden" value="{{ post.post_uuid }}" id="post-uuid" />#}
     <input type="hidden" value="{% url 'editormd-upload' %}" id="upload-url" />
     {% endif %}
 {% endblock %}

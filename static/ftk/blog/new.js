@@ -266,6 +266,18 @@ $(document).ready(function(){
         autosaveIntervalNum = 5;
     }
     var autoSaveInterval = setInterval(autoSave,autosaveIntervalNum * 60 * 1000);
-    //setInterval(autoSave, 10 * 1000);
+
+    $('#autoSaveToggle').click(function(event){
+        var status = $(this).text().indexOf('开启') != -1;
+        if (status){
+            clearInterval(autoSaveInterval);
+            $(this).text('自动保存 | 关闭');
+        }
+        else{
+            autoSaveInterval = setInterval(autoSave, autosaveIntervalNum * 60 * 1000);
+            $(this).text('自动保存 | 开启')
+        }
+        $(this).toggleClass('btn-success').toggleClass('btn-danger');
+    });
 });
 });
