@@ -55,6 +55,7 @@ class IndexView(View):
             else:
                 posts = tag.in_tag_posts.all()
 
+        top_posts = posts.filter(is_top=1).order_by('-edit_time')
         posts = posts.order_by('-is_top', '-edit_time')
 
         p = Paginator(posts, 10, request=request)
@@ -69,6 +70,7 @@ class IndexView(View):
             tag.count = tag.in_tag_posts.count()
 
         ctx = {}
+        ctx['topPosts'] = top_posts
         ctx['posts'] = paged_posts
         ctx['categoryList'] = sorted(categories, key=lambda x: x.count, reverse=True)
         ctx['tagList'] = sorted(tags, key=lambda x: x.count, reverse=True)

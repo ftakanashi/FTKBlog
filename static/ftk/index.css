@@ -61,6 +61,12 @@ h4 > .post-wrap-title:hover{
     text-decoration: none;
     /*color: #256abc;*/
 }
+.top-post-info-wrap{
+    display: none;
+}
+.top-post-title:hover + .top-post-info-wrap{
+    display: block;
+}
 .post-wrap-footer a:hover{
     background-color: #256abc;
     color: white;
