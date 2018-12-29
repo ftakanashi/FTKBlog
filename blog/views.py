@@ -56,7 +56,7 @@ class IndexView(View):
                 posts = tag.in_tag_posts.all()
 
         top_posts = posts.filter(is_top=1).order_by('-edit_time')
-        posts = posts.order_by('-is_top', '-edit_time')
+        posts = posts.order_by('-edit_time')
 
         p = Paginator(posts, 10, request=request)
         paged_posts = p.page(page)

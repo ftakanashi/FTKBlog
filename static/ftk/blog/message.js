@@ -61,57 +61,65 @@ $(function(){
 
         $('#submit').click(function(event){
             event.preventDefault();
-            var loadLayer = layer.load('1',{shade: 0.6});
-            var author = $('#authorInput').val();
-            var contact = $('#contactInput').val();
-            var title = $('#titleInput').val();
-            var content = $('#contentInput').val();
-            var relatePost = $('#relatePostSelect').val();
-            var veriCode = $('#veriCodeInput').val();
-            var veriCodeUuid = $('#veriCodeInput').attr('name');
+            layer.confirm('<h4>这里是留言板喔</h4><br/>' +
+                '如果你不想透露联系方式或昵称当然OK，不过如果想让博主联系你的话<span style="color:red;font-weight:bold;">最好能填一个联系方式</span>' +
+                '。<br/>否则我找不到你的<img style="height:25px;" src="/static/comp/editormd/plugins/emoji-dialog/emoji/joy.png">',
+            {icon: 0, title: '提示', btn: ['提交留言','补充信息']},
+                function(index){
+                    layer.close(index);
+                    var loadLayer = layer.load('1',{shade: 0.6});
+                    var author = $('#authorInput').val();
+                    var contact = $('#contactInput').val();
+                    var title = $('#titleInput').val();
+                    var content = $('#contentInput').val();
+                    var relatePost = $('#relatePostSelect').val();
+                    var veriCode = $('#veriCodeInput').val();
+                    var veriCodeUuid = $('#veriCodeInput').attr('name');
 
-            if (!author){
-                layer.tips('请填写此项','#authorInput',{tips: [3,'red']});
-                $.scrollTo('#authorInput');
-                layer.close(loadLayer);
-                return;
-            }
+                    if (!author){
+                        layer.tips('请填写此项','#authorInput',{tips: [3,'red']});
+                        $.scrollTo('#authorInput');
+                        layer.close(loadLayer);
+                        return;
+                    }
 
-            if (!content){
-                layer.tips('请填写此项','#contentInput',{tips: [1,'red']});
-                $.scrollTo('#contentInput');
-                layer.close(loadLayer);
-                return;
-            }
-            $.ajax({
-                url: location.pathname,
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    author: author,
-                    contact: contact,
-                    title: title,
-                    content: content,
-                    relatePost: relatePost,
-                    veriCode: veriCode,
-                    veriCodeUuid: veriCodeUuid
-                },
-                complete: function(){layer.close(loadLayer);},
-                success: function(data){
-                    layer.msg('留言成功，谢谢反馈');
-                    setTimeout('location.href="/"',1000);
-                },
-                error: function(xml, err, exc){
-                    try{
-                        layer.msg(JSON.parse(xml.responseText).msg);
-                        if(xml.status === 502){
-                            $('.refresh-veri-code.constant').trigger('click');
+                    if (!content){
+                        layer.tips('请填写此项','#contentInput',{tips: [1,'red']});
+                        $.scrollTo('#contentInput');
+                        layer.close(loadLayer);
+                        return;
+                    }
+
+                    $.ajax({
+                        url: location.pathname,
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            author: author,
+                            contact: contact,
+                            title: title,
+                            content: content,
+                            relatePost: relatePost,
+                            veriCode: veriCode,
+                            veriCodeUuid: veriCodeUuid
+                        },
+                        complete: function(){layer.close(loadLayer);},
+                        success: function(data){
+                            layer.msg('留言成功，谢谢反馈');
+                            setTimeout('location.href="/"',1000);
+                        },
+                        error: function(xml, err, exc){
+                            try{
+                                layer.msg(JSON.parse(xml.responseText).msg);
+                                if(xml.status === 502){
+                                    $('.refresh-veri-code.constant').trigger('click');
+                                }
+                            }
+                            catch(e){
+                                layer.msg('未知错误');
+                            }
                         }
-                    }
-                    catch(e){
-                        layer.msg('未知错误');
-                    }
-                }
+                    });
             });
         });
     });
