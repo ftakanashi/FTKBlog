@@ -19,6 +19,18 @@
 {% block main-content %}
 <section class="content container-fluid">
     <h4>今日总访客数：{{ access_count }} 人次</h4>
+    <h4>上次备份下载时间：{{ last_backup }}</h4>
+    {% if last_backup_gap %}
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            已经三天以上未下载备份了。不要吝啬本地磁盘，下载个备份吧！！
+        </div>
+    {% endif %}
+    <h4>最近来访:
+    {% for ip in access_ip %}
+        <span class="label label-primary">{{ ip }}</span>&nbsp;&nbsp;
+    {% endfor %}
+    </h4>
     <hr>
     <div class="panel panel-default">
         <div class="panel-heading">

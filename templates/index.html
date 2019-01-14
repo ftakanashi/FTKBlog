@@ -128,7 +128,7 @@
             <h3 style="text-align:center;">置顶区</h3>
             <div class="row">
             {% for post in topPosts %}
-                <div class="col-lg-6 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
                 <h4 class="top-post-title"><a class="post-wrap-title" href="{% url 'detail' post.post_uuid %}">{{ post.title }}</a></h4>
                 <div class="top-post-info-wrap">
                 {% if post.is_reprint %}
@@ -137,6 +137,7 @@
                     <span class="label label-primary">原创</span>
                 {% endif %}
                     <span class="post-info">更新时间：{{ post.edit_time }}</span>
+                    <hr/>
                 </div>
                 </div>
             {% endfor %}

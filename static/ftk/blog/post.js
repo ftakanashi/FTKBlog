@@ -10,19 +10,26 @@ $(document).ready(function(){
         var element = layui.element;
     });
 
-    // 图片alt居中处理
+    // 图片alt居中处理, cursor显示，大小缩放处理
     $('.post-body').find('img.post-image').each(function(i,ele){
-        var size = [$(ele).width(),$(ele).height()];
         var altText = $(ele).attr('alt');
         $(ele).parent('p').css('text-align', 'center').append('<div class="alt-tag-wrap"><span class="alt-tag">' + altText + '</span></div>');
-        if (size[0] >= 800){  // 过大的图片的显示优化
-            var rate = size[0] / 800.0;
-            $(ele).css({width: size[0]*rate + 'px', height: size[1]*rate + 'px'});
-        }
-        else if (size[1] >= 500){
-            var rate = size[1] / 500.0;
-            $(ele).css({width: size[0]*rate + 'px', height: size[1]*rate + 'px'});
-        }
+
+        //var currWidth = $(ele).width();
+        //var windowWidth = $(window).width();
+        //console.log(currWidth, windowWidth);
+        //if (currWidth / windowWidth >= 0.5) {
+        $(ele).on('click', function (event) {
+            event.preventDefault();
+            var currWidth = $(this).width();
+            var windowWidth = $(window).width();
+            if (currWidth / windowWidth < 0.5) {
+                $(this).animate({width: '80%'}, 'fast');
+            }
+            else {
+                $(this).animate({width: '30%'}, 'fast');
+            }
+        });
     });
 
     // 代码折叠

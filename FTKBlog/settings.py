@@ -234,10 +234,12 @@ ES_CLIENT = Elasticsearch([
 # Redis中key的一些配置
 READ_COUNT_KEY = 'blog:read_count'
 ACCESS_COUNT_KEY = 'blog:access_count'
+ACCESS_IP_QUEUE = 'blog:access_ip_queue'
 CACHE_KEY = 'blog:post_cache'
 UNREAD_COMMENTS_KEY = 'blog:unread_comment_queue'
 UNREAD_MESSAGE_KEY = 'blog:unread_message_queue'
 VERI_CODE_KEY = 'blog:veri_code:%s'
+LAST_BACKUP_KEY = 'blog:last_backup'
 
 # post中图片上传目录
 IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload', 'post-image')

@@ -28,6 +28,9 @@ def redis_init():
     if not r.exists(settings.UNREAD_MESSAGE_KEY):
         r.rpush(settings.UNREAD_MESSAGE_KEY, '-1')
 
+    if not r.exists(settings.ACCESS_IP_QUEUE):
+        r.rpush(settings.ACCESS_IP_QUEUE, '127.0.0.1')
+
     for key in (settings.READ_COUNT_KEY,settings.ACCESS_COUNT_KEY, settings.UNREAD_COMMENTS_KEY,
                 settings.UNREAD_MESSAGE_KEY):
         r.persist(key)

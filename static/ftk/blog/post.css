@@ -99,6 +99,10 @@
     margin-top: 3%;
     padding: 0 3% 3% 3%;
 }
+.post-image{
+    width: 30%;
+    cursor: url('/static/image/icon/resize-up.png'), default;
+}
 .alt-tag-wrap{
     margin-top: 10px;
     text-align: center;

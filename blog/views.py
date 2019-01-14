@@ -55,7 +55,7 @@ class IndexView(View):
             else:
                 posts = tag.in_tag_posts.all()
 
-        top_posts = posts.filter(is_top=1).order_by('-edit_time')
+        top_posts = posts.filter(is_top=1).order_by('title')
         posts = posts.order_by('-edit_time')
 
         p = Paginator(posts, 10, request=request)
@@ -79,6 +79,9 @@ class IndexView(View):
 
         if not request.user.is_superuser:
             redis.incr(settings.ACCESS_COUNT_KEY)
+            if redis.llen(settings.ACCESS_IP_QUEUE) >= 10:
+                redis.lpop(settings.ACCESS_IP_QUEUE)
+            redis.rpush(settings.ACCESS_IP_QUEUE, request.META.get('REMOTE_ADDR'))
 
         return render(request, 'index.html', ctx)
 

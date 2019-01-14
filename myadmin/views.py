@@ -4,8 +4,10 @@ from __future__ import unicode_literals
 import collections
 import datetime
 import json
+import logging
 import os
 import shutil
+import time
 import traceback
 
 from django.conf import settings
@@ -20,7 +22,7 @@ from blog.views import NewPostView
 from ftkuser.models import AccessControl
 # Create your views here.
 redis = get_redis_connection('default')
-
+logger = logging.getLogger('django')
 class IndexView(View):
 
     def get(self, request):
@@ -46,7 +48,22 @@ class IndexView(View):
             else:
                 urmInfo.append(message)
 
+        accessIp = redis.lrange(settings.ACCESS_IP_QUEUE, 0, -1)
+
+        lastBackupTime = redis.get(settings.LAST_BACKUP_KEY)
+        if lastBackupTime is None:
+            logger.warning('未找到上次备份下载时间')
+            lastBackupTime = '未找到上次备份下载时间'
+            lastBackupGap = 0
+        else:
+            lastBackupTime = datetime.datetime.fromtimestamp(float(lastBackupTime))
+            lastBackupGap = (datetime.datetime.now() - lastBackupTime).total_seconds()
+            lastBackupTime = lastBackupTime.strftime('%Y年%m月%d日 %H:%M:%S'.encode('utf-8'))
+
         ctx['access_count'] = redis.get(settings.ACCESS_COUNT_KEY)
+        ctx['last_backup'] = lastBackupTime
+        ctx['last_backup_gap'] = lastBackupGap > (86400 * 3)
+        ctx['access_ip'] = accessIp
         ctx['site_switches'] = Dict.objects.filter(category='site_switch')
         ctx['urcInfo'] = urcInfo
         ctx['urmInfo'] = urmInfo
@@ -558,5 +575,7 @@ def backup_download(request, fn):
     response = StreamingHttpResponse(file_iterator(filename))
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(filename)
+
+    redis.set(settings.LAST_BACKUP_KEY, time.time())
 
     return response
