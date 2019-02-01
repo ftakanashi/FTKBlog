@@ -160,6 +160,7 @@ $(document).ready(function(){
             type: 'post',
             dataType: 'json',
             data: {
+                flag: 'edit',
                 title: title,
                 post_uuid: uuid,
                 content: content,
@@ -171,13 +172,23 @@ $(document).ready(function(){
                 is_publish: isPublished
             },
             success: function(data){
-                var next = data.next;
-                var msg = data.msg;
                 $.clearCache();
-                setTimeout('window.close();', 3000);
-                layer.load('1',{shade: 0.5});
                 window.clearInterval(autoSaveInterval);
-                layer.msg(msg?msg:'' + '  3秒后关闭界面');
+                layer.confirm('提交成功',{
+                    icon: 1,
+                    title: '提示',
+                    btn: ['跳转至文章', '继续编辑'],
+                    btn1: function(index){
+                        layer.close(index);
+                        location.href = data.next;
+                    },
+                    btn2: function(index){
+                        layer.close(index);
+                    }
+                });
+                //setTimeout('window.close();', 3000);
+                //layer.load('1',{shade: 0.5});
+                //layer.msg(msg?msg:'' + '  3秒后关闭界面');
             },
             error: function(xml, err, exc){
                 try{

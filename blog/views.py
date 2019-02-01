@@ -79,9 +79,11 @@ class IndexView(View):
 
         if not request.user.is_superuser:
             redis.incr(settings.ACCESS_COUNT_KEY)
+            aip = request.META.get('REMOTE_ADDR')
+            redis.lrem(settings.ACCESS_IP_QUEUE, 0, aip)
             if redis.llen(settings.ACCESS_IP_QUEUE) >= 10:
                 redis.lpop(settings.ACCESS_IP_QUEUE)
-            redis.rpush(settings.ACCESS_IP_QUEUE, request.META.get('REMOTE_ADDR'))
+            redis.rpush(settings.ACCESS_IP_QUEUE, aip)
 
         return render(request, 'index.html', ctx)
 
@@ -160,6 +162,7 @@ class NewPostView(View):
             return JsonResponse({'msg': '上传内容错误'}, status=500)
 
         processFlag = False
+        typeFlag = request.POST.get('flag', 'new')
         try:
             post = Post(**postInfo)
             post.save()
@@ -169,7 +172,7 @@ class NewPostView(View):
                     tag = int(tag)
                 post.tag.add(Tag.objects.get(tag_id=tag))
         except Exception, e:
-            print traceback.format_exc(e)
+            # print traceback.format_exc(e)
             if processFlag:
                 postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
                 redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)
@@ -179,7 +182,11 @@ class NewPostView(View):
         else:
             redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)
             postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
-            return JsonResponse({'next': postUrl})
+            if typeFlag == 'new':
+                editUrl = reverse('post.manage') + '?pk={}&type=edit'.format(postInfo['post_uuid'])
+                return JsonResponse({'next': postUrl, 'edit_next': editUrl})
+            elif typeFlag == 'edit':
+                return JsonResponse({'next': postUrl})
 
 
 class PostView(View):
