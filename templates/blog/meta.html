@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meta管理</title>
+    <link href="{% static 'comp/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/codemirror/lib/codemirror.css' %}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <input type="hidden" id="post-uuid" value="{{ post.post_uuid }}" />
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>{{ post.title }}</h2><h4>Meta管理</h4>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="control-label" for="metaInput">Meta内容</label>
+                <textarea class="form-control" id="metaInput" rows="10" style="width:100%;">{% if meta %}{{ meta.content }}{% endif %}</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <button class="btn btn-success btn-sm" id="submit">保存</button>
+        </div>
+    </div>
+</div>
+<script src="{% static 'comp/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'comp/jquery/jquery.cookie.js' %}"></script>
+<script src="{% static 'comp/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'comp/codemirror/lib/codemirror.js' %}"></script>
+<script src="{% static 'comp/codemirror/mode/javascript/javascript.js' %}"></script>
+<script src="{% static 'comp/layer/layer.js' %}"></script>
+<script>
+$(function(){
+$(document).ready(function(){
+    var editor = CodeMirror.fromTextArea(
+            document.getElementById('metaInput'),
+            {
+                lineNumbers: true,
+                readOnly: false,
+                styleActiveLine: true,
+                matchBrackets: true
+            }
+    );
+
+    $('#submit').click(function(event){
+        var loadLayer = layer.load('1');
+        var uuid = $('#post-uuid').val();
+        var content = editor.getValue();
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
+            data: {
+                uuid: uuid,
+                meta: content
+            },
+            dataType: 'json',
+            success: function(data){
+                layer.alert('保存成功!');
+            },
+            error: function(xml, err, exc){
+                var msg;
+                try{
+                    msg = JSON.parse(xml.responseText).msg;
+                }
+                catch(e){
+                    msg = '未知错误';
+                }
+                layer.alert(msg,{icon: 2, title: '保存失败'});
+            },
+            complete: function(){layer.close(loadLayer);}
+        });
+    });
+});
+})
+</script>
+</body>
+</html>

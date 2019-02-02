@@ -99,6 +99,20 @@ class Comment(models.Model):
         return '%s: <Comment %s>' % (self.comment_id,self.author)
 
 
+class PostMeta(models.Model):
+    post_meta_id = models.AutoField(primary_key=True, verbose_name='文章metaID')
+    title = models.TextField(max_length=128, default='', verbose_name='meta标题')
+    content = models.TextField(max_length=2048, default='', verbose_name='meta内容')
+    in_post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name='metas',
+        verbose_name='所属文章'
+    )
+
+    def __unicode__(self):
+        return '{}: <PostMeta {}>'.format(self.post_meta_id, self.title)
+
 class Dict(models.Model):
     key = models.CharField(max_length=128,primary_key=True,verbose_name='数据字典键')
     value = models.CharField(max_length=1024,verbose_name='数据字典值')

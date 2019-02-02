@@ -13,7 +13,7 @@ from django.views.generic import View
 from django.utils.decorators import method_decorator
 from pure_pagination import Paginator
 from ratelimit.decorators import ratelimit
-from .models import Post, Category, Tag, Comment, Dict, Message
+from .models import Post, Category, Tag, Comment, Dict, Message, PostMeta
 from .utils import CodeGenerator
 
 import json
@@ -188,7 +188,6 @@ class NewPostView(View):
             elif typeFlag == 'edit':
                 return JsonResponse({'next': postUrl})
 
-
 class PostView(View):
     @ratelimit(key='ip', rate='1/5s')
     def get(self, request, uuid):
@@ -259,6 +258,53 @@ class PostView(View):
         else:
             # 删除post直接在页面上实现掉真的好吗…安全方面考虑
             return JsonResponse({'msg': '你想干什么[发呆]'}, status=500)
+
+class PostMetaView(View):
+    @ratelimit(key='ip', rate='1/1s')
+    def get(self, request):
+        ctx = {}
+
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
+
+        try:
+            uuid = request.GET.get('pk')
+            if not uuid:
+                raise Post.DoesNotExist
+            post = Post.objects.get(post_uuid=uuid)
+        except Post.DoesNotExist,e:
+            return Http404()
+
+        try:
+            ctx['meta'] = post.metas.all()[0]
+        except IndexError,e:
+            ctx['meta'] = None
+
+        ctx['post'] = post
+        return render(request, 'blog/meta.html', ctx)
+
+    @ratelimit(key='ip', rate='1/5s', block=True)
+    def post(self, request):
+        uuid = request.POST.get('uuid')
+        meta_content = request.POST.get('meta')
+
+        try:
+            post = Post.objects.get(post_uuid=uuid)
+        except Post.DoesNotExist,e:
+            return JsonResponse({'msg': '没有找到相应文章'}, status=404)
+
+        try:
+            meta = post.metas.all()[0]
+            meta.content = meta_content
+        except IndexError,e:
+            meta = PostMeta(title=post.title, content=meta_content, in_post=post)
+
+        try:
+            meta.save()
+        except Exception,e:
+            return JsonResponse({'msg': '保存Meta失败'}, status=400)
+
+        return JsonResponse({})
 
 
 class CommentView(View):

@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^comment/$', BlogView.CommentView.as_view(),name='comment'),
     url(r'^message/$', BlogView.MessageView.as_view(), name='message'),
     url(r'^vericode/$', BlogView.VeriCodeView.as_view(), name='veri-code'),
+    url(r'^postmeta/$', BlogView.PostMetaView.as_view(), name='post_meta'),
     url(r'^(?P<uuid>.+?)/$', BlogView.PostView.as_view(), name='detail')
 ]

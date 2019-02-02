@@ -54,6 +54,7 @@
                 <div class="post-footer-toolbar">
                     <div>
                         {% if request.user.is_superuser %}
+                        <a href="javascript:void(0);" id="add-meta" class="post-footer-btn">[管理Meta]</a>
                         <a href="javascript:void(0);" id="edit-post" class="post-footer-btn">[编辑]</a>
                         <a href="javascript:void(0);" id="delete-post" class="post-footer-btn">[删除]</a>
                         {% endif %}
@@ -139,7 +140,15 @@
         $(function() {
 
             {% if request.user.is_superuser %}
-            // 编辑。删除按钮
+            // 管理Meta, 编辑。删除按钮
+            $('#add-meta').click(function(event){
+                var uuid = $('#post-uuid').val();
+                layer.open({
+                    type: 2,
+                    content: '{% url 'post_meta' %}?pk=' + uuid,
+                    area: ['90%', '90%']
+                });
+            });
             $('#edit-post').click(function(event){
                 window.open('{% url 'post.manage' %}?pk=' + $('#post-uuid').val() + '&type=edit');
             });
@@ -182,6 +191,9 @@
             $('.comment-body').each(function(ele,i){
                 markdown2Html($(this).attr('id'));
             });
+
+            {# meta插入 #}
+            {{ post.metas.all.0.content|safe }}
 
         });
     </script>
