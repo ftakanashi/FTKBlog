@@ -41,12 +41,16 @@
             <div class="layui-form-item">
                 <div class="layui-inline" style="width: 100%;">
                     <label class="layui-form-label">Key</label>
-                    <div class="layui-input-inline" style="width: 15%;">
+                    <div class="layui-input-inline" style="width: 10%;">
                         <input class="layui-input" autocomplete="off" value="{{ key }}" id="key_{{ key }}" readonly>
                     </div>
                     <label class="layui-form-label">Value</label>
-                    <div class="layui-input-inline" style="width: 50%;">
-                        <input class="layui-input" autocomplete="off" value="{{ value }}" id="value_{{ key }}" >
+                    <div class="layui-input-inline" style="width: 30%;">
+                        <input class="layui-input" autocomplete="off" value="{{ value.0 }}" id="value_{{ key }}" >
+                    </div>
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-inline" style="width: 15%;">
+                        <input class="layui-input" autocomplete="off" value="{{ value.1 }}" id="comment_{{ key }}" >
                     </div>
                     <div class="layui-form-mid">
                         <button class="btn btn-xs btn-primary btn-submit" id="submit_{{ key }}"><i class="fa fa-save"></i>保存</button>
@@ -78,13 +82,15 @@
                 var key = $(this).attr('id');
                 key = key.trim().replace('submit_','');
                 var value = $('#value_' + key).val();
+                var comment = $('#comment_' + key).val();
                 $.ajax({
                     url: location.pathname,
                     type: 'put',
                     dataType: 'json',
                     data: {
                         key: key,
-                        value: value
+                        value: value,
+                        comment: comment
                     },
                     success: function(data){
                         location.reload();

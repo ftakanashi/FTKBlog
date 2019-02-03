@@ -218,7 +218,8 @@ background-attachment: fixed;
             <div class="col-lg-4 col-sm-12 col-xs-12">
                 {% if site_switch__bgmSwitch %}
                 <h5 class="footer-title">BGM</h5>
-                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=2389989722&auto=0&height=90"></iframe>
+{#                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=2389989722&auto=0&height=90"></iframe>#}
+                    {{ site_globalv__bgm_plugin|safe }}
                 {% endif %}
             </div>
             <div class="col-lg-4 col-sm-12 col-xs-12">
@@ -253,7 +254,7 @@ background-attachment: fixed;
     <!-- hidden inputs config -->
     <div class="hidden-inputs-area">
     {% block hidden_inputs %}
-        <input type="hidden" value="{{ mail_addr|default:'wyzypa@gmail.com' }}" id="MailAddr" />
+        <input type="hidden" value="{{ site_globalv__mail_addr|default:'wyzypa@gmail.com' }}" id="MailAddr" />
     {% endblock %}
     </div>
 

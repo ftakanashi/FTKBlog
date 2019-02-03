@@ -224,7 +224,7 @@ class DictManage(View):
 
         dictInfo = collections.defaultdict(dict)
         for item in Dict.objects.exclude(category__in=('site_switch',)):
-            dictInfo[item.category][item.key] = item.value
+            dictInfo[item.category][item.key] = (item.value, item.comment)
 
         ctx['dictInfo'] = dict(dictInfo)
         return render(request, 'myadmin/modulemanage/dict/dict.html',ctx)
@@ -234,7 +234,8 @@ class DictManage(View):
             key = request.POST.get('key')
             value = request.POST.get('value')
             category = request.POST.get('category')
-            dictItem = Dict(key=key,value=value,category=category)
+            comment = request.POST.get('comment')
+            dictItem = Dict(key=key,value=value,category=category, comment=comment)
             dictItem.save()
         except Exception,e:
             return JsonResponse({'msg': '新增失败\n%s' % unicode(e)},status=500)
@@ -256,13 +257,13 @@ class DictManage(View):
             return JsonResponse({})
 
     def put(self, request):
-        ctx = {}
         PUT = QueryDict(request.body)
         try:
             item = Dict.objects.get(key=PUT.get('key'))
         except Dict.DoesNotExist,e:
             return JsonResponse({'msg': '没有找到相关字典项'}, status=404)
         item.value = PUT.get('value')
+        item.comment = PUT.get('comment')
         try:
             item.save()
         except Exception,e:

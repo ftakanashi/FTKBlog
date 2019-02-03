@@ -15,6 +15,10 @@
         <label class="control-label" for="categoryInput">类型</label>
         <input class="form-control" id="categoryInput" />
     </div>
+    <div class="form-group">
+        <label class="control-label" for="commentInput">备注</label>
+        <input class="form-control" id="commentInput" />
+    </div>
 {% endblock %}
 
 {% block script %}
@@ -26,6 +30,7 @@ $(document).ready(function(){
         var key = $('#keyInput').val();
         var value = $('#valueInput').val();
         var category = $('#categoryInput').val();
+        var comment = $('#commentInput').val();
         $.ajax({
             url: location.pathname,
             type: 'post',
@@ -33,7 +38,8 @@ $(document).ready(function(){
             data: {
                 key: key,
                 value: value,
-                category: category
+                category: category,
+                comment: comment
             },
             success: function(data){
                 var frameIndex = parent.layer.getFrameIndex(window.name);
