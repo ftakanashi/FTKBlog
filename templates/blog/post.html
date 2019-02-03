@@ -146,7 +146,8 @@
                 layer.open({
                     type: 2,
                     content: '{% url 'post_meta' %}?pk=' + uuid,
-                    area: ['90%', '90%']
+                    area: ['90%', '90%'],
+                    maxmin: true
                 });
             });
             $('#edit-post').click(function(event){

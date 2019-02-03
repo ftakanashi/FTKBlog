@@ -64,7 +64,9 @@ $(document).ready(function(){
             },
             dataType: 'json',
             success: function(data){
-                layer.alert('保存成功!');
+                layer.alert('保存成功!', function(){
+                    parent.layer.closeAll();
+                });
             },
             error: function(xml, err, exc){
                 var msg;

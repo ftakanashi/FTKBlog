@@ -102,10 +102,10 @@ $(document).ready(function(event){
 
     var navbar = $('div.navbar-inverse');
 
-    $(navbar).css({top: $(window).scrollTop()});
-    $(window).scroll(function(event){
-        $(navbar).css({top: $(window).scrollTop()});
-    });
+    //$(navbar).css({top: $(window).scrollTop()});
+    //$(window).scroll(function(event){
+    //    $(navbar).css({top: $(window).scrollTop()});
+    //});
     $('.ground-row').css({'min-height': $(window).height() - $('.footer').height() - $(navbar).height()});
     $('.left-ground').css({top: $(navbar).height() + $('.toolbar').height()});
 
