@@ -32,7 +32,7 @@ class Post(models.Model):
     POST_STATUS = [('0', '发布'), ('1', '草稿')]
 
     post_id = models.AutoField(primary_key=True, verbose_name='文章真实ID')
-    post_uuid = models.UUIDField(default=uuid.uuid4, verbose_name='文章伪装ID')
+    post_uuid = models.UUIDField(default=uuid.uuid4, verbose_name='文章伪装ID', unique=True)
     title = models.CharField(max_length=256, verbose_name='文章标题', unique=True)
     abstract = models.CharField(max_length=256, verbose_name='文章摘要')
     content = models.TextField(null=True, default='', verbose_name='文章内容')
