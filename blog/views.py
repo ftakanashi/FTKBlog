@@ -34,7 +34,7 @@ class IndexView(View):
     def get(self, request):
 
         if getattr(request, 'limited', False):
-            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})
 
         try:
             page = int(request.GET.get('page', '1'))
@@ -50,7 +50,7 @@ class IndexView(View):
         elif sTag is not None:
             try:
                 tag = Tag.objects.get(tag_id=sTag)
-            except Tag.DoesNotExist,e:
+            except Tag.DoesNotExist, e:
                 pass
             else:
                 posts = tag.in_tag_posts.all()
@@ -88,6 +88,51 @@ class IndexView(View):
         return render(request, 'index.html', ctx)
 
 
+class SiteMemoView(View):
+    SITE_MEMO_KEY = settings.SITE_MEMO_KEY
+
+    @ratelimit(key='ip', rate='1/1s')
+    def get(self, request):
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})
+
+        ctx = {}
+
+        memos = sorted(redis.hgetall(self.SITE_MEMO_KEY).items(), key=lambda x: float(x[0]))
+        def adapt_content(c):
+            return c.replace(str('\n'), str('<br/>'))
+        ctx['memos'] = [(i+1,m[0],adapt_content(m[1])) for i,m in enumerate(memos[1:])]
+
+        return render(request, 'blog/sitememo.html', ctx)
+
+    @ratelimit(key='ip', rate='1/5s', block=True)
+    def post(self, request):
+        content = request.POST.get('content')
+        try:
+            redis.hset(self.SITE_MEMO_KEY, str(time.time()), content)
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '提交备忘录失败'}, status=500)
+        else:
+            return JsonResponse({})
+
+    @method_decorator(login_required)
+    @ratelimit(key='ip', rate='1/5s', block=True)
+    def delete(self, request):
+        delete = QueryDict(request.body)
+
+        if not request.user.is_superuser:
+            return JsonResponse({'msg': '拒绝非管理员的删除请求'}, status=403)
+
+        try:
+            id = delete.get('id')
+            redis.hdel(self.SITE_MEMO_KEY, id)
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '删除失败'}, status=500)
+        else:
+            return JsonResponse({})
+
 class NewPostView(View):
     CACHE_KEY = settings.CACHE_KEY
     CACHE_TTL = 3600
@@ -100,7 +145,7 @@ class NewPostView(View):
     def get(self, request):
         try:
             autosave_interval = Dict.objects.get(key='autosaveInterval').value
-        except Exception,e:
+        except Exception, e:
             pass
         categoryList = Category.objects.all()
         tagList = Tag.objects.all().order_by('name')
@@ -116,9 +161,9 @@ class NewPostView(View):
                 content = put.get('content')
                 post_uuid = put.get('post_uuid')
                 # cache.set(self.CACHE_KEY, content, self.CACHE_TTL)
-                redis.hset(self.CACHE_KEY,'content',content)
-                redis.hset(self.CACHE_KEY,'post_uuid',post_uuid)
-                redis.expire(self.CACHE_KEY,self.CACHE_TTL)
+                redis.hset(self.CACHE_KEY, 'content', content)
+                redis.hset(self.CACHE_KEY, 'post_uuid', post_uuid)
+                redis.expire(self.CACHE_KEY, self.CACHE_TTL)
             except Exception, e:
                 print traceback.format_exc(e)
                 return JsonResponse({'msg': '自动保存失败'}, status=500)
@@ -127,7 +172,8 @@ class NewPostView(View):
         elif act == 'load':
             try:
                 # fetch = cache.get(self.CACHE_KEY)
-                fetch = {'content': redis.hget(self.CACHE_KEY,'content'),'post_uuid': redis.hget(self.CACHE_KEY,'post_uuid')}
+                fetch = {'content': redis.hget(self.CACHE_KEY, 'content'),
+                         'post_uuid': redis.hget(self.CACHE_KEY, 'post_uuid')}
                 if fetch['content'] is None and fetch['post_uuid'] is None:
                     return JsonResponse({'msg': '抱歉，没有找到自动保存'}, status=404)
             except Exception, e:
@@ -172,13 +218,13 @@ class NewPostView(View):
                     tag = int(tag)
                 post.tag.add(Tag.objects.get(tag_id=tag))
         except Exception, e:
-            # print traceback.format_exc(e)
+            print traceback.format_exc(e)
             if processFlag:
                 postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
                 redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)
                 return JsonResponse({'msg': '添加文章成功，但是关联标签失败', 'next': postUrl})
             else:
-                return JsonResponse({'msg': '添加文章失败'}, status=500)
+                return JsonResponse({'msg': '添加文章失败：{}'.format(unicode(e))}, status=500)
         else:
             redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)
             postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
@@ -188,13 +234,14 @@ class NewPostView(View):
             elif typeFlag == 'edit':
                 return JsonResponse({'next': postUrl})
 
+
 class PostView(View):
     @ratelimit(key='ip', rate='1/5s')
     def get(self, request, uuid):
         ctx = {}
 
         if getattr(request, 'limited', False):
-            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})
 
         try:
             postId = int(uuid)
@@ -240,7 +287,7 @@ class PostView(View):
         '''
         delete = QueryDict(request.body)
         target = delete.get('target')
-        if not request.user.is_superuser:    # 拒绝非管理员的删除请求
+        if not request.user.is_superuser:  # 拒绝非管理员的删除请求
             return JsonResponse({'msg': '你想什么滴干活？！'}, status=500)
         if target == 'comment':
             comment_uuid = delete.get('uuid')
@@ -259,25 +306,26 @@ class PostView(View):
             # 删除post直接在页面上实现掉真的好吗…安全方面考虑
             return JsonResponse({'msg': '你想干什么[发呆]'}, status=500)
 
+
 class PostMetaView(View):
     @ratelimit(key='ip', rate='1/1s')
     def get(self, request):
         ctx = {}
 
         if getattr(request, 'limited', False):
-            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})
 
         try:
             uuid = request.GET.get('pk')
             if not uuid:
                 raise Post.DoesNotExist
             post = Post.objects.get(post_uuid=uuid)
-        except Post.DoesNotExist,e:
+        except Post.DoesNotExist, e:
             return Http404()
 
         try:
             ctx['meta'] = post.metas.all()[0]
-        except IndexError,e:
+        except IndexError, e:
             ctx['meta'] = None
 
         ctx['post'] = post
@@ -290,32 +338,31 @@ class PostMetaView(View):
 
         try:
             post = Post.objects.get(post_uuid=uuid)
-        except Post.DoesNotExist,e:
+        except Post.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相应文章'}, status=404)
 
         try:
             meta = post.metas.all()[0]
             meta.content = meta_content
-        except IndexError,e:
+        except IndexError, e:
             meta = PostMeta(title=post.title, content=meta_content, in_post=post)
 
         try:
             meta.save()
-        except Exception,e:
+        except Exception, e:
             return JsonResponse({'msg': '保存Meta失败'}, status=400)
 
         return JsonResponse({})
 
 
 class CommentView(View):
-
     # VERI_CODE_EXPIRE = 60
     VERI_CODE_KEY = settings.VERI_CODE_KEY
 
     @ratelimit(key='ip', rate='1/s')
     def get(self, request):
         if getattr(request, 'limited', False):
-            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})
 
         ctx = {}
 
@@ -397,15 +444,15 @@ class CommentView(View):
                 redis.rpush(settings.UNREAD_COMMENTS_KEY, comment.comment_id)
             return JsonResponse({})
 
-class MessageView(View):
 
+class MessageView(View):
     VERI_CODE_KEY = settings.VERI_CODE_KEY
 
     @ratelimit(key='ip', rate='1/s')
     def get(self, request):
 
         if getattr(request, 'limited', False):
-            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})
 
         ctx = {}
         ctx['posts'] = Post.objects.filter(status='0')
@@ -440,26 +487,26 @@ class MessageView(View):
                 post = Post.objects.get(post_uuid=relatePostId)
             else:
                 post = None
-        except Post.DoesNotExist,e:
+        except Post.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到对应文章，可能已经被删除了o(╥﹏╥)o'}, status=404)
         try:
-            message = Message(author=author,content=content,title=title,contact=contact,relate_post=post,source_ip=sourceIp)
+            message = Message(author=author, content=content, title=title, contact=contact, relate_post=post,
+                              source_ip=sourceIp)
             message.save()
-            redis.rpush(settings.UNREAD_MESSAGE_KEY,message.message_id)
-        except Exception,e:
+            redis.rpush(settings.UNREAD_MESSAGE_KEY, message.message_id)
+        except Exception, e:
             print traceback.format_exc(e)
-            return JsonResponse({'msg': '提交留言失败'},status=500)
+            return JsonResponse({'msg': '提交留言失败'}, status=500)
 
         return JsonResponse({})
 
-class VeriCodeView(View):
 
+class VeriCodeView(View):
     VERI_CODE_KEY = settings.VERI_CODE_KEY
     VERI_CODE_EXPIRE = 60
 
     @ratelimit(key='ip', rate='1/5s')
     def get(self, request):
-
         if getattr(request, 'limited', False):
             return JsonResponse({'msg': '你点得太快了(╯‵□′)╯︵┻━┻'}, status=500)
 
@@ -477,21 +524,22 @@ class VeriCodeView(View):
 
         return JsonResponse(ctx)
 
+
 @csrf_exempt
 def editormd_upload(request):
     if request.method != 'POST':
         return JsonResponse({
             'success': 0,
             'message': '错误的请求方法'
-        },status=500)
+        }, status=500)
 
     fi_obj = request.FILES.get('editormd-image-file')
 
     if fi_obj is None:
-        return JsonResponse({'success': 0,'message': '上传体未找到图片文件对象'})
+        return JsonResponse({'success': 0, 'message': '上传体未找到图片文件对象'})
 
     guid = request.GET.get('guid')
-    guid_dir = os.path.join(settings.IMG_UPLOAD_DIR,guid)
+    guid_dir = os.path.join(settings.IMG_UPLOAD_DIR, guid)
     if not os.path.isdir(guid_dir):
         os.mkdir(guid_dir)
 
@@ -500,17 +548,17 @@ def editormd_upload(request):
     if os.path.isfile(fi_name):
         return JsonResponse({'success': 0, 'message': '服务器中已经存在同名文件'})
     try:
-        f = open(fi_path,'wb')
+        f = open(fi_path, 'wb')
         for chunk in fi_obj.chunks():
             f.write(chunk)
         f.close()
-    except Exception,e:
+    except Exception, e:
         return JsonResponse({'success': 0, 'message': '生成文件失败：%s' % unicode(e)})
     try:
         return JsonResponse({
             'success': 1,
             'msg': '上传成功',
-            'url': '/static/upload/post-image/%s/%s' % (guid,fi_name)
+            'url': '/static/upload/post-image/%s/%s' % (guid, fi_name)
         })
-    except Exception,e:
+    except Exception, e:
         return JsonResponse({'success': 0, 'message': '上传失败...'})

@@ -88,7 +88,7 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '192.168.3.5:9200'
+        'hosts': '192.168.178.59:9200'
         # 'hosts': '127.0.0.1:9200'
         # 'hosts': '10.13.114.112:9200'
     },
@@ -98,7 +98,7 @@ ELASTICSEARCH_INDEX = 'ftkblog'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.3.5:6379/1',
+        'LOCATION': 'redis://192.168.178.59:6379/1',
         # 'LOCATION': 'redis://127.0.0.1:6379/1',
         # 'LOCATION': 'redis://10.13.114.112:6379/1',
         'OPTIONS': {
@@ -233,6 +233,7 @@ ES_CLIENT = Elasticsearch([
 ])
 
 # Redis中key的一些配置
+SITE_MEMO_KEY = 'blog:site_memo'
 READ_COUNT_KEY = 'blog:read_count'
 ACCESS_COUNT_KEY = 'blog:access_count'
 ACCESS_IP_QUEUE = 'blog:access_ip_queue'

@@ -165,6 +165,37 @@ $(function () {
             }
         });
 
+        // 零碎积累wyz-item的转化
+        var s = $('#start-of-wyz-items').parent();
+        if (s.length > 0){  // 找到标识DOM
+            var title = $(s).next('h5');
+            var oldTitle;
+            while(title.length > 0){
+                var content = $(title).nextUntil('h5');
+                var newItem = '<div class="wyz-item">';
+                var newTitle = '<h3 class="wyz-item-title">' + $(title).text() + '</h3>';
+                var newContent;
+                if (content.length <= 1){
+                    newContent = '<div class="wyz-item-content">' + $(content).html() + '</div>';
+                }
+                else{
+                    var contentStr = [];
+                    var i = 0;
+                    while (i < content.length){
+                        contentStr.push($(content[i]).html());
+                        i++;
+                    }
+                    newContent = '<div class="wyz-item-content">' + contentStr.join('<br>') + '</div>';
+                }
+                newItem = newItem + newTitle + newContent + '</div>';
+                $(title).before(newItem);
+                oldTitle = $(title);
+                $(content).remove();
+                title = $(oldTitle).next('h5');
+                $(oldTitle).remove();
+            }
+        }
+
         // 点赞
         $('#great-up').click(function (event) {
             var direct;
@@ -253,7 +284,8 @@ $(function () {
                 $.scrollTo('#comment_' + tuuid);
             }
         });
-    }).on('click', '.code-fold-toggle', function (event) {
+    })
+        .on('click', '.code-fold-toggle', function (event) {
         // 在进行textSearch之后文档被重新加载，按照一般模式的代码折叠打开绑定操作会失效，所以移到这里
         $(this).next('ol').slideToggle();
         if ($(this).text() == '折叠') {
@@ -262,7 +294,8 @@ $(function () {
         else {
             $(this).text('折叠');
         }
-    }).on('click', '#fold-code-all', function (event) {
+    })
+        .on('click', '#fold-code-all', function (event) {
         var i = $(this).find('i');
         if ($(i).hasClass('fa-level-up')) {
             $('.code-fold-toggle').each(function (i, ele) {
@@ -280,5 +313,16 @@ $(function () {
             });
             $(i).removeClass('fa-level-down').addClass('fa-level-up');
         }
-    });
+    })
+        .on('click', '.wyz-item-title', function(event){
+            var contentBlock = $(this).next('.wyz-item-content');
+            var isDisplayed = $(contentBlock).css('display') != 'none';
+            if (isDisplayed){
+                $(this).css({background: 'white', 'border-style': 'dashed'}, 'slow');
+            }
+            else{
+                $(this).css({background: '#f4f4f4', 'border-style': 'solid'}, 'slow');
+            }
+            $(contentBlock).slideToggle();
+        });
 });

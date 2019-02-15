@@ -1,0 +1,155 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block style %}
+    {{ block.super }}
+    <style>
+    .memo-panels{
+        padding: 10px;
+    }
+    .memo-panel{
+        background: white;
+        border: 1px solid #b4b4b4;
+        box-shadow: 1px 1px 3px;
+        margin: 10px;
+        padding: 10px;
+    }
+    .memo-del{
+        display: none;
+        cursor: pointer;
+        color: lightgrey;
+    }
+    .memo-panel:hover .memo-del{
+        display: block;
+    }
+    .memo-del:hover{
+        color: gray;
+    }
+    .memo-time{
+        color: grey;
+        font-size: 12px;
+    }
+    .memo-content{
+        font-size: 16px;
+    }
+    #memoContentInput{
+        border: 1px dashed #b4b4b4;
+        width: 100%;
+        font-size: 16px;
+    }
+    #memoContentInput:focus{
+        border: 1px solid;
+        box-shadow: 2px 2px 10px;
+    }
+    </style>
+{% endblock %}
+
+{% block body %}
+<body style="background: #f4f4f4;">
+<div class="container">
+<div class="row">
+<div class="memo-panels">
+    {% if memos|length == 0 %}
+    <div class="memo-panel">
+        <h4>这里还空空如也</h4>
+    </div>
+    {% else %}
+    {% for memo in memos %}
+        <div class="memo-panel">
+            <i class="fa fa-window-close pull-right memo-del" id="{{ memo.1 }}"></i>
+            <span class="label label-default">{{ memo.0 }}</span>
+            <h5 class="memo-time">{{ memo.1 }}</h5>
+            <div class="memo-content">{{ memo.2|safe }}</div>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <div style="padding: 10px;">
+        <textarea id="memoContentInput" placeholder="新备忘录..." rows="5"></textarea>
+    </div>
+    <div style="padding: 10px;">
+        <button class="btn btn-sm btn-success" id="submit">保存</button>
+    </div>
+
+</div>
+</div>
+</div>
+<script src="{% static 'comp/moment.js' %}"></script>
+<script>
+$(function(){
+   $(document).ready(function(){
+
+       // 基于moment.js调整时间显示
+       moment.locale('zh-cn');
+       $('.memo-time').each(function(i, ele){
+           $(ele).text(moment.unix(parseFloat($(ele).text())).fromNow());
+       });
+
+       // 删除备忘录
+       $('.memo-del').click(function(event){
+           var panel = $(this).parent();
+           var id = parseFloat($(this).attr('id'));
+           var confirmIdx;
+           confirmIdx = layer.confirm('确认删除吗？',
+                   {title: false, closeBtn: false, btnAlign:'c'}, function(){
+               $.ajax({
+                   url: location.pathname,
+                   type: 'delete',
+                   dataType: 'json',
+                   headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
+                   data: {
+                       id: id
+                   },
+                   success: function(data){
+                       $(panel).fadeOut();
+                   },
+                   error: function(xml, err, exc){
+                       try{
+                           layer.msg(JSON.parse(xml.responseText).msg);
+                       }
+                       catch(e){
+                           layer.msg('未知错误');
+                       }
+                   },
+                   complete: function(){layer.close(confirmIdx);}
+               });
+           }, function(){});
+       });
+
+       // 提交新备忘录
+       $('#submit').click(function(event){
+           var content = $('#memoContentInput').val();
+           if (!content){
+               layer.tips('内容为空', '#memoContentInput', {tips: [3,'red']});
+               return;
+           }
+
+           $.ajax({
+               url: location.pathname,
+               type: 'post',
+               dataType: 'json',
+               headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
+               data: {
+                   content: content
+               },
+               success: function(data){
+                   $('#memoContentInput').val('');
+                   location.reload();
+               },
+               error: function(xml, err, exc){
+                   var msg;
+                   try{
+                       msg = JSON.parse(xml.responseText).msg;
+                   }
+                   catch(e){
+                       msg = '未知错误';
+                   }
+                   layer.msg(msg);
+               }
+           });
+       });
+   });
+});
+</script>
+</body>
+{% endblock %}

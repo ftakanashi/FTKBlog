@@ -114,6 +114,24 @@
     border-bottom: 2px solid darkgrey;
 
 }
+.wyz-item .wyz-item-content{
+    padding: 10px;
+    border-style: dashed;
+    border-color: #b4b4b4;
+    border-width: 0 1px 1px 1px;
+}
+.wyz-item .wyz-item-title{
+    font-size: 15px;
+    padding: 10px;
+    background: #f4f4f4;
+    border-width: 1px;
+    border-style: solid;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+/*.wyz-item .wyz-item-title:hover + .wyz-item-content{*/
+    /*display: block;*/
+/*}*/
 .post-footer{
     /*height: 40px;*/
     text-align: center;

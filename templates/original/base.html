@@ -30,6 +30,7 @@
     <link href="{% static 'comp/ios-clock/clock.css' %}" rel="stylesheet" />
     <link href="{% static 'comp/ios-clock/shake.min.css' %}" rel="stylesheet" />
     <link href="{% static 'comp/ios-clock/shake-clock.css' %}" rel="stylesheet" />
+    <script src="{% static 'comp/layer/layer.js' %}"></script>
     <script src="{% static 'ftk/base/main.js' %}"></script>
     <link href="{% static 'ftk/base/main.css' %}" rel="stylesheet" />
     {% block style %}
@@ -69,6 +70,7 @@ background-attachment: fixed;
                 <li><a href="{% url 'errortest' %}">小飞机</a></li>
                 {% if request.user.is_active %}
                 <li><a href="{% url 'new_post' %}">新文章</a></li>
+                <li><a href="javascript:void(0);" id="openSiteMemo">站点备忘录</a></li>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -80,7 +82,6 @@ background-attachment: fixed;
                         <ul class="dropdown-menu">
                             {% if request.user.is_superuser %}
                             <li><a href="{% url 'my_admin_index' %}">我的后台</a></li>
-{#                            <li><a href="/admin">后台</a></li>#}
                             {% endif %}
                             <li><a href="javascript:void(0);">个人资料</a></li>
                             <li class="divider"></li>
@@ -266,6 +267,48 @@ background-attachment: fixed;
         $.ajaxSetup({
             headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
             data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}
+        });
+        $('#openSiteMemo').click(function(event){
+            var memoPos = $.cookie('memo-pos');
+            var top, left, width, height;
+            if (memoPos){
+                var _pos = JSON.parse(memoPos);
+                top = _pos[0] + 'px'; left = _pos[1] + 'px';
+                width = _pos[2] + 'px'; height = _pos[3] + 'px';
+            }
+            else{
+                top = '65px'; left = '5%';
+                width = '90%'; height = '50%';
+            }
+            var n = $('.navbar-inverse');
+            var themeBkgColor = $(n).css('background-color');
+            layer.open({
+                title: ['', 'background-color: '+themeBkgColor+';font-size: 20px;text-align: center;'],
+                type: 2,
+                content: '{% url 'site-memo' %}',
+                maxmin: true,
+                shade: false,
+                area: [width, height],
+                offset: [top, left],
+                resize: true,
+                anim: 1,
+                cancel: function(idx, dom){
+                    var c = $(dom).find('iframe').contents().find('#memoContentInput');
+                    if (c.length == 0){return true;}
+                    c = c.val();
+                    if (c != ''){
+                        $(dom).find('iframe')[0].contentWindow.layer.msg('输入框还有内容');
+                        return false;
+                    }
+
+                    var _width = parseInt($(dom).width());
+                    var _height = parseInt($(dom).height());
+                    var _top = parseInt($(dom).position().top);
+                    var _left = parseInt($(dom).position().left);
+
+                    $.cookie('memo-pos', JSON.stringify([_top, _left, _width, _height]), {path: '/'});
+                }
+            });
         });
     </script>
     {% block script %}
