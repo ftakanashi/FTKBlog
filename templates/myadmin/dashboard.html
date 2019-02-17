@@ -23,12 +23,16 @@
     {% if last_backup_gap %}
         <div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            已经三天以上未下载备份了。不要吝啬本地磁盘，下载个备份吧！！
+            已经三天以上未下载备份了。不要吝啬本地磁盘，下载个备份吧！！<br>(另，酸酸乳的端口是不是可以换一换了？)
         </div>
     {% endif %}
     <h4>最近来访:
-    {% for ip in access_ip %}
-        <span class="label label-primary">{{ ip }}</span>&nbsp;&nbsp;
+    {% for access_data in access_ip %}
+    <div class="btn-group" role="group">
+        <a type="button" target="_blank" class="btn btn-xs btn-primary" href="https://www.baidu.com/s?wd={{ access_data.ip }}">{{ access_data.ip }}</a>
+        <button type="button" class="btn btn-xs btn-default" title="{{ access_data.time }}" onclick="layer.msg(moment('{{ access_data.time }}').fromNow(),{icon: 6, offset: '30%'})">{{ access_data.count }}</button>
+    </div>
+{#        <span class="label label-primary" title="{{ access_data.time }}">{{ access_data.ip }}&nbsp;&nbsp;({{ access_data.count }})</span>&nbsp;&nbsp;#}
     {% endfor %}
     </h4>
     <hr>
@@ -60,8 +64,10 @@
 
 {% block script %}
     <script src="{% static 'comp/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+    <script src="{% static 'comp/moment.js' %}"></script>
     <script>
     $(document).ready(function(){
+        moment.locale('zh-cn');
     $('.site-switch').bootstrapSwitch({
         size: 'mini',
         onText: 'on',

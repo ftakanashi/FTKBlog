@@ -16,6 +16,7 @@ from ratelimit.decorators import ratelimit
 from .models import Post, Category, Tag, Comment, Dict, Message, PostMeta
 from .utils import CodeGenerator
 
+import datetime
 import json
 import os
 import re
@@ -80,10 +81,27 @@ class IndexView(View):
         if not request.user.is_superuser:
             redis.incr(settings.ACCESS_COUNT_KEY)
             aip = request.META.get('REMOTE_ADDR')
-            redis.lrem(settings.ACCESS_IP_QUEUE, 0, aip)
-            if redis.llen(settings.ACCESS_IP_QUEUE) >= 10:
+            found_flag = False
+            total_access = 0
+
+            for acc_rec in redis.lrange(settings.ACCESS_IP_QUEUE, 0, -1):
+                if acc_rec.split('|')[0] == aip:
+                    redis.lrem(settings.ACCESS_IP_QUEUE, 0, acc_rec)
+                    found_flag = True
+                    total_access = int(acc_rec.split('|')[2])
+                    break
+
+            if not found_flag and redis.llen(settings.ACCESS_IP_QUEUE) >= 10:
                 redis.lpop(settings.ACCESS_IP_QUEUE)
-            redis.rpush(settings.ACCESS_IP_QUEUE, aip)
+
+            redis.rpush(settings.ACCESS_IP_QUEUE, '{}|{}|{}'.format(aip,
+                                                                    datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                                                    total_access+1))
+
+            # redis.lrem(settings.ACCESS_IP_QUEUE, 0, aip)
+            # if redis.llen(settings.ACCESS_IP_QUEUE) >= 10:
+            #     redis.lpop(settings.ACCESS_IP_QUEUE)
+            # redis.rpush(settings.ACCESS_IP_QUEUE, aip)
 
         return render(request, 'index.html', ctx)
 

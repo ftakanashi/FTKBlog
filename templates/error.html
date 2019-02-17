@@ -13,14 +13,18 @@
         <div class="error-info">
             {{ error_msg }}
         </div>
-        <a href="javascript:void(0);" class="return-link">返回首页</a>
+        <a href="javascript:void(0);" class="return-link" id="return">返回首页</a>
+        {% if refresh_btn %}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:location.reload();" class="return-link">刷新页面</a>
+        {% endif %}
     </div>
     <canvas id="paperplane-lost-in-space" resize="true" style="-moz-user-select: none; touch-action: none;"></canvas>
     <script src="{% static 'comp/paperplane-in-space/paper-full.min.js' %}"></script>
     <script src="{% static 'comp/paperplane-in-space/fly.js' %}"></script>
     <script>
         $(document).ready(function(){
-            $('.return-link').click(function(event){
+            $('#return').click(function(event){
                 event.preventDefault();
                 location.pathname = getParam('next','{% url 'index' %}');
             });

@@ -12,9 +12,12 @@ $(function(){
         }, function(){
             $('.my-carousel').fadeOut(1200);
             $.cookie('accessed', true, {path: '/'});
+            layer.tips('<h4>こ↑こ↓</h4>有更多按钮', '#goTop', {tips: [2, $('.navbar-inverse').css('background-color')]
+                , fixed: true, time: -1, closeBtn: true});
         },function(){});
         slider.init();
 
+        // 是否显示滑动解锁
         var accessed = $.cookie('accessed');
         var show = $('#showCarousel').val() === 'True';
         if (show && !accessed){
@@ -25,7 +28,6 @@ $(function(){
             $('.my-carousel').hide();
             $('body').show();
         }
-
 
         //收放左边栏
         $('.navbar-brand').click(function(event){

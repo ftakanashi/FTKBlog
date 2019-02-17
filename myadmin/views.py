@@ -48,7 +48,12 @@ class IndexView(View):
             else:
                 urmInfo.append(message)
 
-        accessIp = redis.lrange(settings.ACCESS_IP_QUEUE, 0, -1)
+        # accessIp = redis.lrange(settings.ACCESS_IP_QUEUE, 0, -1)
+
+        accessIp = []
+        for data in redis.lrange(settings.ACCESS_IP_QUEUE, 0, -1):
+            ip, time, count = data.split('|')
+            accessIp.append({'ip': ip, 'time': time, 'count': count})
 
         lastBackupTime = redis.get(settings.LAST_BACKUP_KEY)
         if lastBackupTime is None:

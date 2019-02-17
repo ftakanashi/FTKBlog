@@ -32,7 +32,7 @@ def redis_init():
         r.rpush(settings.UNREAD_MESSAGE_KEY, '-1')
 
     if not r.exists(settings.ACCESS_IP_QUEUE):
-        r.rpush(settings.ACCESS_IP_QUEUE, '127.0.0.1')
+        r.rpush(settings.ACCESS_IP_QUEUE, '127.0.0.1|1970-01-01 00:00:00|1')
 
     for key in (
         settings.SITE_MEMO_KEY,

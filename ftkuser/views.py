@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, reverse, redirect
 from django.views import View
-from django.http import HttpResponseForbidden,JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse
 from django.contrib.auth import logout, authenticate, login
 
 from ratelimit.decorators import ratelimit
@@ -11,22 +11,23 @@ from ratelimit.decorators import ratelimit
 from .models import Slogan, AccessControl
 
 import random
+
+
 # Create your views here.
 class UserLogout(View):
-
-    def post(self,request):
+    def post(self, request):
         ctx = {
             'error_title': '错误的请求方法',
             'error_msg': 'POST方法不适用于登出用户'
         }
-        return HttpResponseForbidden(render(request,'error.html',ctx))
+        return HttpResponseForbidden(render(request, 'error.html', ctx))
 
-    def get(self,request):
+    def get(self, request):
         logout(request)
         return redirect(reverse('index'))
 
-class UserLogin(View):
 
+class UserLogin(View):
     TOLARENCE = 10
 
     def _randomGetSlogan(self):
@@ -34,6 +35,10 @@ class UserLogin(View):
 
     @ratelimit(key='ip', rate='1/5s')
     def get(self, request):
+
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})
+
         ctx = {}
 
         auth_flag = False
@@ -44,14 +49,7 @@ class UserLogin(View):
                 break
 
         if not auth_flag:
-            return render(request, 'error.html', {'error_msg': '只有授权的人才能尝试登录ヾ(◍°∇°◍)ﾉﾞ'})
-        # try:
-        #     ac = AccessControl.objects.get(control_type='0',source_ip=request.META.get('REMOTE_ADDR'))
-        # except AccessControl.DoesNotExist,e:
-        #     return render(request, 'error.html', {'error_msg': '抱歉，只有有授权的人才能尝试登录'})
-
-        if getattr(request, 'limited', False):
-            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
+            return render(request, 'error.html', {'error_msg': '只有授权的人才能尝试登录ヾ(◍°∇°◍)ﾉﾞ', 'refresh_btn': True})
 
         next = request.GET.get('next', reverse('index'))
 
@@ -82,12 +80,12 @@ class UserLogin(View):
         ctx = {}
         username = request.POST.get('u')
         password = request.POST.get('p')
-        user = authenticate(username=username,password=password)
+        user = authenticate(username=username, password=password)
         if user is not None and user.is_active:
             try:
                 login(request, user)
-            except Exception,e:
-                return JsonResponse({'msg': '登录失败'},status=500)
+            except Exception, e:
+                return JsonResponse({'msg': '登录失败'}, status=500)
             else:
                 if user.is_staff:
                     return JsonResponse({'next': reverse('my_admin_index')})
