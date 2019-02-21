@@ -262,12 +262,20 @@ background-attachment: fixed;
     <script src="{% static 'comp/ios-clock/clock.js' %}"></script>
     <script src="{% static 'comp/ios-clock/shake.js' %}"></script>
     <script>
+        $(window).on('beforeunload', function(event){
+            if($('.layui-layer-content#1659').length != 0){
+                event.preventDefault();
+                return '备忘录窗口开启着，确定要离开吗？';
+            }
+        });
+
         var loginBtn = $('#login');
         $(loginBtn).attr('href',$(loginBtn).attr('href') + location.pathname);
         $.ajaxSetup({
             headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
             data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}
         });
+
         $('#openSiteMemo').click(function(event){
             var memoPos = $.cookie('memo-pos');
             var top, left, width, height;
@@ -285,6 +293,7 @@ background-attachment: fixed;
             layer.open({
                 title: ['', 'background-color: '+themeBkgColor+';font-size: 20px;text-align: center;'],
                 type: 2,
+                id: 1659,    // 1659是我随便想的… 看有没有其他好办法？
                 content: '{% url 'site-memo' %}',
                 maxmin: true,
                 shade: false,
@@ -293,20 +302,20 @@ background-attachment: fixed;
                 resize: true,
                 anim: 1,
                 cancel: function(idx, dom){
-                    var c = $(dom).find('iframe').contents().find('#memoContentInput');
-                    if (c.length == 0){return true;}
-                    c = c.val();
-                    if (c != ''){
-                        $(dom).find('iframe')[0].contentWindow.layer.msg('输入框还有内容');
-                        return false;
+
+                    var close = $(dom).find('iframe')[0].contentWindow.closeCheck();
+
+                    if (close){
+                        var _width = parseInt($(dom).width());
+                        var _height = parseInt($(dom).height());
+                        var _top = parseInt($(dom).position().top);
+                        var _left = parseInt($(dom).position().left);
+
+                        $.cookie('memo-pos', JSON.stringify([_top, _left, _width, _height]), {path: '/'});
                     }
-
-                    var _width = parseInt($(dom).width());
-                    var _height = parseInt($(dom).height());
-                    var _top = parseInt($(dom).position().top);
-                    var _left = parseInt($(dom).position().left);
-
-                    $.cookie('memo-pos', JSON.stringify([_top, _left, _width, _height]), {path: '/'});
+                    else{
+                        return false
+                    }
                 }
             });
         });

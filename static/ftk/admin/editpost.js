@@ -251,7 +251,7 @@ $(document).ready(function(){
                     msg = '未知错误';
                 }
                 if (showMsg){
-                    layer.msg(msg,{offset: 'rb',icon: 1});
+                    layer.msg(msg,{offset: 'rb',icon: 2});
                 }
                 else{
                     console.log(msg);

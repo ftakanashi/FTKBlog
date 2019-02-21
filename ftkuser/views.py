@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, reverse, redirect
 from django.views import View
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse, QueryDict
 from django.contrib.auth import logout, authenticate, login
 
 from ratelimit.decorators import ratelimit
@@ -94,3 +94,12 @@ class UserLogin(View):
                     return JsonResponse({'next': reverse('index')})
         else:
             return JsonResponse({'msg': '用户名或密码错误'}, status=500)
+
+    def put(self, request):
+
+        PUT = QueryDict(request.body)
+
+        if PUT.get('act') == 'save':    # 编辑文章自动保存重定向到登录View的请求
+            return JsonResponse({'msg': '登录信息已失效，请重新登录'}, status=403)
+
+        return JsonResponse({'msg': '错误的请求方法'}, status=405)

@@ -95,8 +95,9 @@ class IndexView(View):
                 redis.lpop(settings.ACCESS_IP_QUEUE)
 
             redis.rpush(settings.ACCESS_IP_QUEUE, '{}|{}|{}'.format(aip,
-                                                                    datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                                                                    total_access+1))
+                                                                    datetime.datetime.now().strftime(
+                                                                        '%Y-%m-%d %H:%M:%S'),
+                                                                    total_access + 1))
 
             # redis.lrem(settings.ACCESS_IP_QUEUE, 0, aip)
             # if redis.llen(settings.ACCESS_IP_QUEUE) >= 10:
@@ -117,9 +118,12 @@ class SiteMemoView(View):
         ctx = {}
 
         memos = sorted(redis.hgetall(self.SITE_MEMO_KEY).items(), key=lambda x: float(x[0]))
+
         def adapt_content(c):
-            return c.replace(str('\n'), str('<br/>'))
-        ctx['memos'] = [(i+1,m[0],adapt_content(m[1])) for i,m in enumerate(memos[1:])]
+            # return c.replace(str('\n'), str('<br/>'))
+            return c
+
+        ctx['memos'] = [(i + 1, m[0], adapt_content(m[1])) for i, m in enumerate(memos[1:])]
 
         return render(request, 'blog/sitememo.html', ctx)
 
@@ -128,13 +132,12 @@ class SiteMemoView(View):
         content = request.POST.get('content')
         try:
             redis.hset(self.SITE_MEMO_KEY, str(time.time()), content)
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '提交备忘录失败'}, status=500)
         else:
             return JsonResponse({})
 
-    @method_decorator(login_required)
     @ratelimit(key='ip', rate='1/5s', block=True)
     def delete(self, request):
         delete = QueryDict(request.body)
@@ -145,11 +148,36 @@ class SiteMemoView(View):
         try:
             id = delete.get('id')
             redis.hdel(self.SITE_MEMO_KEY, id)
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '删除失败'}, status=500)
         else:
             return JsonResponse({})
+
+    @ratelimit(key='ip', rate='1/5s', block=True)
+    def put(self, request):
+        PUT = QueryDict(request.body)
+        memo_id = PUT.get('id')
+        if memo_id is None:
+            return JsonResponse({'msg': '上送ID有误'}, status=400)
+        if not redis.hexists(self.SITE_MEMO_KEY, memo_id):
+            return JsonResponse({'msg': '未找到相关备忘录记录'}, status=404)
+
+        try:
+            content = PUT.get('content')
+            redis.hset(self.SITE_MEMO_KEY, str(time.time()), content)
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '保存新备忘录失败'}, status=500)
+
+        try:
+            redis.hdel(self.SITE_MEMO_KEY, memo_id)
+        except Exception,e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '删除旧备忘录失败'}, status=500)
+
+        return JsonResponse({})
+
 
 class NewPostView(View):
     CACHE_KEY = settings.CACHE_KEY
