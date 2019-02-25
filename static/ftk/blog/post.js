@@ -43,15 +43,6 @@ $(function () {
                 }
             }
         });
-        //$('.code-fold-toggle').click(function(event){
-        //    $(this).next('ol').slideToggle();
-        //    if ($(this).text() == '折叠'){
-        //        $(this).text('展开');
-        //    }
-        //    else{
-        //        $(this).text('折叠');
-        //    }
-        //});
 
         // 开关边栏动画
         $('#left-ground-toggle').click(function (event) {
@@ -71,27 +62,6 @@ $(function () {
             }
         });
 
-        // 折叠全部代码
-        //$('#fold-code-all').click(function(event){
-        //    var i = $(this).find('i');
-        //    if ($(i).hasClass('fa-level-up')){
-        //        $('.code-fold-toggle').each(function(i, ele){
-        //            if ($(ele).text() == '折叠'){
-        //                $(ele).trigger('click');
-        //            }
-        //        });
-        //        $(i).removeClass('fa-level-up').addClass('fa-level-down');
-        //    }
-        //    else{
-        //        $('.code-fold-toggle').each(function(i, ele){
-        //            if ($(ele).text() === '展开'){
-        //                $(ele).trigger('click');
-        //            }
-        //        });
-        //        $(i).removeClass('fa-level-down').addClass('fa-level-up');
-        //    }
-        //});
-
         // 开关灯
         $('#light-toggle').click(function (event) {
             var post = $('.post');
@@ -102,6 +72,49 @@ $(function () {
             else {
                 $(post).css({'background-color': 'white'});
             }
+        });
+
+        // 生成目录
+        $('#make-category').click(function(event){
+            function makeCategory(nodes) {
+                var res = '<div class="category">';
+                for (var i = 0; i < nodes.length; i++) {
+                    var node = nodes[i];
+                    m = $(node)[0].tagName.match(/H([12345])/);
+                    if (!m) {
+                        continue;
+                    }
+                    var level = m[1];
+                    var text = $(node).text();
+                    if (level == 1){
+                        text = '【' + text + '】';
+                    }
+                    else if (level == 2){
+                        text = '■ ' + text;
+                    }
+                    else if (level == 3){
+                        text = '● ' + text;
+                    }
+                    else if (level == 4){
+                        text = '- ' + text;
+                    }
+                    res += '<div class="category-node category-' + level + '"><a href="#'+$(node).attr('id')+'">' + text + '</a></div>';
+                }
+
+                res += '</div>';
+                return res;
+            }
+            layer.open({
+                id: 3251,
+                type: 1,
+                area: ['auto','80%'],
+                offset: 'rt',
+                content: makeCategory($('#postContent').children()),
+                title: '文章目录',
+                shade: false,
+                maxmin: true,
+                resize: true
+            });
         });
 
 

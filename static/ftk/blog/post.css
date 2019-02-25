@@ -72,6 +72,40 @@
     width: 90%;
     margin-left: 5%;
 }
+.category{
+    padding: 10px;
+    background: #f4f4f4;
+}
+.category a{
+    text-decoration: none;
+}
+.category-node:hover{
+    background: dimgray;
+    box-shadow: 1px 1px 3px black;
+}
+.category-node:hover a{
+    color: white;
+}
+.category-1{
+    font-size: 20px;
+    padding: 10px 0 10px 0;
+}
+.category-2{
+    font-size: 18px;
+    padding: 8px 0 8px 10%;
+}
+.category-3{
+    font-size: 16px;
+    padding: 6px 0 6px 20%;
+}
+.category-4{
+    font-size: 14px;
+    padding: 4px 0 4px 30%;
+}
+.category-5{
+    font-size: 12px;
+    padding: 2px 0 2px 40%;
+}
 .post{
     background-color: white;
     margin-bottom: 20px;

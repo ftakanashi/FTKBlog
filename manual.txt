@@ -13,7 +13,7 @@
 
     检查scripts中还有没有需手动执行的sql，python，shell等脚本
 
-
+    生成验证码使用的arial.tff字体文件要放到/usr/share/fonts目录中。
 
     刷新crontab
 

@@ -251,10 +251,11 @@
 
                 $('#sm').click(function (event) {
                     event.preventDefault();
-                    layer.load('1');
+                    var loader = layer.load('1');
                     var kw = encodeURIComponent($('#kw').val());
                     if (!kw) {
                         layer.tips('请输入关键词', '#kw', {tips: 3});
+                        layer.close(loader);
                         return;
                     }
                     var logicCond = $('#and-or-select').val();
