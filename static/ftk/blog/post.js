@@ -76,44 +76,23 @@ $(function () {
 
         // 生成目录
         $('#make-category').click(function(event){
-            function makeCategory(nodes) {
-                var res = '<div class="category">';
-                for (var i = 0; i < nodes.length; i++) {
-                    var node = nodes[i];
-                    m = $(node)[0].tagName.match(/H([12345])/);
-                    if (!m) {
-                        continue;
-                    }
-                    var level = m[1];
-                    var text = $(node).text();
-                    if (level == 1){
-                        text = '【' + text + '】';
-                    }
-                    else if (level == 2){
-                        text = '■ ' + text;
-                    }
-                    else if (level == 3){
-                        text = '● ' + text;
-                    }
-                    else if (level == 4){
-                        text = '- ' + text;
-                    }
-                    res += '<div class="category-node category-' + level + '"><a href="#'+$(node).attr('id')+'">' + text + '</a></div>';
-                }
-
-                res += '</div>';
-                return res;
-            }
+            event.preventDefault();
             layer.open({
-                id: 3251,
+                id: 3521,
                 type: 1,
-                area: ['auto','80%'],
-                offset: 'rt',
-                content: makeCategory($('#postContent').children()),
+                content: '<div id="toc"></div>',
                 title: '文章目录',
-                shade: false,
+                offset: 'rt',
                 maxmin: true,
-                resize: true
+                area: ['20%', '80%'],
+                resize: true,
+                shade: false
+            });
+            $('#toc').tocify({
+                context: '#postContent',
+                selectors: 'h1,h2,h3,h4,h5',
+                scrollTo: 95,
+                highlightOffset: 0
             });
         });
 

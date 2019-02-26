@@ -23,6 +23,7 @@ from ftkuser.models import AccessControl
 # Create your views here.
 redis = get_redis_connection('default')
 logger = logging.getLogger('django')
+
 class IndexView(View):
 
     def get(self, request):
