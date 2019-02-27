@@ -79,12 +79,13 @@ $(function () {
             event.preventDefault();
             layer.open({
                 id: 3521,
+                skin: 'layer-category',
                 type: 1,
                 content: '<div id="toc"></div>',
                 title: '文章目录',
                 offset: 'rt',
                 maxmin: true,
-                area: ['20%', '80%'],
+                area: ['30%', '80%'],
                 resize: true,
                 shade: false
             });
@@ -92,7 +93,8 @@ $(function () {
                 context: '#postContent',
                 selectors: 'h1,h2,h3,h4,h5',
                 scrollTo: 95,
-                highlightOffset: 0
+                highlightOffset: 0,
+                extendPage: false
             });
         });
 
