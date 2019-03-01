@@ -11,6 +11,7 @@ from ratelimit.decorators import ratelimit
 from .models import Slogan, AccessControl
 
 import random
+import re
 
 
 # Create your views here.
@@ -35,6 +36,19 @@ class UserLogin(View):
 
     @ratelimit(key='ip', rate='1/5s')
     def get(self, request):
+        try:
+            referer = request.META.get('HTTP_REFERER')
+            m = re.match('https?\://(?:.+?)(/.+)$', referer)
+            newPostUrl = reverse('new_post')
+            editPostUrl = reverse('post.manage')
+            url = m.group(1)
+
+            if url == newPostUrl \
+                or \
+            url.startswith(editPostUrl) and len(editPostUrl) < len(url):
+                return JsonResponse({'msg': '登录状态已经失效，请尝试重新登录后刷新页面'}, status=500)
+        except Exception,e:
+            pass
 
         if getattr(request, 'limited', False):
             return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})

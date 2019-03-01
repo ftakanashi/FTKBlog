@@ -197,22 +197,19 @@ $(document).ready(function(){
                         location.href = data.edit_next;
                     }
                 });
-                //setTimeout('window.close();', 3000);
-                //layer.load('1',{shade: 0.5});
-                //layer.msg(msg?msg:'' + '  3秒后关闭界面');
             },
             error: function(xml, err, exc){
+                var msg;
                 try{
-                    layer.open({
-                        title: '保存失败',
-                        content: JSON.parse(xml.responseText).msg});
+                    msg = JSON.parse(xml.responseText).msg;
                 }
                 catch(e){
-                    layer.open({
-                        title: '保存失败',
-                        content: '未知错误'
-                    });
+                    msg = '未知错误';
                 }
+                layer.open({
+                    title: '保存失败',
+                    content: msg
+                });
             },
             complete: function(){layer.close(loadLayer);}
         });

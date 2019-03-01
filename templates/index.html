@@ -31,11 +31,13 @@
 {% block main_ground_aside %}
     <div class="aside">
         <div class="aside-frame">
+            {% if site_switch__showWelcomeInfo %}
             <div class="welcome-info">
                 <h3>{{ pageDictInfo.welcomeTitle | default:"欢迎！" }}</h3>
                 <hr>
                 <p>{{ pageDictInfo.welcomeText | default:"一个半路出家素人的自言自语" }}</p>
             </div>
+            {% endif %}
             {% if site_switch__showEmotion %}
             <div>
                 <h4>(╯‵□′)╯︵┻━┻</h4>
