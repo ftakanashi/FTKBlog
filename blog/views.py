@@ -301,8 +301,10 @@ class PostView(View):
         except Post.DoesNotExist, e:
             return Http404()
         else:
-            # ctx['read_count'] = cache.incr('read_count:%s' % uuid)
-            ctx['read_count'] = redis.hincrby(settings.READ_COUNT_KEY, uuid, 1)
+            if post.status == '0':
+                ctx['read_count'] = redis.hincrby(settings.READ_COUNT_KEY, uuid, 1)
+            else:
+                ctx['read_count'] = redis.hget(settings.READ_COUNT_KEY, uuid)
             ctx['post'] = post
 
         return render(request, 'blog/post.html', ctx)
