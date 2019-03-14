@@ -588,8 +588,12 @@ def editormd_upload(request):
 
     guid = request.GET.get('guid')
     guid_dir = os.path.join(settings.IMG_UPLOAD_DIR, guid)
-    if not os.path.isdir(guid_dir):
-        os.mkdir(guid_dir)
+    try:
+        if not os.path.isdir(guid_dir):
+            os.mkdir(guid_dir)
+    except Exception as e:
+        print traceback.format_exc(e)
+        return JsonResponse({'success': 0, 'message': '创建图片缓存目录失败'.format(guid_dir)})
 
     fi_name = '%s-%s' % (str(int(time.time() * 1000)), fi_obj.name)
     fi_path = os.path.join(guid_dir, fi_name)
@@ -601,12 +605,11 @@ def editormd_upload(request):
             f.write(chunk)
         f.close()
     except Exception, e:
+        print traceback.format_exc(e)
         return JsonResponse({'success': 0, 'message': '生成文件失败：%s' % unicode(e)})
-    try:
-        return JsonResponse({
-            'success': 1,
-            'msg': '上传成功',
-            'url': '/static/upload/post-image/%s/%s' % (guid, fi_name)
-        })
-    except Exception, e:
-        return JsonResponse({'success': 0, 'message': '上传失败...'})
+
+    return JsonResponse({
+        'success': 1,
+        'msg': '上传成功',
+        'url': '/static/upload/post-image/%s/%s' % (guid, fi_name)
+    })

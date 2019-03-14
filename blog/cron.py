@@ -48,21 +48,21 @@ def refresh_today_access_count():
     else:
         logger.info('reset over')
 
-def gc_post_images():
-    '''
-    定期检查post-image上传目录中是否有无效的文章uuid情况，若有则直接删除之
-    :return:
-    '''
-    logger.info('Start to check invalid post-images..')
-    deleted_count = 0
-    for _post_uuid in os.listdir(settings.IMG_UPLOAD_DIR):
-        try:
-            post = Post.objects.get(post_uuid=_post_uuid)
-        except Post.DoesNotExist,e:
-            logger.info('Deleting directory: %s' % os.path.join(_post_uuid))
-            shutil.rmtree(os.path.join(settings.IMG_UPLOAD_DIR, _post_uuid))
-            deleted_count += 1
-        else:
-            continue
-
-    logger.info('Deleted %s directories' % deleted_count)
+# def gc_post_images():
+#     '''
+#     定期检查post-image上传目录中是否有无效的文章uuid情况，若有则直接删除之
+#     :return:
+#     '''
+#     logger.info('Start to check invalid post-images..')
+#     deleted_count = 0
+#     for _post_uuid in os.listdir(settings.IMG_UPLOAD_DIR):
+#         try:
+#             post = Post.objects.get(post_uuid=_post_uuid)
+#         except Post.DoesNotExist,e:
+#             logger.info('Deleting directory: %s' % os.path.join(_post_uuid))
+#             shutil.rmtree(os.path.join(settings.IMG_UPLOAD_DIR, _post_uuid))
+#             deleted_count += 1
+#         else:
+#             continue
+#
+#     logger.info('Deleted %s directories' % deleted_count)

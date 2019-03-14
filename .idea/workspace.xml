@@ -47,12 +47,156 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="manual.txt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/manual.txt">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/blog/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.73311895">
-              <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+            <state vertical-scroll-proportion="-1.4199288">
+              <caret line="593" column="26" selection-start-line="593" selection-start-column="26" selection-end-line="593" selection-end-column="26" />
+              <folding>
+                <element signature="e#24#63#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="new.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/blog/new.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-2.34375">
+              <caret line="101" column="40" selection-start-line="101" selection-start-column="40" selection-end-line="101" selection-end-column="40" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="editpost.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/ftk/admin/editpost.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#47#0" expanded="false" />
+                <element signature="e#195#234#0" expanded="false" />
+                <element signature="e#289#335#0" expanded="false" />
+                <element signature="e#372#428#0" expanded="false" />
+                <element signature="e#469#541#0" expanded="false" />
+                <element signature="e#586#775#0" expanded="false" />
+                <element signature="e#693#769#0" expanded="false" />
+                <element signature="e#1841#1892#0" expanded="false" />
+                <element signature="e#2357#2664#0" expanded="false" />
+                <element signature="e#2411#2498#0" expanded="false" />
+                <element signature="e#2527#2588#0" expanded="false" />
+                <element signature="e#2722#2947#0" expanded="false" />
+                <element signature="e#2743#2936#0" expanded="false" />
+                <element signature="e#2870#2922#0" expanded="false" />
+                <element signature="e#2960#2969#0" expanded="false" />
+                <element signature="e#3507#6354#0" expanded="false" />
+                <element signature="e#3700#3875#0" expanded="false" />
+                <element signature="e#4000#4182#0" expanded="false" />
+                <element signature="e#4418#4653#0" expanded="false" />
+                <element signature="e#4501#4643#0" expanded="false" />
+                <element signature="e#4754#4822#0" expanded="false" />
+                <element signature="e#4839#6345#0" expanded="false" />
+                <element signature="e#4951#5323#0" expanded="false" />
+                <element signature="e#5360#5898#0" expanded="false" />
+                <element signature="e#5487#5882#0" expanded="false" />
+                <element signature="e#5636#5754#0" expanded="false" />
+                <element signature="e#5797#5864#0" expanded="false" />
+                <element signature="e#5942#6276#0" expanded="false" />
+                <element signature="e#5988#6067#0" expanded="false" />
+                <element signature="e#6092#6145#0" expanded="false" />
+                <element signature="e#6173#6260#0" expanded="false" />
+                <element signature="e#6420#6450#0" expanded="false" />
+                <element signature="e#6477#7854#0" expanded="false" />
+                <element signature="e#6656#7847#0" expanded="false" />
+                <element signature="e#6767#6884#0" expanded="false" />
+                <element signature="e#6933#7146#0" expanded="false" />
+                <element signature="e#6963#7047#0" expanded="false" />
+                <element signature="e#7068#7132#0" expanded="false" />
+                <element signature="e#7183#7393#0" expanded="false" />
+                <element signature="e#7213#7296#0" expanded="false" />
+                <element signature="e#7317#7379#0" expanded="false" />
+                <element signature="e#7435#7837#0" expanded="false" />
+                <element signature="e#7481#7560#0" expanded="false" />
+                <element signature="e#7585#7638#0" expanded="false" />
+                <element signature="e#7667#7745#0" expanded="false" />
+                <element signature="e#7766#7823#0" expanded="false" />
+                <element signature="e#7891#7971#0" expanded="false" />
+                <element signature="e#7984#8024#0" expanded="false" />
+                <element signature="e#8193#8624#0" expanded="false" />
+                <element signature="e#8303#8398#0" expanded="false" />
+                <element signature="e#8411#8548#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="new.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/ftk/blog/new.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="45" column="23" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#47#0" expanded="false" />
+                <element signature="e#196#235#0" expanded="false" />
+                <element signature="e#290#336#0" expanded="false" />
+                <element signature="e#373#429#0" expanded="false" />
+                <element signature="e#470#542#0" expanded="false" />
+                <element signature="e#587#776#0" expanded="false" />
+                <element signature="e#694#770#0" expanded="false" />
+                <element signature="e#1579#3192#0" expanded="false" />
+                <element signature="e#1610#2669#0" expanded="false" />
+                <element signature="e#1693#2657#0" expanded="false" />
+                <element signature="e#1820#1871#0" expanded="false" />
+                <element signature="e#1912#2290#0" expanded="false" />
+                <element signature="e#2056#2270#0" expanded="false" />
+                <element signature="e#2336#2643#0" expanded="false" />
+                <element signature="e#2390#2477#0" expanded="false" />
+                <element signature="e#2506#2567#0" expanded="false" />
+                <element signature="e#2701#2926#0" expanded="false" />
+                <element signature="e#2722#2915#0" expanded="false" />
+                <element signature="e#2849#2901#0" expanded="false" />
+                <element signature="e#2955#3186#0" expanded="false" />
+                <element signature="e#3044#3174#0" expanded="false" />
+                <element signature="e#3335#3734#0" expanded="false" />
+                <element signature="e#3419#3726#0" expanded="false" />
+                <element signature="e#3799#6701#0" expanded="false" />
+                <element signature="e#3992#4167#0" expanded="false" />
+                <element signature="e#4292#4474#0" expanded="false" />
+                <element signature="e#4710#4945#0" expanded="false" />
+                <element signature="e#4793#4935#0" expanded="false" />
+                <element signature="e#5046#5114#0" expanded="false" />
+                <element signature="e#5131#6692#0" expanded="false" />
+                <element signature="e#5243#5614#0" expanded="false" />
+                <element signature="e#5651#6245#0" expanded="false" />
+                <element signature="e#5778#6229#0" expanded="false" />
+                <element signature="e#5927#6045#0" expanded="false" />
+                <element signature="e#6088#6211#0" expanded="false" />
+                <element signature="e#6289#6623#0" expanded="false" />
+                <element signature="e#6335#6414#0" expanded="false" />
+                <element signature="e#6439#6492#0" expanded="false" />
+                <element signature="e#6520#6607#0" expanded="false" />
+                <element signature="e#6767#6797#0" expanded="false" />
+                <element signature="e#6824#8201#0" expanded="false" />
+                <element signature="e#7003#8194#0" expanded="false" />
+                <element signature="e#7114#7231#0" expanded="false" />
+                <element signature="e#7280#7493#0" expanded="false" />
+                <element signature="e#7310#7394#0" expanded="false" />
+                <element signature="e#7415#7479#0" expanded="false" />
+                <element signature="e#7530#7740#0" expanded="false" />
+                <element signature="e#7560#7643#0" expanded="false" />
+                <element signature="e#7664#7726#0" expanded="false" />
+                <element signature="e#7782#8184#0" expanded="false" />
+                <element signature="e#7828#7907#0" expanded="false" />
+                <element signature="e#7932#7985#0" expanded="false" />
+                <element signature="e#8014#8092#0" expanded="false" />
+                <element signature="e#8113#8170#0" expanded="false" />
+                <element signature="e#8238#8319#0" expanded="false" />
+                <element signature="e#8332#8372#0" expanded="false" />
+                <element signature="e#8502#8900#0" expanded="false" />
+                <element signature="e#8580#8675#0" expanded="false" />
+                <element signature="e#8688#8824#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -72,8 +216,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../../BeforeAlive/ossBackup.py" />
-        <option value="$PROJECT_DIR$/blog/urls.py" />
         <option value="$PROJECT_DIR$/templates/blog/comment.html" />
         <option value="$PROJECT_DIR$/templates/blog/message.html" />
         <option value="$PROJECT_DIR$/templates/blog/new.html" />
@@ -85,14 +227,12 @@
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/b2002097-ad15-4421-8f7e-e1cce473c960/console_1.sql" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/b2002097-ad15-4421-8f7e-e1cce473c960/console_2.sql" />
         <option value="$PROJECT_DIR$/manage.py" />
-        <option value="$PROJECT_DIR$/FTKBlog/settings.py" />
         <option value="$PROJECT_DIR$/templates/blog/sitememo.html" />
         <option value="$PROJECT_DIR$/scripts/redis_init.py" />
         <option value="$PROJECT_DIR$/manual.txt" />
         <option value="$PROJECT_DIR$/test/test.js" />
         <option value="$PROJECT_DIR$/static/ftk/blog/post.css" />
         <option value="$PROJECT_DIR$/templates/test.html" />
-        <option value="$PROJECT_DIR$/myadmin/views.py" />
         <option value="$PROJECT_DIR$/myadmin/urls.py" />
         <option value="$PROJECT_DIR$/static/comp/tocify/jquery.tocify.js" />
         <option value="$PROJECT_DIR$/static/ftk/blog/post.js" />
@@ -106,10 +246,7 @@
         <option value="$PROJECT_DIR$/templates/myadmin/dashboard.html" />
         <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/ftkuser/views.py" />
-        <option value="$PROJECT_DIR$/static/ftk/admin/editpost.js" />
-        <option value="$PROJECT_DIR$/static/ftk/blog/new.js" />
         <option value="$PROJECT_DIR$/scripts/blogdict/init.sql" />
-        <option value="$PROJECT_DIR$/blog/views.py" />
         <option value="$PROJECT_DIR$/templates/blog/post.html" />
         <option value="$PROJECT_DIR$/search/views.py" />
         <option value="$PROJECT_DIR$/templates/search/index.html" />
@@ -123,6 +260,13 @@
         <option value="$PROJECT_DIR$/FTKBlog/urls.py" />
         <option value="$PROJECT_DIR$/templates/about/about.html" />
         <option value="$PROJECT_DIR$/templates/about/info.html" />
+        <option value="$PROJECT_DIR$/blog/cron.py" />
+        <option value="$PROJECT_DIR$/FTKBlog/settings.py" />
+        <option value="$PROJECT_DIR$/myadmin/views.py" />
+        <option value="$PROJECT_DIR$/static/ftk/blog/new.js" />
+        <option value="$PROJECT_DIR$/blog/views.py" />
+        <option value="$PROJECT_DIR$/templates/myadmin/modulemanage/post/view.html" />
+        <option value="$PROJECT_DIR$/static/ftk/admin/editpost.js" />
       </list>
     </option>
   </component>
@@ -545,10 +689,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23373677" sideWeight="0.44846797" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23298033" sideWeight="0.44846797" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45470086" sideWeight="0.4969743" order="4" side_tool="false" content_ui="tabs" />
@@ -614,39 +758,11 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="83" />
+      <option name="time" value="86" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test/test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="19" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/ftk/blog/post.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8950382">
-          <caret line="106" column="25" selection-start-line="106" selection-start-column="25" selection-end-line="106" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/comp/tocify/jquery.tocify.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6660305">
-          <caret line="75" column="20" selection-start-line="75" selection-start-column="20" selection-end-line="75" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/comp/tocify/jquery.tocify.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08992806">
-          <caret line="4" column="4855" selection-start-line="4" selection-start-column="4855" selection-end-line="4" selection-end-column="4855" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/comp/tocify/jquery.tocify.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.5124555">
@@ -766,13 +882,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/ftk/admin/editpost.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="32" selection-start-line="199" selection-start-column="32" selection-end-line="199" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/blogdict/init.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2840909">
@@ -791,21 +900,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.53956836">
           <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
-          <folding>
-            <element signature="e#171#630#0" expanded="false" />
-            <element signature="e#576#630#0" expanded="false" />
-            <element signature="e#662#897#0" expanded="false" />
-            <element signature="e#849#897#0" expanded="false" />
-            <element signature="e#2469#2670#0" expanded="false" />
-            <element signature="e#3036#4011#0" expanded="false" />
-            <element signature="e#3954#4011#0" expanded="false" />
-            <element signature="e#4048#4531#0" expanded="false" />
-            <element signature="e#4467#4531#0" expanded="false" />
-            <element signature="e#4563#4955#0" expanded="false" />
-            <element signature="e#4907#4955#0" expanded="false" />
-            <element signature="e#4990#5764#0" expanded="false" />
-            <element signature="e#5689#5764#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -830,25 +924,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/ftk/blog/new.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.471483">
-          <caret line="79" column="32" selection-start-line="79" selection-start-column="28" selection-end-line="79" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/blog/new.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-33.59375">
-          <caret line="99" column="40" selection-start-line="99" selection-start-column="40" selection-end-line="99" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/FTKBlog/logconf.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.08992806">
           <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="6" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -859,19 +938,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/myadmin/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08038585">
-          <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.089605734">
           <caret line="39" column="23" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -879,7 +949,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="3259" selection-start-line="0" selection-start-column="3259" selection-end-line="0" selection-end-column="3259" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -887,7 +956,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.8327339">
           <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -895,7 +963,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34160304">
           <caret line="154" column="62" selection-start-line="154" selection-start-column="62" selection-end-line="154" selection-end-column="62" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -903,7 +970,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.5413668">
           <caret line="41" column="10" selection-start-line="41" selection-start-column="10" selection-end-line="41" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -911,7 +977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="2745" selection-start-line="0" selection-start-column="2745" selection-end-line="0" selection-end-column="2745" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -919,15 +984,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22482014">
-          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -935,7 +991,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.14312977">
           <caret line="12" column="10" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -943,15 +998,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="11.902672">
           <caret line="287" column="7" selection-start-line="287" selection-start-column="7" selection-end-line="287" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/post/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -959,7 +1005,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33691755">
           <caret line="31" column="43" selection-start-line="31" selection-start-column="43" selection-end-line="31" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -967,11 +1012,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.71684587">
           <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-          <folding>
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#p#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#5;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -979,46 +1019,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.40192926">
           <caret line="35" column="16" selection-start-line="35" selection-start-column="16" selection-end-line="35" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding>
-            <element signature="e#915#3886#0" expanded="false" />
-            <element signature="e#986#3886#0" expanded="false" />
-            <element signature="e#3919#6323#0" expanded="false" />
-            <element signature="e#4033#4558#0" expanded="false" />
-            <element signature="e#4341#4405#0" expanded="false" />
-            <element signature="e#4647#4952#0" expanded="false" />
-            <element signature="e#5043#5463#0" expanded="false" />
-            <element signature="e#5551#6323#0" expanded="false" />
-            <element signature="e#6355#10825#0" expanded="false" />
-            <element signature="e#6471#6556#0" expanded="false" />
-            <element signature="e#6594#6880#0" expanded="false" />
-            <element signature="e#6918#8636#0" expanded="false" />
-            <element signature="e#8675#10825#0" expanded="false" />
-            <element signature="e#10854#13398#0" expanded="false" />
-            <element signature="e#10930#11778#0" expanded="false" />
-            <element signature="e#11873#12354#0" expanded="false" />
-            <element signature="e#12489#13398#0" expanded="false" />
-            <element signature="e#12489#12552#1" expanded="false" />
-            <element signature="e#13431#14818#0" expanded="false" />
-            <element signature="e#13501#14112#0" expanded="false" />
-            <element signature="e#14201#14818#0" expanded="false" />
-            <element signature="e#14850#18409#0" expanded="false" />
-            <element signature="e#14991#16337#0" expanded="false" />
-            <element signature="e#16426#18409#0" expanded="false" />
-            <element signature="e#18441#20538#0" expanded="false" />
-            <element signature="e#18555#18838#0" expanded="false" />
-            <element signature="e#18928#20538#0" expanded="false" />
-            <element signature="e#20571#21318#0" expanded="false" />
-            <element signature="e#20711#21318#0" expanded="false" />
-            <element signature="e#21368#22529#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1026,6 +1026,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28315413">
           <caret line="27" column="19" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manual.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.89928055">
+          <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FTKBlog/cron.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1033,16 +1048,242 @@
     <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="131" column="1" selection-start-line="131" selection-start-column="1" selection-end-line="131" selection-end-column="1" />
+          <caret line="185" column="49" selection-start-line="185" selection-start-column="49" selection-end-line="185" selection-end-column="49" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/manual.txt">
+    <entry file="file://$PROJECT_DIR$/../FTKEnv/Lib/site-packages/redis/connection.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.73311895">
-          <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.33103448">
+          <caret line="488" column="0" selection-start-line="488" selection-start-column="0" selection-end-line="488" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/cron.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="58" column="14" selection-start-line="58" selection-start-column="14" selection-end-line="58" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/myadmin/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="361" column="45" selection-start-line="361" selection-start-column="45" selection-end-line="361" selection-end-column="45" />
+          <folding>
+            <element signature="e#725#3749#0" expanded="false" />
+            <element signature="e#757#2653#0" expanded="false" />
+            <element signature="e#2692#3749#0" expanded="false" />
+            <element signature="e#3783#5977#0" expanded="false" />
+            <element signature="e#3815#4542#0" expanded="false" />
+            <element signature="e#4581#4937#0" expanded="false" />
+            <element signature="e#4978#5426#0" expanded="false" />
+            <element signature="e#5464#5977#0" expanded="false" />
+            <element signature="e#6006#8099#0" expanded="false" />
+            <element signature="e#6038#6727#0" expanded="false" />
+            <element signature="e#6766#7107#0" expanded="false" />
+            <element signature="e#7149#7576#0" expanded="false" />
+            <element signature="e#7614#8099#0" expanded="false" />
+            <element signature="e#8130#10096#0" expanded="false" />
+            <element signature="e#8162#8607#0" expanded="false" />
+            <element signature="e#8646#9107#0" expanded="false" />
+            <element signature="e#9148#9573#0" expanded="false" />
+            <element signature="e#9611#10096#0" expanded="false" />
+            <element signature="e#10280#11210#0" expanded="false" />
+            <element signature="e#11248#12424#0" expanded="false" />
+            <element signature="e#13602#15339#0" expanded="false" />
+            <element signature="e#15373#15979#0" expanded="false" />
+            <element signature="e#15405#15491#0" expanded="false" />
+            <element signature="e#15532#15979#0" expanded="false" />
+            <element signature="e#16013#16619#0" expanded="false" />
+            <element signature="e#16045#16131#0" expanded="false" />
+            <element signature="e#16172#16619#0" expanded="false" />
+            <element signature="e#16659#18854#0" expanded="false" />
+            <element signature="e#16691#17247#0" expanded="false" />
+            <element signature="e#17288#17715#0" expanded="false" />
+            <element signature="e#17754#18218#0" expanded="false" />
+            <element signature="e#18256#18854#0" expanded="false" />
+            <element signature="e#18895#20211#0" expanded="false" />
+            <element signature="e#18932#19200#0" expanded="false" />
+            <element signature="e#19238#20211#0" expanded="false" />
+            <element signature="e#20252#21263#0" expanded="false" />
+            <element signature="e#20780#20972#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="58" selection-start-line="10" selection-start-column="58" selection-end-line="10" selection-end-column="58" />
+          <folding>
+            <element signature="e#24#56#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/blog/new.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.34375">
+          <caret line="101" column="40" selection-start-line="101" selection-start-column="40" selection-end-line="101" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/myadmin/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.32258">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/post/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23293173">
+          <caret line="59" column="27" selection-start-line="59" selection-start-column="27" selection-end-line="59" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/ftk/admin/editpost.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#47#0" expanded="false" />
+            <element signature="e#195#234#0" expanded="false" />
+            <element signature="e#289#335#0" expanded="false" />
+            <element signature="e#372#428#0" expanded="false" />
+            <element signature="e#469#541#0" expanded="false" />
+            <element signature="e#586#775#0" expanded="false" />
+            <element signature="e#693#769#0" expanded="false" />
+            <element signature="e#1841#1892#0" expanded="false" />
+            <element signature="e#2357#2664#0" expanded="false" />
+            <element signature="e#2411#2498#0" expanded="false" />
+            <element signature="e#2527#2588#0" expanded="false" />
+            <element signature="e#2722#2947#0" expanded="false" />
+            <element signature="e#2743#2936#0" expanded="false" />
+            <element signature="e#2870#2922#0" expanded="false" />
+            <element signature="e#2960#2969#0" expanded="false" />
+            <element signature="e#3507#6354#0" expanded="false" />
+            <element signature="e#3700#3875#0" expanded="false" />
+            <element signature="e#4000#4182#0" expanded="false" />
+            <element signature="e#4418#4653#0" expanded="false" />
+            <element signature="e#4501#4643#0" expanded="false" />
+            <element signature="e#4754#4822#0" expanded="false" />
+            <element signature="e#4839#6345#0" expanded="false" />
+            <element signature="e#4951#5323#0" expanded="false" />
+            <element signature="e#5360#5898#0" expanded="false" />
+            <element signature="e#5487#5882#0" expanded="false" />
+            <element signature="e#5636#5754#0" expanded="false" />
+            <element signature="e#5797#5864#0" expanded="false" />
+            <element signature="e#5942#6276#0" expanded="false" />
+            <element signature="e#5988#6067#0" expanded="false" />
+            <element signature="e#6092#6145#0" expanded="false" />
+            <element signature="e#6173#6260#0" expanded="false" />
+            <element signature="e#6420#6450#0" expanded="false" />
+            <element signature="e#6477#7854#0" expanded="false" />
+            <element signature="e#6656#7847#0" expanded="false" />
+            <element signature="e#6767#6884#0" expanded="false" />
+            <element signature="e#6933#7146#0" expanded="false" />
+            <element signature="e#6963#7047#0" expanded="false" />
+            <element signature="e#7068#7132#0" expanded="false" />
+            <element signature="e#7183#7393#0" expanded="false" />
+            <element signature="e#7213#7296#0" expanded="false" />
+            <element signature="e#7317#7379#0" expanded="false" />
+            <element signature="e#7435#7837#0" expanded="false" />
+            <element signature="e#7481#7560#0" expanded="false" />
+            <element signature="e#7585#7638#0" expanded="false" />
+            <element signature="e#7667#7745#0" expanded="false" />
+            <element signature="e#7766#7823#0" expanded="false" />
+            <element signature="e#7891#7971#0" expanded="false" />
+            <element signature="e#7984#8024#0" expanded="false" />
+            <element signature="e#8193#8624#0" expanded="false" />
+            <element signature="e#8303#8398#0" expanded="false" />
+            <element signature="e#8411#8548#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/ftk/blog/new.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="45" column="23" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#47#0" expanded="false" />
+            <element signature="e#196#235#0" expanded="false" />
+            <element signature="e#290#336#0" expanded="false" />
+            <element signature="e#373#429#0" expanded="false" />
+            <element signature="e#470#542#0" expanded="false" />
+            <element signature="e#587#776#0" expanded="false" />
+            <element signature="e#694#770#0" expanded="false" />
+            <element signature="e#1579#3192#0" expanded="false" />
+            <element signature="e#1610#2669#0" expanded="false" />
+            <element signature="e#1693#2657#0" expanded="false" />
+            <element signature="e#1820#1871#0" expanded="false" />
+            <element signature="e#1912#2290#0" expanded="false" />
+            <element signature="e#2056#2270#0" expanded="false" />
+            <element signature="e#2336#2643#0" expanded="false" />
+            <element signature="e#2390#2477#0" expanded="false" />
+            <element signature="e#2506#2567#0" expanded="false" />
+            <element signature="e#2701#2926#0" expanded="false" />
+            <element signature="e#2722#2915#0" expanded="false" />
+            <element signature="e#2849#2901#0" expanded="false" />
+            <element signature="e#2955#3186#0" expanded="false" />
+            <element signature="e#3044#3174#0" expanded="false" />
+            <element signature="e#3335#3734#0" expanded="false" />
+            <element signature="e#3419#3726#0" expanded="false" />
+            <element signature="e#3799#6701#0" expanded="false" />
+            <element signature="e#3992#4167#0" expanded="false" />
+            <element signature="e#4292#4474#0" expanded="false" />
+            <element signature="e#4710#4945#0" expanded="false" />
+            <element signature="e#4793#4935#0" expanded="false" />
+            <element signature="e#5046#5114#0" expanded="false" />
+            <element signature="e#5131#6692#0" expanded="false" />
+            <element signature="e#5243#5614#0" expanded="false" />
+            <element signature="e#5651#6245#0" expanded="false" />
+            <element signature="e#5778#6229#0" expanded="false" />
+            <element signature="e#5927#6045#0" expanded="false" />
+            <element signature="e#6088#6211#0" expanded="false" />
+            <element signature="e#6289#6623#0" expanded="false" />
+            <element signature="e#6335#6414#0" expanded="false" />
+            <element signature="e#6439#6492#0" expanded="false" />
+            <element signature="e#6520#6607#0" expanded="false" />
+            <element signature="e#6767#6797#0" expanded="false" />
+            <element signature="e#6824#8201#0" expanded="false" />
+            <element signature="e#7003#8194#0" expanded="false" />
+            <element signature="e#7114#7231#0" expanded="false" />
+            <element signature="e#7280#7493#0" expanded="false" />
+            <element signature="e#7310#7394#0" expanded="false" />
+            <element signature="e#7415#7479#0" expanded="false" />
+            <element signature="e#7530#7740#0" expanded="false" />
+            <element signature="e#7560#7643#0" expanded="false" />
+            <element signature="e#7664#7726#0" expanded="false" />
+            <element signature="e#7782#8184#0" expanded="false" />
+            <element signature="e#7828#7907#0" expanded="false" />
+            <element signature="e#7932#7985#0" expanded="false" />
+            <element signature="e#8014#8092#0" expanded="false" />
+            <element signature="e#8113#8170#0" expanded="false" />
+            <element signature="e#8238#8319#0" expanded="false" />
+            <element signature="e#8332#8372#0" expanded="false" />
+            <element signature="e#8502#8900#0" expanded="false" />
+            <element signature="e#8580#8675#0" expanded="false" />
+            <element signature="e#8688#8824#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.4199288">
+          <caret line="593" column="26" selection-start-line="593" selection-start-column="26" selection-end-line="593" selection-end-column="26" />
+          <folding>
+            <element signature="e#24#63#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

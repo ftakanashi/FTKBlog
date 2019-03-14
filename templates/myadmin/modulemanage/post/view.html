@@ -58,7 +58,7 @@ $(document).ready(function(){
             field: 'title',
             title: '标题',
             sortable: true,
-            formatter(value, row, index){
+            formatter: function(value, row, index){
                 var urlRoot = '{% url 'detail' '__' %}';
                 url = urlRoot.replace('__', row.post_uuid);
                 return '<a href="' + url + '">' + value + '</a>';
@@ -126,14 +126,16 @@ $(document).ready(function(){
     }).on('click','.del-btn',function(event){
         var target = $(this).attr('name');
         var text = $(this).attr('alias');
-        layer.confirm('确定要删除文章 ['+ text +'] 吗?',{icon:3 ,title: '提示'}, function(index){
+
+        function deleteReq(delImg){
             var loadLayer = layer.load('1');
             $.ajax({
                 url: location.pathname,
                 type: 'delete',
                 dataType: 'json',
                 data: {
-                    target: target
+                    target: target,
+                    del_img: delImg
                 },
                 success: function(data){
                     location.reload();
@@ -147,6 +149,21 @@ $(document).ready(function(){
                     }
                 },
                 complete: function(){layer.close(loadLayer)}
+            });
+        }
+
+        layer.confirm('确定要删除文章 ['+ text +'] 吗?',{icon:3 ,title: '提示'}, function(index){
+            var deleteImg;
+            layer.confirm('是否一并删除该文章内所有图片？如果这些图片在其他文章中继续使用，请选择否', {
+                icon: 3,
+                title: '删除图片确认',
+                btn: ['是,一并删除','否,保留图片']
+            }, function(){
+                deleteImg = true;
+                deleteReq(deleteImg);   // 为了阻塞orz
+            }, function(){
+                deleteImg = false;
+                deleteReq(deleteImg);
             });
         });
     }).on('click','.edit-btn',function(event){

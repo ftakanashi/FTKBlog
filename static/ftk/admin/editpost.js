@@ -43,7 +43,7 @@ $(document).ready(function(){
         path: $('#editor-md-root').val() + '/lib/',
         markdown: $('#post-content').val(),
         codeFold: true,
-        saveHtmlToTextarea: true,
+        saveHTMLToTextarea: true,
         searchPlace: true,
         watch: true,
         htmlDecode: 'script,style,iframe|on*',

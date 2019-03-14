@@ -309,7 +309,6 @@ class PostManange(View):
 
         return render(request, 'myadmin/modulemanage/post/view.html', ctx)
 
-
     def put(self, request):
         put = QueryDict(request.body)
         act = put.get('act')
@@ -357,9 +356,10 @@ class PostManange(View):
                 raise Exception('No such key in redis found: %s' % self.READ_COUNT_KEY + post.post_uuid)
 
             # 删除文章中上传的图片
-            postImgDir = os.path.join(settings.IMG_UPLOAD_DIR, str(post.post_uuid))
-            if os.path.isdir(postImgDir):
-                shutil.rmtree(postImgDir)
+            if DELETE.get('del_img') == 'true':
+                postImgDir = os.path.join(settings.IMG_UPLOAD_DIR, str(post.post_uuid))
+                if os.path.isdir(postImgDir):
+                    shutil.rmtree(postImgDir)
 
         except Exception,e:
             print traceback.format_exc(e)

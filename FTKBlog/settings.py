@@ -184,7 +184,7 @@ CRONLOG = os.path.join(BASE_DIR, 'logs', 'cron', 'cron.log')
 CRONJOBS = [
     ('0 */4 * * *', 'blog.cron.sync_read_count'),  # 每隔四小时同步redis中阅读数到库中
     ('0 0 * * *', 'blog.cron.refresh_today_access_count'),  # 每天零时重置当天访问人数
-    ('0 0 */2 * *', 'blog.cron.gc_post_image'),  # 每两天清理一次无用的图片
+    # ('0 0 */2 * *', 'blog.cron.gc_post_image'),  # 每两天清理一次无用的图片
     ('40 9 * * *', 'FTKBlog.cron.db_backup'),  # 每天备份数据库数据
     ('0 1 * * *', 'FTKBlog.cron.upload_backup'),  # 每天备份上传（图片）数据
     ('0 2 */3 * *', 'FTKBlog.cron.migration_backup')  # 每天备份migration记录
