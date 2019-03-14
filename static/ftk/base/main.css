@@ -30,7 +30,7 @@ a:hover{
     line-height: 34px;
 }
 .navbar-inverse .navbar-nav > li > a:hover{
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.15);
     /*opacity: 0.1;*/
 }
 .navbar-inverse .navbar-nav > li > a.active{

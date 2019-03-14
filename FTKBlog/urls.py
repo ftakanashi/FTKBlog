@@ -21,17 +21,23 @@ from django.http import JsonResponse
 
 from ratelimit.decorators import ratelimit
 
+from blog.models import Dict
+
 def index(request):
     return redirect(reverse('index'))
 
 @ratelimit(key='ip', rate='1/s')
 def about(request):
-    ctx = {}
 
     if getattr(request, 'limited', False):
         return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ','error_title': ''})
 
-    return render(request,'about.html',ctx)
+    if request.GET.get('cont') == '1':
+        ctx = {}
+        return render(request, 'about/info.html', ctx)
+    else:
+        ctx = {}
+        return render(request, 'about/about.html', ctx)
 
 @ratelimit(key='ip', rate='1/s')
 def error_test(request):

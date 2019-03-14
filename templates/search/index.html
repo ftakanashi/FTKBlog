@@ -149,7 +149,8 @@
                             <option value="1" selected>OR</option>
                         </select>
                     </span>
-                    <input type="text" placeholder="请输入关键词站内搜索..." class="form-control" id="kw"/>
+                    <input type="text" placeholder="请输入关键词站内搜索..." class="form-control"
+                           id="kw" value="{{ keyword|default:"" }}" disabled />
                     <span class="input-group-btn">
                         <button class="btn btn-default" id="sm">
                             <i class="fa fa-search-plus"></i>
@@ -236,6 +237,14 @@
             $(document).ready(function () {
 
                 $('body').trigger('loadTheme');
+
+                function unfreezeKw(){
+                    var kw = $('#kw');
+                    if ($(kw).prop('disabled')){
+                        $(kw).prop('disabled', false);
+                    }
+                }
+                setTimeout(unfreezeKw, 5000);
 
                 {% if msg %}
                     layer.closeAll();

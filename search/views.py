@@ -39,6 +39,8 @@ class SearchView(View):
         if kw is None or logic is None:
             return render(request, 'search/index.html',ctx)
 
+        ctx['keyword'] = kw
+
         kws = kw.split(' ')
         highlightConf = {
             'number_of_fragments': 3,

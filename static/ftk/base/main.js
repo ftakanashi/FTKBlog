@@ -58,7 +58,7 @@ $(document).ready(function(event){
 
     $('body').on('themeChange',function(event){
         var themeSet = [
-            {colorMap: ['#000000','#808080','#000000','#000000'], bg: '0.jpg'},
+            {colorMap: ['#323232','#808080','#323232','#323232'], bg: '0.jpg'},
             {colorMap: ['#F0F0D8','#735783','#D9E0CA','#C4B882'], bg: '1.jpg'},
             {colorMap: ['#C0C060','#3E1653','#E0E08C','#C0B060'], bg: '2.jpg'},
             {colorMap: ['#FFF078','#7A5AAE','#F09060','#FFDA78'], bg: '3.jpg'},
@@ -87,12 +87,9 @@ $(document).ready(function(event){
     }).on('loadTheme', function(event){
         try{
             var theme = JSON.parse($.cookie('theme'));
-            //if ($('#refreshTheme').length == 0){
-            //    throw('No refresh theme found');
-            //}
         }
         catch(e){
-            var defaultTheme = {colorMap: ['#000000','#808080','#000000','#000000'], bg: '0.jpg'};
+            var defaultTheme = {colorMap: ['#323232','#808080','#323232','#323232'], bg: '0.jpg'};
             theme = defaultTheme;
             $.cookie('theme',JSON.stringify(defaultTheme), {path: '/'});
         }

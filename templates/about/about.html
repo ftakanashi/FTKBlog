@@ -28,6 +28,11 @@
         width: 30%;
         left: 35%;
     }
+    .about-info{
+        background: #f4f4f4;
+        font-size: 18px;
+        padding: 5%;
+    }
     </style>
 {% endblock %}
 
@@ -48,6 +53,10 @@
     </div>
 {% endblock %}
 
+{% block hidden_inputs %}
+    {{ block.super }}
+{% endblock %}
+
 {% block footer %}{% endblock %}
 
 {% block script %}
@@ -56,16 +65,22 @@
     var slider = new SliderUnlock('.slideunlock-slider',{
         labelTip: '>>>>>推动历史行程>>>>>',
         successLabelTip: '但是还要考虑历史的…行程'
-    }, function(){location.href = '/';},function(){});
+    }, function(){
+        layer.open({
+            type: 2,
+            title: false,
+            closeBtn: false,
+            shade: false,
+            content: location.pathname + '?cont=1',
+            offset: ['65px', '0'],
+            area: ['100%', '70%'],
+            zIndex: 1
+        })
+    },function(){});
     slider.init();
 
     $(document).ready(function(){
         $('body').trigger('loadTheme');
-{#        var theme = JSON.parse($.cookie('theme'));#}
-{#        var color = theme.colorMap[3];#}
-{#        $('.slideunlock-label').css({'background-color': color});#}
-{#        $('.welcome-title').css({background: 'rgba('+code2num(color).join(',')+',0.7)'});#}
-{#        $('.my-carousel').css({'background-image': 'url({% static 'image/bg' %}' + theme.bg + ')'});#}
     });
     </script>
 {% endblock %}

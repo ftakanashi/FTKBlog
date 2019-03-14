@@ -64,25 +64,31 @@ background-attachment: fixed;
         </div>
         <div class="collapse navbar-collapse navbar-toggle-menu">
             <ul class="nav navbar-nav">
-                <li><a class="{% ifequal request.path '/blog/' %}active{% endifequal %}" href="{% url 'index' %}">
-                    <i class="fa fa-home"></i>首页
+                <li><a class="{% if request.path == '/blog/' %}active{% endif %}" href="{% url 'index' %}">
+                    <i class="fa fa-home"></i>
+                    &nbsp;首页
                 </a></li>
-                <li><a class="{% ifequal request.path '/about/' %}active{% endifequal %}" href="{% url 'about' %}">
-                    <i class="fa fa-dashboard"></i>关于
+                <li><a class="{% if request.path == '/about/' %}active{% endif %}" href="{% url 'about' %}">
+                    <i class="fa fa-dashboard"></i>
+                    &nbsp;关于
                 </a></li>
-                <li><a class="{% ifequal request.path '/blog/message/' %}active{% endifequal %}" href="{% url 'message' %}">
-                    <i class="fa fa-comments"></i>留言板
+                <li><a class="{% if request.path == '/blog/message/' %}active{% endif %}" href="{% url 'message' %}">
+                    <i class="fa fa-comments"></i>
+                    &nbsp;留言板
                 </a></li>
                 <li><a href="{% url 'errortest' %}">
-                    <i class="fa fa-paper-plane"></i>小飞机
+                    <i class="fa fa-paper-plane"></i>
+                    &nbsp;小飞机
                 </a></li>
                 {% if request.user.is_active %}
-                <li><a href="{% url 'new_post' %}">
-                    <i class="fa fa-edit"></i>新文章
+                <li><a class="{% if request.path == '/blog/new/' %}active{% endif %}" href="{% url 'new_post' %}">
+                    <i class="fa fa-edit"></i>
+                    &nbsp;新文章
                 </a></li>
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                        <i class="fa fa-cogs"></i>站点工具
+                        <i class="fa fa-cogs"></i>
+                        &nbsp;站点工具
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="javascript:void(0);" id="openSiteMemo">站点备忘录</a></li>
