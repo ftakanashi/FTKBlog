@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'ftkuser.apps.FtkuserConfig',
     'search.apps.SearchConfig',
-    'myadmin.apps.MyadminConfig'
+    'myadmin.apps.MyadminConfig',
+    'tools.apps.ToolsConfig'
 ]
 
 MIDDLEWARE = [

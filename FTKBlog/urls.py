@@ -71,6 +71,7 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls')),
     url(r'^user/',include('ftkuser.urls')),
     url(r'^search/',include('search.urls')),
+    url(r'^tools/', include('tools.urls')),
     url(r'^about/', about, name='about'),
     url(r'^error/', error_test, name='errortest'),
     url(r'^accounts/login/', lambda x: redirect(reverse('login')))
