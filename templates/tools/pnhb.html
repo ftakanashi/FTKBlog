@@ -1,0 +1,89 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block title %}神秘链接{% endblock %}
+
+{% block style %}
+    <style>
+    .main-panel{
+        padding: 20px;
+    }
+    </style>
+{% endblock %}
+
+{% block toolsbar %}{% endblock %}
+{% block left_page_content %}{% endblock %}
+{% block main_ground %}
+<div class="main-panel">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="control-label" for="hrefInput">下载链接</label>
+                <input class="form-control" id="hrefInput" placeholder="请输入神秘网站的原链接..." />
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label class="control-label" for="filenameInput">指定文件名</label>
+                <input class="form-control" id="filenameInput" placeholder="若想指定文件名，请输入..." />
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8" style="text-align:center;">
+            <button type="button" class="btn btn-success" id="submit">
+                <i class="fa fa-download"></i>发起下载请求
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $('#submit').click(function(event){
+        var url = $('#hrefInput').val();
+        var filename = $('#filenameInput').val();
+        if (url == '') {
+            layer.msg('链接不能为空');
+            return;
+        }
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                url: url,
+                filename: filename
+            },
+            success: function(data){
+                layer.open({
+                    title: false,
+                    closeBtn: false,
+                    content: data.msg
+                }, function(){
+                    location.href = '{% url 'index' %}';
+                });
+            },
+            error: function(xml, err, exc){
+                var msg;
+                try{
+                    msg = JSON.parse(xml.responseText).msg;
+                }
+                catch(e){
+                    msg = '未知错误';
+                }
+                layer.msg(msg);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
