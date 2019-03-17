@@ -47,11 +47,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="base.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/original/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.642858">
-              <caret line="101" column="74" selection-start-line="101" selection-start-column="74" selection-end-line="101" selection-end-column="74" />
+            <state vertical-scroll-proportion="1.0452489">
+              <caret line="105" column="21" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
               <folding>
                 <element signature="e#111#137#0#DjangoTemplate" expanded="false" />
                 <element signature="e#142#256#0#DjangoTemplate" expanded="false" />
@@ -86,7 +86,7 @@
                 <element signature="n#if#11;n#!!top" expanded="false" />
                 <element signature="n#block#21;n#!!top" expanded="false" />
                 <element signature="n#if#12;n#!!top" expanded="false" />
-                <element signature="e#11525#11716#0#DjangoTemplate" expanded="false" />
+                <element signature="e#11617#11808#0#DjangoTemplate" expanded="false" />
                 <element signature="n#block#22;n#!!top" expanded="false" />
                 <element signature="n#block#23;n#!!top" expanded="false" />
               </folding>
@@ -98,7 +98,7 @@
         <entry file="file://$PROJECT_DIR$/tools/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <caret line="5" column="69" selection-start-line="5" selection-start-column="69" selection-end-line="5" selection-end-column="69" />
               <folding>
                 <element signature="e#24#56#0" expanded="true" />
               </folding>
@@ -110,41 +110,37 @@
         <entry file="file://$PROJECT_DIR$/tools/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+              <caret line="147" column="104" selection-start-line="147" selection-start-column="104" selection-end-line="147" selection-end-column="104" />
               <folding>
-                <element signature="e#24#63#0" expanded="true" />
+                <element signature="e#391#1050#0" expanded="false" />
+                <element signature="e#391#426#1" expanded="false" />
+                <element signature="e#1089#1191#0" expanded="false" />
+                <element signature="e#1229#1527#0" expanded="false" />
+                <element signature="e#1300#1527#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ssr.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/tools/ssr.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-17.785715">
+              <caret line="77" column="14" selection-start-line="77" selection-start-column="14" selection-end-line="77" selection-end-column="14" />
+              <folding>
+                <element signature="e#397#423#0#HTML" expanded="true" />
+                <element signature="e#447#467#0#HTML" expanded="true" />
+                <element signature="e#735#761#0#HTML" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="9.471074">
-              <caret line="261" column="65" selection-start-line="261" selection-start-column="65" selection-end-line="261" selection-end-column="65" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pnhb.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/tools/pnhb.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.0238094">
-              <caret line="77" column="58" selection-start-line="77" selection-start-column="58" selection-end-line="77" selection-end-column="58" />
-              <folding>
-                <element signature="e#1036#1062#0#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="biorhy.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/tools/biorhy.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.357142">
-              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="23" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="265" column="67" selection-start-line="265" selection-start-column="67" selection-end-line="265" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -175,7 +171,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/search/res.html" />
         <option value="$PROJECT_DIR$/static/comp/moment.js" />
         <option value="$PROJECT_DIR$/static/ftk/index.js" />
         <option value="$PROJECT_DIR$/templates/error.html" />
@@ -221,11 +216,12 @@
         <option value="$PROJECT_DIR$/FTKBlog/urls.py" />
         <option value="$PROJECT_DIR$/search/views.py" />
         <option value="$PROJECT_DIR$/templates/tools/biorhy.html" />
-        <option value="$PROJECT_DIR$/templates/original/base.html" />
+        <option value="$PROJECT_DIR$/templates/tools/pnhb.html" />
         <option value="$PROJECT_DIR$/tools/urls.py" />
         <option value="$PROJECT_DIR$/FTKBlog/settings.py" />
+        <option value="$PROJECT_DIR$/templates/tools/ssr.html" />
         <option value="$PROJECT_DIR$/tools/views.py" />
-        <option value="$PROJECT_DIR$/templates/tools/pnhb.html" />
+        <option value="$PROJECT_DIR$/templates/original/base.html" />
       </list>
     </option>
   </component>
@@ -266,6 +262,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -308,6 +305,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="blog" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -328,11 +357,10 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../transformer-test" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../hook_scripts" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
@@ -342,18 +370,18 @@
     <property name="SearchEverywhereHistoryKey" value="@&#9;null&#9;null" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\templates\myadmin\modulemanage\message" />
+      <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\templates\myadmin\modulemanage\comment" />
+      <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\templates\myadmin\modulemanage\tag" />
+      <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\test" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\templates\about" />
       <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\scripts\blogdict" />
       <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\scripts\ftkuser" />
       <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\blog" />
       <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\static\image\profile" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\templates\myadmin\modulemanage\message" />
-      <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\templates\myadmin\modulemanage\comment" />
-      <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\templates\myadmin\modulemanage\tag" />
-      <recent name="D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKBlog\test" />
     </key>
   </component>
   <component name="RunManager" selected="Django server.FTKBlog">
@@ -689,10 +717,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23982869" sideWeight="0.44846797" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24304068" sideWeight="0.44846797" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45470086" sideWeight="0.4969743" order="4" side_tool="false" content_ui="tabs" />
@@ -701,7 +729,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3982906" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22012103" sideWeight="0.5392405" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.74859077" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41826382" sideWeight="0.48184568" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="运行" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41826382" sideWeight="0.48184568" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27458397" sideWeight="0.55153203" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -763,13 +791,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/comp/ios-clock/clock.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/comp/ios-clock/shake.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.6173635">
@@ -1134,7 +1155,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1158,6 +1178,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.8912281">
           <caret line="58" column="14" selection-start-line="58" selection-start-column="14" selection-end-line="58" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tools/biorhy.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="19" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="19" />
           <folding />
         </state>
       </provider>
@@ -1165,35 +1192,59 @@
     <entry file="file://$PROJECT_DIR$/tools/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <caret line="5" column="69" selection-start-line="5" selection-start-column="69" selection-end-line="5" selection-end-column="69" />
           <folding>
             <element signature="e#24#56#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/tools/biorhy.html">
+    <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.357142">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="23" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="265" column="67" selection-start-line="265" selection-start-column="67" selection-end-line="265" selection-end-column="67" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/tools/pnhb.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.0238094">
-          <caret line="77" column="58" selection-start-line="77" selection-start-column="58" selection-end-line="77" selection-end-column="58" />
+        <state vertical-scroll-proportion="-10.142858">
+          <caret line="72" column="41" selection-start-line="0" selection-start-column="0" selection-end-line="90" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tools/ssr.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-17.785715">
+          <caret line="77" column="14" selection-start-line="77" selection-start-column="14" selection-end-line="77" selection-end-column="14" />
           <folding>
-            <element signature="e#1036#1062#0#HTML" expanded="true" />
+            <element signature="e#397#423#0#HTML" expanded="true" />
+            <element signature="e#447#467#0#HTML" expanded="true" />
+            <element signature="e#735#761#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="147" column="104" selection-start-line="147" selection-start-column="104" selection-end-line="147" selection-end-column="104" />
+          <folding>
+            <element signature="e#391#1050#0" expanded="false" />
+            <element signature="e#391#426#1" expanded="false" />
+            <element signature="e#1089#1191#0" expanded="false" />
+            <element signature="e#1229#1527#0" expanded="false" />
+            <element signature="e#1300#1527#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/original/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.642858">
-          <caret line="101" column="74" selection-start-line="101" selection-start-column="74" selection-end-line="101" selection-end-column="74" />
+        <state vertical-scroll-proportion="1.0452489">
+          <caret line="105" column="21" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
           <folding>
             <element signature="e#111#137#0#DjangoTemplate" expanded="false" />
             <element signature="e#142#256#0#DjangoTemplate" expanded="false" />
@@ -1228,28 +1279,10 @@
             <element signature="n#if#11;n#!!top" expanded="false" />
             <element signature="n#block#21;n#!!top" expanded="false" />
             <element signature="n#if#12;n#!!top" expanded="false" />
-            <element signature="e#11525#11716#0#DjangoTemplate" expanded="false" />
+            <element signature="e#11617#11808#0#DjangoTemplate" expanded="false" />
             <element signature="n#block#22;n#!!top" expanded="false" />
             <element signature="n#block#23;n#!!top" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tools/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding>
-            <element signature="e#24#63#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="9.471074">
-          <caret line="261" column="65" selection-start-line="261" selection-start-column="65" selection-end-line="261" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>

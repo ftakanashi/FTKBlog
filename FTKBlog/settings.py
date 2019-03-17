@@ -260,6 +260,10 @@ TOOLS_CONFIG = {
     },
     'pnhb': {
         'script_path': '/root/hook_scripts/pnhb_download/main.py'
+    },
+    'ssr_config': {
+        'show_port_path': '/root/hook_scripts/ssr_config/show_port.py',
+        'do_config_path': '/root/hook_scripts/ssr_config/config.py'
     }
 }
 

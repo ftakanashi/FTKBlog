@@ -55,6 +55,7 @@ $(document).ready(function(){
             layer.msg('链接不能为空');
             return;
         }
+        var load = layer.load(1,{shade: 0.5});
         $.ajax({
             url: location.pathname,
             type: 'post',
@@ -81,7 +82,8 @@ $(document).ready(function(){
                     msg = '未知错误';
                 }
                 layer.msg(msg);
-            }
+            },
+            complete: function(){layer.close(load);}
         });
     });
 });

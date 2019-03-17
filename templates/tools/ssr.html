@@ -1,0 +1,78 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block title %}小飞机配置{% endblock %}
+
+{% block style %}
+    <style>
+    .main-panel{
+        padding: 20px;
+    }
+    </style>
+{% endblock %}
+
+{% block toolsbar %}{% endblock %}
+{% block left_page_content %}{% endblock %}
+{% block main_ground %}
+<div class="main-panel">
+    <div class="row">
+        <div class="col-lg-12">
+            <div style="text-align:center;">
+                <span style="color: gray;">当前端口</span>
+                <h2>{{ ssr_port }}</h2>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-2 col-xs-2"></div>
+        <div class="col-lg-4 col-md-4 col-sm-8 col-xs-8">
+            <div style="text-align:center;">
+                <div class="form-group">
+                    <label class="control-label" for="portInput">新端口</label>
+                    <input class="form-control" id="portInput" placeholder="输入新端口..." />
+                </div>
+                <button class="btn btn-success" id="submit">
+                    <i class="fa fa-upload"></i>起飞！
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $('#submit').click(function(event){
+        var newPort = $('#portInput').val();
+        var load = layer.load(1, {shade: 0.5});
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                port: newPort
+            },
+            success: function(data){
+                layer.msg(data.msg);
+            },
+            error: function(xml, err, exc){
+                var msg;
+                try{
+                    msg = JSON.parse(xml.responseText).msg;
+                }
+                catch(e){
+                    msg = '未知错误';
+                }
+                layer.msg(msg);
+            },
+            complete: function(){layer.close(load);}
+        })
+    });
+});
+</script>
+{% endblock %}

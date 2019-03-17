@@ -99,6 +99,7 @@ background-attachment: fixed;
                                id="openRateTool">汇率工具</a></li>
                         <li><a target="_blank" href="{% url 'biorhy' %}">生物节律查询</a></li>
                         {% if request.user.is_active %}
+                        <li><a target="_blank" href="{% url 'ssr_config' %}">小飞机配置</a></li>
                         <li><a target="_blank" href="{% url 'pnhb_download' %}">神秘链接</a></li>
                         {% endif %}
                     </ul>
