@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block style %}
-    <link href="{% static 'comp/datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/select2/css/select2.min.css' %}" rel="stylesheet" />
     <style>
     .main-panel{
         padding: 20px;
@@ -32,20 +32,62 @@
     <div class="row">
         <div class="col-lg-2 col-md-2"></div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <div class="input-group date">
-                <input type="text" class="form-control" id="startInput" placeholder="出生日期" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="control-label" for="startYear">出生日期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年</label>
+                    <select class="form-control" id="startYear">
+                        {% for year in year_opt %}
+                        <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="startMonth">月</label>
+                    <select class="form-control" id="startMonth">
+                        {% for month in month_opt %}
+                        <option value="{{ month }}">{{ month }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="startDay">日</label>
+                    <select id="startDay" class="form-control">
+                        {% for day in day_opt %}
+                        <option value="{{ day }}">{{ day }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <div class="input-group date">
-                <input type="text" class="form-control" id="endInput" placeholder="测试日期" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="control-label" for="endYear">测试日期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年</label>
+                    <select class="form-control" id="endYear">
+                        {% for year in year_opt %}
+                        <option value="{{ year }}" {% if year == today.year %}selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="endMonth">月</label>
+                    <select class="form-control" id="endMonth">
+                        {% for month in month_opt %}
+                        <option value="{{ month }}" {% if month == today.month %}selected{% endif %}>{{ month }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="endDay">日</label>
+                    <select id="endDay" class="form-control">
+                        {% for day in day_opt %}
+                        <option value="{{ day }}" {% if day == today.day %}selected{% endif %}>{{ day }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+{#                <input type="hidden" value="{{ today.year }}-{{ today.month }}-{{ today.day }}" id="todayInput" />#}
+{#                <button type="button" class="btn btn-sm btn-default" id="setToday"><i class="fa fa-calendar"></i>今天</button>#}
+            </form>
         </div>
     </div>
     <hr>
@@ -61,34 +103,33 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'comp/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
-    <script src="{% static 'comp/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+    <script src="{% static 'comp/select2/js/select2.min.js' %}"></script>
+    <script src="{% static 'comp/select2/js/i18n/zh-CN.js' %}"></script>
     <script src="{% static 'comp/moment.js' %}"></script>
     <script src="{% static 'comp/echarts/echarts-all.js' %}"></script>
     <script>
     $(document).ready(function(){
-        // 构建datetimepicker
-        $('#startInput').datetimepicker({
-            format: 'yyyy-mm-dd',
-            language: 'zh-CN',
-            todayBtn: 'linked',
-            maxView: 4,
-            minView: 2,
-            startView: 4,
-            autoClose: true,
-            initialDate: '2000-01-01',
-            pickerPosition: 'bottom-right'
+        // 构造选择框
+        $('select').select2({
+            language: 'zh-CN'
         });
-        $('#endInput').datetimepicker({
-            format: 'yyyy-mm-dd',
-            language: 'zh-CN',
-            todayBtn: 'linked',
-            maxView: 4,
-            minView: 2,
-            startView: 4,
-            autoClose: true,
-            pickerPosition: 'bottom-right'
-        });
+
+{#        // 重置到今天#}
+{#        $('#setToday').click(function(event){#}
+{#            var today = $('#todayInput').val();#}
+{#            var info = today.split('-');#}
+{#            var year = parseInt(info[0]);#}
+{#            var month = parseInt(info[1]);#}
+{#            var day = parseInt(info[2]);#}
+{#            $('#endYear').find('option').each(function(ele,i){#}
+{#                if($(ele).attr('value') === year.toString()){#}
+{#                    $(ele).prop('selected',true);#}
+{#                }#}
+{#                else{#}
+{#                    $(ele.prop('selected'), false);#}
+{#                }#}
+{#            });#}
+{#        });#}
 
         // 初始化图表
         var chart = echarts.init($('#graph')[0]);
@@ -106,9 +147,18 @@
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['体力指数','情绪指数','智力指数'],
+                    data:[{
+                        name: '体力指数',
+                        textStyle: {color: '#963634'}
+                    },{
+                        name: '情绪指数',
+                        textStyle: {color: '#76933c'}
+                    },{
+                        name: '智力指数',
+                        textStyle: {color: '#366092'}
+                    }],
                     itemGap: 20,
-                    textStyle: {fontSize: 20},
+                    textStyle: {fontSize: 18},
                     y: 'bottom'
                 },
                 toolbox: {
@@ -118,6 +168,10 @@
                     }
                 },
                 calculable : true,
+                dataZoom: {
+                    show: true,
+                    zlevel: -1
+                },
                 xAxis : [
                     {
                         type : 'category',
@@ -141,9 +195,7 @@
                         name:'体力指数',
                         type:'line',
                         itemStyle: {
-                            normal:{
-                                lineStyle: {color: '#76933c'}
-                            }
+                            normal: {color: '#963634'}
                         },
                         data:[],
                         markPoint: {
@@ -155,7 +207,7 @@
                         name:'情绪指数',
                         type:'line',
                         itemStyle: {
-                            normal: {color: '#963634'}
+                            normal: {color: '#76933c'}
                         },
                         data:[],
                         markPoint: {
@@ -219,9 +271,13 @@
         }
 
         $('#submit').click(function(event){
-            var startDate = $('#startInput').val();
-            var endDate = $('#endInput').val();
-            if (startDate == '' || endDate == ''){
+            var startDate = new Date($('#startYear').val(), parseInt($('#startMonth').val())-1, $('#startDay').val());
+            console.log(startDate);
+
+            var endDate = new Date($('#endYear').val(), parseInt($('#endMonth').val() - 1), $('#endDay').val());
+            console.log(endDate);
+
+            if (!startDate || !endDate){
                 layer.msg('请选择出生日期和测试日期');
                 return;
             }

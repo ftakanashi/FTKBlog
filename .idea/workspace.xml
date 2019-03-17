@@ -47,61 +47,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="base.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/original/base.html">
+      <file leaf-file-name="biorhy.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/tools/biorhy.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0452489">
-              <caret line="105" column="21" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
-              <folding>
-                <element signature="e#111#137#0#DjangoTemplate" expanded="false" />
-                <element signature="e#142#256#0#DjangoTemplate" expanded="false" />
-                <element signature="e#261#318#0#DjangoTemplate" expanded="false" />
-                <element signature="n#block#0;n#!!top" expanded="false" />
-                <element signature="n#if#0;n#!!top" expanded="false" />
-                <element signature="n#block#1;n#!!top" expanded="false" />
-                <element signature="n#block#2;n#!!top" expanded="false" />
-                <element signature="n#block#3;n#!!top" expanded="false" />
-                <element signature="n#block#5;n#!!top" expanded="false" />
-                <element signature="n#block#7;n#!!top" expanded="false" />
-                <element signature="n#if#1;n#!!top" expanded="false" />
-                <element signature="n#if#2;n#!!top" expanded="false" />
-                <element signature="n#if#3;n#!!top" expanded="false" />
-                <element signature="n#if#4;n#!!top" expanded="false" />
-                <element signature="n#if#5;n#!!top" expanded="false" />
-                <element signature="n#if#6;n#!!top" expanded="false" />
-                <element signature="n#if#9;n#!!top" expanded="false" />
-                <element signature="n#if#10;n#!!top" expanded="false" />
-                <element signature="n#block#8;n#!!top" expanded="false" />
-                <element signature="n#block#9;n#!!top" expanded="false" />
-                <element signature="n#block#10;n#!!top" expanded="false" />
-                <element signature="n#block#12;n#!!top" expanded="false" />
-                <element signature="n#block#13;n#!!top" expanded="false" />
-                <element signature="n#block#14;n#!!top" expanded="false" />
-                <element signature="n#block#15;n#!!top" expanded="false" />
-                <element signature="n#block#16;n#!!top" expanded="false" />
-                <element signature="n#block#17;n#!!top" expanded="false" />
-                <element signature="n#block#18;n#!!top" expanded="false" />
-                <element signature="n#block#19;n#!!top" expanded="false" />
-                <element signature="n#block#20;n#!!top" expanded="false" />
-                <element signature="n#if#11;n#!!top" expanded="false" />
-                <element signature="n#block#21;n#!!top" expanded="false" />
-                <element signature="n#if#12;n#!!top" expanded="false" />
-                <element signature="e#11617#11808#0#DjangoTemplate" expanded="false" />
-                <element signature="n#block#22;n#!!top" expanded="false" />
-                <element signature="n#block#23;n#!!top" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tools/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="69" selection-start-line="5" selection-start-column="69" selection-end-line="5" selection-end-column="69" />
-              <folding>
-                <element signature="e#24#56#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="1.0180995">
+              <caret line="100" column="10" selection-start-line="100" selection-start-column="10" selection-end-line="100" selection-end-column="10" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -110,48 +61,19 @@
         <entry file="file://$PROJECT_DIR$/tools/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="147" column="104" selection-start-line="147" selection-start-column="104" selection-end-line="147" selection-end-column="104" />
+              <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
               <folding>
-                <element signature="e#391#1050#0" expanded="false" />
-                <element signature="e#391#426#1" expanded="false" />
-                <element signature="e#1089#1191#0" expanded="false" />
-                <element signature="e#1229#1527#0" expanded="false" />
-                <element signature="e#1300#1527#0" expanded="false" />
+                <element signature="e#24#63#0" expanded="true" />
+                <element signature="e#408#1067#0" expanded="false" />
+                <element signature="e#408#443#1" expanded="false" />
+                <element signature="e#1107#1209#0" expanded="false" />
+                <element signature="e#1750#3229#0" expanded="false" />
+                <element signature="e#1821#2046#0" expanded="false" />
+                <element signature="e#2135#3229#0" expanded="false" />
+                <element signature="e#3263#5232#0" expanded="false" />
+                <element signature="e#3334#4300#0" expanded="false" />
+                <element signature="e#4389#5232#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ssr.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/tools/ssr.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-17.785715">
-              <caret line="77" column="14" selection-start-line="77" selection-start-column="14" selection-end-line="77" selection-end-column="14" />
-              <folding>
-                <element signature="e#397#423#0#HTML" expanded="true" />
-                <element signature="e#447#467#0#HTML" expanded="true" />
-                <element signature="e#735#761#0#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="265" column="67" selection-start-line="265" selection-start-column="67" selection-end-line="265" selection-end-column="67" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="redis_init.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/redis_init.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -171,7 +93,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/static/comp/moment.js" />
         <option value="$PROJECT_DIR$/static/ftk/index.js" />
         <option value="$PROJECT_DIR$/templates/error.html" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/b2002097-ad15-4421-8f7e-e1cce473c960/console_1.sql" />
@@ -215,13 +136,14 @@
         <option value="$PROJECT_DIR$/static/ftk/admin/editpost.js" />
         <option value="$PROJECT_DIR$/FTKBlog/urls.py" />
         <option value="$PROJECT_DIR$/search/views.py" />
-        <option value="$PROJECT_DIR$/templates/tools/biorhy.html" />
         <option value="$PROJECT_DIR$/templates/tools/pnhb.html" />
         <option value="$PROJECT_DIR$/tools/urls.py" />
         <option value="$PROJECT_DIR$/FTKBlog/settings.py" />
-        <option value="$PROJECT_DIR$/templates/tools/ssr.html" />
-        <option value="$PROJECT_DIR$/tools/views.py" />
         <option value="$PROJECT_DIR$/templates/original/base.html" />
+        <option value="$PROJECT_DIR$/templates/tools/ssr.html" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/b2002097-ad15-4421-8f7e-e1cce473c960/console_3.sql" />
+        <option value="$PROJECT_DIR$/tools/views.py" />
+        <option value="$PROJECT_DIR$/templates/tools/biorhy.html" />
       </list>
     </option>
   </component>
@@ -324,34 +246,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="tools" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="blog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -720,12 +614,13 @@
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24304068" sideWeight="0.44846797" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4746336" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24625267" sideWeight="0.44846797" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45470086" sideWeight="0.4969743" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3863248" sideWeight="0.5181543" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27987897" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27944326" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3982906" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22012103" sideWeight="0.5392405" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.74859077" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -736,7 +631,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.47521368" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="数据库" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32976446" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -791,13 +685,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/comp/ios-clock/shake.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6173635">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/comp/layer/layui.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1181,69 +1068,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/tools/biorhy.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="19" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tools/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="69" selection-start-line="5" selection-start-column="69" selection-end-line="5" selection-end-column="69" />
           <folding>
-            <element signature="e#24#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="265" column="67" selection-start-line="265" selection-start-column="67" selection-end-line="265" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/tools/pnhb.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.142858">
-          <caret line="72" column="41" selection-start-line="0" selection-start-column="0" selection-end-line="90" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/tools/ssr.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.785715">
-          <caret line="77" column="14" selection-start-line="77" selection-start-column="14" selection-end-line="77" selection-end-column="14" />
-          <folding>
-            <element signature="e#397#423#0#HTML" expanded="true" />
-            <element signature="e#447#467#0#HTML" expanded="true" />
-            <element signature="e#735#761#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tools/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="147" column="104" selection-start-line="147" selection-start-column="104" selection-end-line="147" selection-end-column="104" />
-          <folding>
-            <element signature="e#391#1050#0" expanded="false" />
-            <element signature="e#391#426#1" expanded="false" />
-            <element signature="e#1089#1191#0" expanded="false" />
-            <element signature="e#1229#1527#0" expanded="false" />
-            <element signature="e#1300#1527#0" expanded="false" />
+            <element signature="e#24#56#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/original/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0452489">
+        <state vertical-scroll-proportion="0.0">
           <caret line="105" column="21" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
           <folding>
             <element signature="e#111#137#0#DjangoTemplate" expanded="false" />
@@ -1283,6 +1120,69 @@
             <element signature="n#block#22;n#!!top" expanded="false" />
             <element signature="n#block#23;n#!!top" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="10.22807">
+          <caret line="265" column="67" selection-start-line="265" selection-start-column="67" selection-end-line="265" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tools/ssr.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="60" column="27" selection-start-line="60" selection-start-column="27" selection-end-line="60" selection-end-column="27" />
+          <folding>
+            <element signature="e#397#423#0#HTML" expanded="true" />
+            <element signature="e#447#467#0#HTML" expanded="true" />
+            <element signature="e#735#761#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tools/pnhb.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.5276753">
+          <caret line="73" column="19" selection-start-line="73" selection-start-column="19" selection-end-line="73" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/b2002097-ad15-4421-8f7e-e1cce473c960/console_3.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="24" selection-start-line="0" selection-start-column="24" selection-end-line="0" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+          <folding>
+            <element signature="e#24#63#0" expanded="true" />
+            <element signature="e#408#1067#0" expanded="false" />
+            <element signature="e#408#443#1" expanded="false" />
+            <element signature="e#1107#1209#0" expanded="false" />
+            <element signature="e#1750#3229#0" expanded="false" />
+            <element signature="e#1821#2046#0" expanded="false" />
+            <element signature="e#2135#3229#0" expanded="false" />
+            <element signature="e#3263#5232#0" expanded="false" />
+            <element signature="e#3334#4300#0" expanded="false" />
+            <element signature="e#4389#5232#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tools/biorhy.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0180995">
+          <caret line="100" column="10" selection-start-line="100" selection-start-column="10" selection-end-line="100" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>

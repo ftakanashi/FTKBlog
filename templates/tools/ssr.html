@@ -58,7 +58,7 @@ $(document).ready(function(){
                 port: newPort
             },
             success: function(data){
-                layer.msg(data.msg);
+                layer.alert(data.msg);
             },
             error: function(xml, err, exc){
                 var msg;
