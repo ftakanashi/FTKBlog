@@ -20,10 +20,11 @@
         <div class="col-lg-12">
             <div style="text-align:center;">
                 <span style="color: gray;">当前端口</span>
-                <h2>{{ ssr_port }}</h2>
+                <span style="border: 1px solid lightgray;font-size: 32px;padding: 10px;color: #963634;">{{ ssr_port }}</span>
             </div>
         </div>
     </div>
+    {% if request.user.is_active %}
     <hr>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-2 col-xs-2"></div>
@@ -39,6 +40,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 

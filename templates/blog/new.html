@@ -88,6 +88,7 @@
     {% if type == 'edit' %}
     <input type="hidden" value="{% url 'editormd-upload' %}" id="upload-url" />
     {% endif %}
+    <input type="hidden" value="{% if type == 'edit' %}true{% else %}false{% endif %}" id="is-edited" />
 {% endblock %}
 
 {% block script %}

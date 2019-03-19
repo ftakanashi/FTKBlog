@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views import View
 from django.conf import settings
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from ratelimit.decorators import ratelimit
 
 import datetime
@@ -132,6 +133,7 @@ class SSRConfigView(View):
         return render(request, 'tools/ssr.html', ctx)
 
     @ratelimit(key='ip', rate='1/5s', block=True)
+    @login_required
     def post(self, request):
         port = request.POST.get('port')
 

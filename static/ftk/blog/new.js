@@ -164,13 +164,18 @@ $(document).ready(function(){
             // 点击保存草稿
             isPublished = 'false';
         }
+        var flag;
+        switch($('#is-edited').val()){
+            case 'false': flag = 'new'; break;
+            case 'true': flag = 'edit'; break;
+        }
 
         $.ajax({
             url: location.pathname,
             type: 'post',
             dataType: 'json',
             data: {
-                flag: 'new',
+                flag: flag,
                 title: title,
                 post_uuid: uuid,
                 content: content,
@@ -184,6 +189,7 @@ $(document).ready(function(){
             success: function(data){
                 $.clearCache();
                 window.clearInterval(autoSaveInterval);
+                $('#is-edited').val('true');
                 layer.confirm('提交成功',{
                     icon: 1,
                     title: '提示',
@@ -194,7 +200,7 @@ $(document).ready(function(){
                     },
                     btn2: function(index){
                         layer.close(index);
-                        location.href = data.edit_next;
+                        //location.href = data.edit_next;
                     }
                 });
             },

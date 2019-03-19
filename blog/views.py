@@ -236,7 +236,7 @@ class NewPostView(View):
         return JsonResponse({})
 
     def post(self, request):
-        # ctx = {}
+
         try:
             postInfo = {}
             postInfo['title'] = request.POST.get('title')
@@ -256,7 +256,14 @@ class NewPostView(View):
         processFlag = False
         typeFlag = request.POST.get('flag', 'new')
         try:
-            post = Post(**postInfo)
+            if typeFlag == 'new':    # 新建
+                post = Post(**postInfo)
+            elif typeFlag == 'edit':    # 编辑已有文章
+                post = Post.objects.get(post_uuid=postInfo['post_uuid'])
+                for k,v in postInfo.iteritems():
+                    setattr(post, k, v)
+            else:
+                return JsonResponse({'msg': '错误的flag种类[{}]'.format(typeFlag)}, status=500)
             post.save()
             processFlag = True
             for tag in tags:
@@ -272,13 +279,10 @@ class NewPostView(View):
             else:
                 return JsonResponse({'msg': '添加文章失败：{}'.format(unicode(e))}, status=500)
         else:
-            redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)
-            postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
             if typeFlag == 'new':
-                editUrl = reverse('post.manage') + '?pk={}&type=edit'.format(postInfo['post_uuid'])
-                return JsonResponse({'next': postUrl, 'edit_next': editUrl})
-            elif typeFlag == 'edit':
-                return JsonResponse({'next': postUrl})
+                redis.hset(settings.READ_COUNT_KEY, post.post_uuid, 0)
+            postUrl = reverse('detail', kwargs={'uuid': post.post_uuid})
+            return JsonResponse({'next': postUrl})
 
 
 class PostView(View):
