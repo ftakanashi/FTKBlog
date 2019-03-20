@@ -6,6 +6,7 @@ from django.views import View
 from django.conf import settings
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from ratelimit.decorators import ratelimit
 
 import datetime
@@ -98,7 +99,7 @@ class PNHBDownloadView(View):
         if err or out.strip() != '0':
             logger.warning('下载节点远程stderr: {}'.format(err))
             logger.warning('下载节点远程stdout: {}'.format(out))
-            return JsonResponse({'msg': '远程下载节点报错了┭┮﹏┭┮'})
+            return JsonResponse({'msg': '远程下载节点报错了┭┮﹏┭┮<br>详情见后台日志'})
         if out.strip() == '0':
             return JsonResponse({'msg': '下载命令已经顺利发出ヾ(◍°∇°◍)ﾉﾞ'})
 
@@ -133,9 +134,10 @@ class SSRConfigView(View):
         return render(request, 'tools/ssr.html', ctx)
 
     @ratelimit(key='ip', rate='1/5s', block=True)
-    @login_required
+    @method_decorator(login_required)
     def post(self, request):
         port = request.POST.get('port')
+        add_blacklist = request.POST.get('blacklist')
 
         try:
             config = settings.TOOLS_CONFIG['ssr_config']['do_config_path']
@@ -146,6 +148,8 @@ class SSRConfigView(View):
         cmd = config
         if port:
             cmd += ' -port {}'.format(port)
+        if add_blacklist == 'true':
+            cmd += ' -blacklist'
 
         ssh = get_proxy_ssh_client()
         stdin, stdout, stderr = ssh.exec_command(cmd)
@@ -154,7 +158,7 @@ class SSRConfigView(View):
 
         if err:
             logger.error('修改SSR远程端口失败:{}'.format(err))
-            return JsonResponse({'msg': '远程修改端口过程报错了┭┮﹏┭┮'})
+            return JsonResponse({'msg': '远程修改端口过程报错了┭┮﹏┭┮<br>详情见后台日志'})
         else:
             logger.info('修改SSR远程端口为{}'.format(out.strip()))
             return JsonResponse({'msg': '远程端口已经修改为<h1 style="color: red;">{}</h1>'.format(out.strip())})
