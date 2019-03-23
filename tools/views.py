@@ -127,17 +127,22 @@ class SSRConfigView(View):
         close_proxy_ssh_client(ssh)
         if err:
             logger.error('获取远程SSR端口失败:\n{}'.format(err))
-            ctx['ssr_port'] = '获取当前端口失败'
+            ctx['ssr_ports'] = ['获取当前端口失败',]
         else:
-            ctx['ssr_port'] = out.strip()
+            ctx['ssr_ports'] = out.strip().split(',')
 
         return render(request, 'tools/ssr.html', ctx)
 
     @ratelimit(key='ip', rate='1/5s', block=True)
     @method_decorator(login_required)
     def post(self, request):
-        port = request.POST.get('port')
-        add_blacklist = request.POST.get('blacklist')
+        info_str = request.POST.get('info')
+        infos = info_str.split(',')
+        ports, blacklists = [], []
+        for info in infos:
+            port, blacklist = info.split(':')
+            ports.append(port)
+            blacklists.append(blacklist)
 
         try:
             config = settings.TOOLS_CONFIG['ssr_config']['do_config_path']
@@ -146,10 +151,9 @@ class SSRConfigView(View):
             return JsonResponse({'msg': '获取远程工作节点脚本目录失败'}, status=500)
 
         cmd = config
-        if port:
-            cmd += ' -port {}'.format(port)
-        if add_blacklist == 'true':
-            cmd += ' -blacklist'
+        cmd += ' -ports {}'.format(','.join(ports))
+        cmd += ' -blacklist {}'.format(''.join(blacklists))
+        logger.info('本次执行命令 [{}]'.format(cmd))
 
         ssh = get_proxy_ssh_client()
         stdin, stdout, stderr = ssh.exec_command(cmd)
