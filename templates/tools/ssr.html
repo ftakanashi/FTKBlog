@@ -59,6 +59,11 @@
                 </form>
             </div>
             {% endfor %}
+            <div style="text-align: center;">
+                <button class="btn btn-success" id="submit">
+                    <i class="fa fa-upload"></i>&nbsp;&nbsp;起飞!
+                </button>
+            </div>
         </div>
     </div>
     {% endif %}
@@ -82,10 +87,10 @@ $(document).ready(function(){
 
         var load = layer.load(1, {shade: 0.5});
         var upload = [];
-        $('form.form-inline').each(function(ele,i){
+        $('form.form-inline').each(function(i, ele){
             var port = $(ele).find('.port-input').val();
             var blacklist = $(ele).find('.blacklist-input').prop('checked');
-            upload.push(port + ':' + blacklist? '1':'0');
+            upload.push(port + ':' + (blacklist? '1':'0'));
         });
         var uploadStr = upload.join(',');
 
