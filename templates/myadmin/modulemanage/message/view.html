@@ -54,7 +54,17 @@ $(document).ready(function(){
         },{
             field: 'relate_post',
             title: '关联文章',
-            sortable: true
+            formatter: function(value, row, index){
+                var link;
+                try{
+                    var info = JSON.parse(value);
+                    link = '<a target="_blank" href="/blog/'+info.uuid+'">'+info.title+'</a>';
+                }
+                catch(e){
+                    link = '未知位置';
+                }
+                return link;
+            }
         },{
             field: 'source_ip',
             title: '来源IP',

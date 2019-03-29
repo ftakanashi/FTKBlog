@@ -26,8 +26,9 @@ class SearchView(View):
 
         kw = request.GET.get('kw')
         logic = request.GET.get('logic')
+        is_admin = request.user.is_superuser
 
-        if getattr(request,'limited',False) and (kw and logic):
+        if not is_admin and getattr(request,'limited',False) and (kw and logic):
             ctx['msg'] = '请求过于频繁，请稍候重试'
             return render(request, 'search/index.html',ctx)
 

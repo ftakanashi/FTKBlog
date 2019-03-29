@@ -6,9 +6,10 @@ from rest_framework.serializers import SlugRelatedField,StringRelatedField
 from blog.models import Category, Tag, Post, Comment, Message
 from ftkuser.models import AccessControl
 
+from fields import PostWithUuidField
+
 class CategorySerializer(ModelSerializer):
     in_category_posts = SlugRelatedField(slug_field='post_uuid', read_only=True, many=True)
-    # in_category_posts = StringRelatedField(read_only=True, many=True)
 
     class Meta:
         model = Category
@@ -32,14 +33,17 @@ class PostSerializer(ModelSerializer):
 
 class CommentSerializer(ModelSerializer):
 
-    in_post = SlugRelatedField(slug_field='title', read_only=True)
+    # in_post = SlugRelatedField(slug_field='title', read_only=True)
+    in_post = PostWithUuidField(read_only=True)
 
     class Meta:
         model = Comment
         fields = '__all__'
 
 class MessageSerializer(ModelSerializer):
-    relate_post = SlugRelatedField(slug_field='title', read_only=True)
+
+    # relate_post = SlugRelatedField(slug_field='title', read_only=True)
+    relate_post = PostWithUuidField(read_only=True)
 
     class Meta:
         model = Message

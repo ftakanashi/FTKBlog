@@ -244,7 +244,9 @@
                         $(kw).prop('disabled', false);
                     }
                 }
-                setTimeout(unfreezeKw, 5000);
+
+                setTimeout(unfreezeKw, {% if not request.user.is_active %}5000{% else %}10{% endif %});
+
 
                 {% if msg %}
                     layer.closeAll();

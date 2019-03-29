@@ -52,7 +52,15 @@ $(document).ready(function(){
             title: '所属文章',
             sortable: true,
             formatter: function(value ,row, index){
-                return '#' + row.floor + ' ' + value;
+                var link;
+                try{
+                    var info = JSON.parse(value);
+                    link = '<a target="_blank" href="/blog/'+info.uuid+'">'+info.title+'</a>';
+                }
+                catch(e){
+                    link = '未知链接';
+                }
+                return '#' + row.floor + ' ' + link;
             }
         },{
             field: 'source_ip',
