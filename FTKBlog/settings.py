@@ -264,6 +264,10 @@ TOOLS_CONFIG = {
     'ssr_config': {
         'show_port_path': '/root/hook_scripts/ssr_config/show_port.py',
         'do_config_path': '/root/hook_scripts/ssr_config/config.py'
+    },
+    'site_dict': {
+        'root_url': 'https://dict.hjenglish.com/jp',
+        'valid_lang_pair': ['jc', 'cj']
     }
 }
 

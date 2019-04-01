@@ -14,6 +14,8 @@ import logging
 import paramiko
 import traceback
 
+from utils import HJDictQuery
+
 logger = logging.getLogger('django')
 
 
@@ -166,3 +168,48 @@ class SSRConfigView(View):
         else:
             logger.info('修改SSR远程端口为{}'.format(out.strip()))
             return JsonResponse({'msg': '远程端口已经修改为<h1 style="color: red;">{}</h1>'.format(out.strip())})
+
+
+class SiteDictView(View):
+
+    def get(self, request):
+        ctx = {}
+        config = settings.TOOLS_CONFIG['site_dict']
+        ctx.update(config)
+
+        return render(request, 'tools/sitedict.html', ctx)
+
+    @ratelimit(key='ip', rate='1/1s', block=True)
+    def post(self, request):
+        word = request.POST.get('w')
+        trans_type = request.POST.get('t')
+
+        config = settings.TOOLS_CONFIG.get('site_dict')
+        if type(config) is not dict:
+            logger.error('读取配置失败。可能是因为没有配置TOOLS_CONFIG或没在TOOLS_CONFIG中配置site_dict')
+            return JsonResponse({'msg': '查询失败'}, status=500)
+
+        if not word or not trans_type:
+            logger.error('错误的参数[word={}, trans_type={}]'.format(word, trans_type))
+            return JsonResponse({'msg': '错误的参数！'}, status=500)
+
+        if trans_type not in config.get('valid_lang_pair'):
+            logger.error('不支持的语对:{}'.format(trans_type))
+            return JsonResponse({'msg': '目前还不支持此类语言查询'}, status=500)
+
+        root_url = settings.TOOLS_CONFIG.get('site_dict').get('root_url')
+        hj_dict = HJDictQuery(root_url)
+
+        try:
+            res = hj_dict.query(word, trans_type)
+        except Exception as e:
+            logger.error('请求失败：\n{}'.format(traceback.format_exc(e)))
+            return JsonResponse({'msg': '查询失败'}, status=500)
+        else:
+            if res is None:
+                logger.info('未在远端找到和[{}]相关的词'.format(word))
+                return JsonResponse({'msg': '远端未能找到相关词'}, status=404)
+            logger.info('找到[{}]个相关的词：{}'.format(len(res), [w.get('word') for w in res]))
+            return JsonResponse({'res': res})
+
+

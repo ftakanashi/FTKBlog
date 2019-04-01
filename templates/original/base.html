@@ -103,6 +103,7 @@ background-attachment: fixed;
                         <li><a target="_blank" href="{% url 'ssr_config' %}">小飞机配置</a></li>
                         <li><a target="_blank" href="{% url 'pnhb_download' %}">神秘链接</a></li>
                         {% endif %}
+                        <li><a href="javascript:void(0);" id="openHJDict">词典工具</a></li>
                     </ul>
                 </li>
             </ul>
@@ -358,6 +359,24 @@ background-attachment: fixed;
                 }
             });
         });
+
+        $('#openHJDict').click(function(event){
+            var n = $('.navbar-inverse');
+            var themeBkgColor = $(n).css('background-color');
+            layer.open({
+                title: ['', 'background-color: '+themeBkgColor+';font-size: 20px;text-align: center;'],
+                type: 2,
+                id: 4328,
+                content: '{% url 'site-dict' %}',
+                maxmin: true,
+                shade: false,
+                area: ['50%', '80%'],
+                offset: 't',
+                resize: true,
+                anim: 1
+            });
+        });
+
     </script>
     {% block script %}
     {% endblock %}

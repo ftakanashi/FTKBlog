@@ -1,0 +1,148 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block style %}
+    <style>
+    .nation-icon{
+        width: 20px;
+        border: 1px solid darkgray;
+        border-radius: 50%;
+    }
+    .pronounce-panel{
+        color: grey;
+    }
+    #res-list{
+        display: none;
+    }
+    .res-panel{
+        margin: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid lightgray;
+        background: white;
+    }
+    .word-pron-audio{
+        cursor: pointer;
+    }
+    </style>
+{% endblock %}
+
+{% block body %}
+<body style="background: #f4f4f4;">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2"></div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+            <div class="form-group">
+                <label class="control-label" for="word"><span class="glyphicon glyphicon-search"></span></label>
+                <input class="form-control" id="word" placeholder="请输入待查词..." />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-xs-6" style="text-align: right;">
+            <button class="btn btn-default btn-sm submit-btn" id="jc">
+                <img src="{% static 'image/icon/sitedict/jp.png' %}" class="nation-icon" />
+                <i class="fa fa-arrow-circle-right"></i>
+                <img src="{% static 'image/icon/sitedict/cn.png' %}" class="nation-icon" />
+            </button>
+        </div>
+        <div class="col-lg-6 col-xs-6" style="text-align: left;">
+            <button class="btn btn-default btn-sm submit-btn" id="cj">
+                <img src="{% static 'image/icon/sitedict/cn.png' %}" class="nation-icon" />
+                <i class="fa fa-arrow-circle-right"></i>
+                <img src="{% static 'image/icon/sitedict/jp.png' %}" class="nation-icon" />
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2 col-sm-2"></div>
+        <div class="col-lg-8 col-xs-12" id="res-list">
+        </div>
+    </div>
+    <div class="row">
+        <div style="text-align: center">
+            <span style="font-size: 12px; color: lightgray;">本页面内容参考自<a href="https://dict.hjenglish.com/jp">沪江小D</a></span>
+        </div>
+    </div>
+    <div id="hidden_inputs">
+        <input type="hidden" id="last-trans-type" value="jc" />
+    </div>
+</div>
+<script>
+    $(document).ready(function(e){
+
+        $.ajaxSetup({
+            headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}
+        });
+
+        // 加载返回信息到页面
+        function loadInfo(words){
+            for(var i=0;i<words.length;i++){
+                var node = '<div class="res-panel"><h3 class="word-panel">';
+                var data = words[i];
+                node += data.word + '</h3>';
+                node += '<span class="pronounce-panel">' + data.pron + '</span><hr>';
+                node += '<span class="fa fa-volume-up word-pron-audio"></span>';
+                node += '<audio src="' + data.audio + '"></audio>';
+                node += '<div class="meaning-panel">' + data.meaning + '</div></div>';
+                $('#res-list').append(node);
+            }
+        }
+
+        // 点击查询提交按钮
+        $('.submit-btn').click(function(event){
+            var word = $('#word').val();
+            if (!word){
+                return;
+            }
+            $('#res-list').html('');
+            var load = layer.load('1');
+            var type = $(this).attr('id');
+            $.ajax({
+                url: location.pathname,
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    w: word,
+                    t: type
+                },
+                success: function(data){
+                    var words = data.res;
+                    loadInfo(words);
+                    $('#res-list').fadeIn();
+                },
+                error: function(xml, err, exc){
+                    var msg;
+                    try{
+                        msg = JSON.parse(xml.responseText).msg;
+                    }
+                    catch(e){
+                        msg = '未知错误';
+                    }
+                    layer.msg(msg);
+                },
+                complete: function(){
+                    layer.close(load);
+                    $('#last-trans-type').val(type);
+                }
+            });
+        });
+
+        $('#word').mouseenter(function(event){
+            $(this).select();
+        }).keyup(function(event){
+            if(event.keyCode == '13'){
+                var last_trans_type = $('#last-trans-type').val();
+                $('.submit-btn#' + last_trans_type).trigger('click');
+            }
+        });
+
+    }).on('click', '.word-pron-audio', function(event){
+        $(this).next('audio')[0].play();
+    });
+</script>
+</body>
+{% endblock %}
