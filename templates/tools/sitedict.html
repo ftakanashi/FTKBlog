@@ -4,6 +4,9 @@
 
 {% block style %}
     <style>
+    .main-panel{
+        padding: 10px;
+    }
     .nation-icon{
         width: 20px;
         border: 1px solid darkgray;
@@ -30,44 +33,79 @@
 
 {% block body %}
 <body style="background: #f4f4f4;">
+<script>
+    // tab切换
+    function switchTab(lang){
+        $('.lang-btns').hide();
+        $('#' + lang + '-btns').show();
+        $('.nav-tabs li').removeClass('active');
+        $('#' + lang + '-tab').addClass('active');
+    }
+</script>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-2 col-md-2 col-sm-2"></div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-            <div class="form-group">
-                <label class="control-label" for="word"><span class="glyphicon glyphicon-search"></span></label>
-                <input class="form-control" id="word" placeholder="请输入待查词..." />
+    <div class="main-panel">
+        <div class="row">
+            <div class="col-lg-12 col-xs-12">
+                <ul class="nav nav-tabs">
+                    <li id="jp-tab" role="presentation" class="active"><a href="javascript:switchTab('jp')">日本語</a></li>
+                    <li id="en-tab" role="presentation"><a href="javascript:switchTab('en')">English</a></li>
+                </ul>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-xs-6" style="text-align: right;">
-            <button class="btn btn-default btn-sm submit-btn" id="jc">
-                <img src="{% static 'image/icon/sitedict/jp.png' %}" class="nation-icon" />
-                <i class="fa fa-arrow-circle-right"></i>
-                <img src="{% static 'image/icon/sitedict/cn.png' %}" class="nation-icon" />
-            </button>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2"></div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label" for="word"><span class="glyphicon glyphicon-search"></span></label>
+                    <input class="form-control" id="word" placeholder="请输入待查词..." />
+                </div>
+            </div>
         </div>
-        <div class="col-lg-6 col-xs-6" style="text-align: left;">
-            <button class="btn btn-default btn-sm submit-btn" id="cj">
-                <img src="{% static 'image/icon/sitedict/cn.png' %}" class="nation-icon" />
-                <i class="fa fa-arrow-circle-right"></i>
-                <img src="{% static 'image/icon/sitedict/jp.png' %}" class="nation-icon" />
-            </button>
+        <div class="row lang-btns" id="jp-btns">
+            <div class="col-lg-6 col-xs-6" style="text-align: right;">
+                <button class="btn btn-default btn-sm submit-btn" id="jc">
+                    <img src="{% static 'image/icon/sitedict/jp.png' %}" class="nation-icon" />
+                    <i class="fa fa-arrow-circle-right"></i>
+                    <img src="{% static 'image/icon/sitedict/cn.png' %}" class="nation-icon" />
+                </button>
+            </div>
+            <div class="col-lg-6 col-xs-6" style="text-align: left;">
+                <button class="btn btn-default btn-sm submit-btn" id="cj">
+                    <img src="{% static 'image/icon/sitedict/cn.png' %}" class="nation-icon" />
+                    <i class="fa fa-arrow-circle-right"></i>
+                    <img src="{% static 'image/icon/sitedict/jp.png' %}" class="nation-icon" />
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-2 col-sm-2"></div>
-        <div class="col-lg-8 col-xs-12" id="res-list">
+        <div class="row lang-btns" id="en-btns" style="display: none;">
+            <div class="col-lg-6 col-xs-6" style="text-align: right;">
+                <button class="btn btn-default btn-sm submit-btn" id="ec">
+                    <img src="{% static 'image/icon/sitedict/us.png' %}" class="nation-icon" />
+                    <i class="fa fa-arrow-circle-right"></i>
+                    <img src="{% static 'image/icon/sitedict/cn.png' %}" class="nation-icon" />
+                </button>
+            </div>
+            <div class="col-lg-6 col-xs-6" style="text-align: left;">
+                <button class="btn btn-default btn-sm submit-btn" id="ce">
+                    <img src="{% static 'image/icon/sitedict/cn.png' %}" class="nation-icon" />
+                    <i class="fa fa-arrow-circle-right"></i>
+                    <img src="{% static 'image/icon/sitedict/us.png' %}" class="nation-icon" />
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div style="text-align: center">
-            <span style="font-size: 12px; color: lightgray;">本页面内容参考自<a href="https://dict.hjenglish.com/jp">沪江小D</a></span>
+        <div class="row">
+            <div class="col-lg-2 col-sm-2"></div>
+            <div class="col-lg-8 col-xs-12" id="res-list">
+            </div>
         </div>
-    </div>
-    <div id="hidden_inputs">
-        <input type="hidden" id="last-trans-type" value="jc" />
+        <div class="row">
+            <div style="text-align: center">
+                <span style="font-size: 12px; color: lightgray;">本页面内容参考自<a href="https://dict.hjenglish.com/jp">沪江小D</a></span>
+            </div>
+        </div>
+        <div id="hidden_inputs">
+            <input type="hidden" id="last-trans-type" value="jc" />
+        </div>
     </div>
 </div>
 <script>
@@ -85,8 +123,10 @@
                 var data = words[i];
                 node += data.word + '</h3>';
                 node += '<span class="pronounce-panel">' + data.pron + '</span><hr>';
-                node += '<span class="fa fa-volume-up word-pron-audio"></span>';
-                node += '<audio src="' + data.audio + '"></audio>';
+                if (data.audio){    // optional
+                    node += '<span class="fa fa-volume-up word-pron-audio"></span>';
+                    node += '<audio src="' + data.audio + '"></audio>';
+                }
                 node += '<div class="meaning-panel">' + data.meaning + '</div></div>';
                 $('#res-list').append(node);
             }

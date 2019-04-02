@@ -266,8 +266,8 @@ TOOLS_CONFIG = {
         'do_config_path': '/root/hook_scripts/ssr_config/config.py'
     },
     'site_dict': {
-        'root_url': 'https://dict.hjenglish.com/jp',
-        'valid_lang_pair': ['jc', 'cj']
+        'root_url': 'https://dict.hjenglish.com',
+        'valid_lang_pair': ['jc', 'cj', 'ce', 'ec']
     }
 }
 

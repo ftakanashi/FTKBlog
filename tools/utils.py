@@ -17,7 +17,7 @@ class HJDictException(Exception):
 
 class HJDictQuery(object):
     def __init__(self, root_url):
-        self.root_url = root_url + '/{}/{}'
+        self.root_url = root_url
         self._header = {
             'Host': 'dict.hjenglish.com',
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0',
@@ -33,6 +33,11 @@ class HJDictQuery(object):
         }
 
     def query(self, word, trans_type):
+        if trans_type in ('jc', 'cj'):
+            self.root_url += '/jp'
+        elif trans_type in ('ce', 'ec'):
+            trans_type = 'w'
+        self.root_url += '/{}/{}'
         url = self.root_url.format(trans_type, word)
         logger.info('查询词：{}    查询类型：{}    请求到{}'.format(word, trans_type, url))
         try:
@@ -59,7 +64,11 @@ class HJDictQuery(object):
             r = {}
             r['word'] = ''.join(word_info.find(attrs={'class': 'word-text'}).stripped_strings)
             r['pron'] = ''.join(word_info.find(attrs={'class': 'pronounces'}).stripped_strings)
-            r['audio'] = word_info.find(attrs={'class': 'word-audio'}).attrs.get('data-src')
+            audio_info = word_info.find(attrs={'class': 'word-audio'})    # optional
+            if audio_info is not None:
+                r['audio'] = audio_info.attrs.get('data-src')
+            else:
+                r['audio'] = None
             r['meaning'] = re.sub('[\n ]+', '<br>', ''.join(word_info.find(attrs={'class': 'simple'}).strings).strip())
             res.append(r)
 
