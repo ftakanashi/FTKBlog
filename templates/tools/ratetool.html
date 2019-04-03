@@ -1,0 +1,183 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block style %}
+    <link href="{% static 'comp/select2/css/select2.min.css' %}" rel="stylesheet" />
+    <style>
+    .main-panel{
+        padding: 10px;
+    }
+    .title-subtext{
+        text-align: center;
+        color: grey;
+        display: block;
+    }
+    input.form-control{
+        height: 28px;
+    }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+<body style="background: #f4f4f4;">
+<div class="container">
+    <div class="main-panel">
+        <h2 style="text-align: center;">汇率工具</h2>
+        <span class="title-subtext">最后汇率更新时间: {{ last_update }}</span>
+        <span class="title-subtext" id="rate-display"></span>
+        <hr>
+        <div class="row">
+            <div class="col-lg-4 col-sm-2"></div>
+            <div class="col-lg-4 col-sm-8 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="srcCreditInput">源金额</label>
+                            <input class="form-control" id="srcCreditInput" />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="srcCurrencySelect">源币种</label>
+                            <select class="form-control" id="srcCurrencySelect">
+                                {% for curr in currs %}
+                                <option value="{{ curr.0 }}" {% if curr.0 == 'CNH' %}selected{% endif %}>{{ curr.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12" style="text-align: center;">
+                <button class="btn btn-sm btn-default" id="exchange">
+                    <i class="fa fa-exchange"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-2"></div>
+            <div class="col-lg-4 col-sm-8 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="trgCreditInput">目标金额</label>
+                            <input class="form-control" id="trgCreditInput" readonly />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="trgCurrencySelect">目标币种</label>
+                            <select class="form-control" id="trgCurrencySelect">
+                                {% for curr in currs %}
+                                <option value="{{ curr.0 }}" {% if curr.0 == 'JPY' %}selected{% endif %}>{{ curr.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12" style="text-align: center;">
+                <button class="btn btn-primary" id="submit">计算金额</button>
+                &nbsp;&nbsp;
+                <label class="control-label">
+                    <input type="checkbox" id="updateRate" />&nbsp;&nbsp;更新汇率
+                </label>
+            </div>
+        </div>
+        <hr>
+        <div style="text-align: center;">
+            本页面汇率信息取自<a href="http://forex.hexun.com/rmbhl/?frommarket=baidurate">和讯网 - 参考价</a>
+        </div>
+    </div>
+</div>
+<script src="{% static 'comp/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'comp/select2/js/i18n/zh-CN.js' %}"></script>
+<script>
+$(document).ready(function(){
+
+    $.ajaxSetup({
+        headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
+        data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}
+    });
+
+    // 构建select2选框
+    $('select').select2({
+        language: 'zh-CN',
+        height: '34px'
+    });
+
+    // 互换币种
+    $('#exchange').click(function(event){
+        event.preventDefault();
+        var src = $('#srcCurrencySelect');
+        var trg = $('#trgCurrencySelect');
+        var src_curr = $(src).val();
+        var trg_curr = $(trg).val();
+        $(src).val(trg_curr).trigger('change');
+        $(trg).val(src_curr).trigger('change');
+
+        var src_input = $('#srcCreditInput');
+        var trg_input = $('#trgCreditInput');
+        if ($(src_input).val() && $(trg_input).val()){
+            var src_value = $(src_input).val();
+            var trg_value = $(trg_input).val();
+            $(src_input).val(trg_value);
+            $(trg_input).val(src_value);
+        }
+        else if ($(trg_input).val()){
+            $(trg_input).val('');
+        }
+    });
+
+    // 提交
+    $('#submit').click(function(event){
+        event.preventDefault();
+        var srcCredit = $('#srcCreditInput').val();
+        var srcCurrency = $('#srcCurrencySelect').val();
+        var trgCurrency = $('#trgCurrencySelect').val();
+        if (!srcCredit.match(/^[\d\.]+$/)){
+            layer.msg('请输入正确的金额');
+            return;
+        }
+        var updateRate = $('#updateRate').prop('checked');
+        var load = layer.load('1');
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                v: srcCredit,
+                s: srcCurrency,
+                t: trgCurrency,
+                u: updateRate
+            },
+            success: function(data){
+                $('#trgCreditInput').val(data.credit);
+                $('#rate-display').text('100 '+ trgCurrency +'=' + data.rate + srcCurrency);
+                if (updateRate){
+                    location.reload();
+                }
+            },
+            error: function(xml, err, exc){
+                var msg;
+                try{
+                    msg = JSON.parse(xml.responseText).msg;
+                }
+                catch(e){
+                    msg = '未知错误';
+                }
+                layer.msg(msg);
+            },
+            complete: function(){layer.close(load);}
+        });
+    });
+});
+</script>
+</body>
+{% endblock %}

@@ -8,16 +8,19 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from ratelimit.decorators import ratelimit
+from django_redis import get_redis_connection
 
 import datetime
+import json
 import logging
 import paramiko
 import traceback
 
-from utils import HJDictQuery
+from utils import HJDictQuery, RateQuery
 
 logger = logging.getLogger('django')
 
+redis = get_redis_connection()
 
 # Create your views here.
 
@@ -209,7 +212,97 @@ class SiteDictView(View):
             if res is None:
                 logger.info('未在远端找到和[{}]相关的词'.format(word))
                 return JsonResponse({'msg': '远端未能找到相关词'}, status=404)
-            logger.info('找到[{}]个相关的词：{}'.format(len(res), [w.get('word') for w in res]))
+            logger.info('找到[{}]个相关的词：{}'.format(len(res), [w.get('header_word') for w in res]))
             return JsonResponse({'res': res})
 
 
+class RateToolView(View):
+
+    RATE_CACHE_KEY = settings.TOOLS_CONFIG['rate_tool']['redis_key']
+
+    @ratelimit(key='ip', rate='1/1s')
+    def get(self, request):
+
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})
+
+        ctx = {}
+        cache = redis.get(self.RATE_CACHE_KEY)
+        if cache is None:
+            root_url = settings.TOOLS_CONFIG['rate_tool']['root_url']
+            rate_query = RateQuery(root_url)
+            info = rate_query.query()
+            if len(info) == 0:
+                ctx['error_msg'] = '建议你去百度一下哦'
+                ctx['error_title'] = '获取汇率信息失败了(ΩДΩ)'
+                return render(request, 'error.html', ctx)
+            else:
+                update_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                data = {'data': info, 'update_time': update_time}
+                redis.set(self.RATE_CACHE_KEY, json.dumps(data))
+        else:
+            data = json.loads(cache)
+            info = data['data']
+            update_time = data['update_time']
+
+        ctx['currs'] = [(i['code'], i['currency']) for i in info]
+        ctx['last_update'] = update_time
+        return render(request, 'tools/ratetool.html', ctx)
+
+    @ratelimit(key='ip', rate='1/1s', block=True)
+    def post(self, request):
+        credit_value = request.POST.get('v')
+        src_currency = request.POST.get('s')
+        trg_currency = request.POST.get('t')
+        update_rate = request.POST.get('u') == 'true'
+
+        logger.info('汇率计算请求：源币[{}]  目标币[{}]  金额[{}]  强制更新汇率[{}]'.format(
+            src_currency, trg_currency, credit_value, update_rate
+        ))
+        cache = redis.get(self.RATE_CACHE_KEY)
+        if update_rate or cache is None:
+            root_url = settings.TOOLS_CONFIG['rate_tool']['root_url']
+            rate_query = RateQuery(root_url)
+            info = rate_query.query()
+            if len(info) == 0:
+                return JsonResponse({'msg': '获取汇率信息失败(ΩДΩ)'}, status=500)
+            else:
+                update_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                data = {'data': info, 'update_time': update_time}
+                redis.set(self.RATE_CACHE_KEY, json.dumps(data))
+        else:
+            info = json.loads(cache)['data']
+
+        src_rate = trg_rate = None
+        src_alias = trg_alias = ''
+        for _info in info:
+            if _info['code'] == src_currency:
+                src_rate = float(_info['refePrice'])
+                src_alias = _info['currency']
+            elif _info['code'] == trg_currency:
+                trg_rate = float(_info['refePrice'])
+                trg_alias = _info['currency']
+
+        if src_rate is None:
+            logger.error('错误的货币类型[{}]'.format(src_rate))
+            return JsonResponse({'msg': '不支持该源币种'}, status=500)
+        elif trg_rate is None:
+            logger.error('错误的货币类型[{}]'.format(trg_rate))
+            return JsonResponse({'msg': '不支持该目标币种'}, status=500)
+        else:
+            logger.info('100外币兑换人民币汇率 = [{}:{}], [{}:{}]'.format(
+                src_currency, src_rate, trg_currency, trg_rate
+            ))
+
+        credit_value = round(float(credit_value),4)
+        rmb_value = (credit_value / 100.0) * src_rate
+        trg_value = (rmb_value / trg_rate) * 100.0
+        direct_rate = src_rate / trg_rate
+        trg_value = round(trg_value, 4)
+        direct_rate = round(direct_rate, 4)
+
+        logger.info('[{}] {} 兑换 [{}] {}\n中间价RMB {}\n直接汇率 {}'.format(
+            credit_value, src_alias, trg_value, trg_alias, rmb_value, direct_rate
+        ))
+
+        return JsonResponse({'credit': trg_value, 'rate': direct_rate})

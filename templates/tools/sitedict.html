@@ -28,6 +28,19 @@
     .word-pron-audio{
         cursor: pointer;
     }
+    .detail-meaning-panel{
+        padding: 15px;
+        border: 1px dotted lightgray;
+        border-radius: 5px;
+    }
+    .detailed-meaning{
+        border-bottom: 3px solid #f4f4f4;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .example-detailed-meaning{
+        font-weight: bold;
+    }
     </style>
 {% endblock %}
 
@@ -40,10 +53,16 @@
         $('#' + lang + '-btns').show();
         $('.nav-tabs li').removeClass('active');
         $('#' + lang + '-tab').addClass('active');
+        switch(lang){
+            case 'jp': $('#last-trans-type').val('jc');break;
+            case 'en': $('#last-trans-type').val('ec');break;
+        }
     }
 </script>
 <div class="container">
     <div class="main-panel">
+        <h2>词典工具</h2>
+        <hr>
         <div class="row">
             <div class="col-lg-12 col-xs-12">
                 <ul class="nav nav-tabs">
@@ -121,13 +140,26 @@
             for(var i=0;i<words.length;i++){
                 var node = '<div class="res-panel"><h3 class="word-panel">';
                 var data = words[i];
-                node += data.word + '</h3>';
-                node += '<span class="pronounce-panel">' + data.pron + '</span><hr>';
+                node += data.header_word + '</h3>';
+                node += '<span class="pronounce-panel">' + data.header_pron + '</span><hr>';
                 if (data.audio){    // optional
                     node += '<span class="fa fa-volume-up word-pron-audio"></span>';
-                    node += '<audio src="' + data.audio + '"></audio>';
+                    node += '<audio src="' + data.header_audio + '"></audio>';
                 }
-                node += '<div class="meaning-panel">' + data.meaning + '</div></div>';
+                node += '<div class="meaning-panel">' + data.meaning + '</div>';
+                if (data.detailed_explanation != ''){
+                    node += '<div class="detail-meaning-panel"><div class="detailed-meaning">' + data.detailed_explanation +
+                        '</div>';
+                }
+                if (data.detailed_examples.length > 0){
+                    for(var j=0;j<data.detailed_examples.length;j++){
+                        var example = data.detailed_examples[j];
+                        var s = '<br>' + (j+1).toString() + '.&nbsp;&nbsp;<span class="example-detailed-meaning">' + example.detailed_meaning + '</span>';
+                        s += '<br>' + example.examples.join('<br>');
+                        node += s;
+                    }
+                }
+
                 $('#res-list').append(node);
             }
         }

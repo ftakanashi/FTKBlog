@@ -54,22 +54,101 @@ class HJDictQuery(object):
         if not_found is not None:
             return None
 
-        word_infos = soup.find_all(attrs={'class': 'word-details-pane-header'})
+        # word_infos = soup.find_all(attrs={'class': 'word-details-pane-header'})
+        word_infos = soup.select('.word-details-pane')
         if len(word_infos) == 0:
             logger.debug(soup)
             raise HJDictException('Still got none dictionary info from page.')
 
-        res = []
+        res_container = []
         for word_info in word_infos:
-            r = {}
-            r['word'] = ''.join(word_info.find(attrs={'class': 'word-text'}).stripped_strings)
-            r['pron'] = ''.join(word_info.find(attrs={'class': 'pronounces'}).stripped_strings)
-            audio_info = word_info.find(attrs={'class': 'word-audio'})    # optional
-            if audio_info is not None:
-                r['audio'] = audio_info.attrs.get('data-src')
+            res_info = {}
+            header = word_info.find(attrs={'class': 'word-details-pane-header'})
+            self.extract('header', header, res_info)
+            content = word_info.find(attrs={'class': 'word-details-item-content'})
+            if content is None:    # none content is possible
+                res_info['detailed_explanation'] = ''
+                res_info['detailed_examples'] = []
             else:
-                r['audio'] = None
-            r['meaning'] = re.sub('[\n ]+', '<br>', ''.join(word_info.find(attrs={'class': 'simple'}).strings).strip())
-            res.append(r)
+                self.extract('content', content, res_info)
+            res_container.append(res_info)
 
-        return res
+        return res_container
+
+    def extract(self, part, obj, container):
+        if part == 'header':
+            self._extract_header(obj, container)
+        elif part == 'content':
+            self._extract_content(obj, container)
+
+    def _extract_header(self, header, res):
+        res['header_word'] = ''.join(header.find(attrs={'class': 'word-text'}).stripped_strings)
+        res['header_pron'] = ''.join(header.find(attrs={'class': 'pronounces'}).stripped_strings)
+        audio_info = header.find(attrs={'class': 'word-audio'})
+        if audio_info is not None:
+            res['header_audio'] = audio_info.attrs.get('data-src')
+        else:
+            res['header_audio'] = None
+        res['meaning'] = re.sub('[\n ]+', '<br>', ''.join(header.find(attrs={'class': 'simple'}).strings).strip())
+
+    def _extract_content(self, content, res):
+        section = content.find(attrs={'class': 'detail-groups'})
+        pos = ''.join(section.find('dt').stripped_strings)
+        dds = []
+        for dd in section.select('dd'):
+            dd_info = self._extract_one_dd(dd)
+            dds.append(dd_info)
+        res['detailed_explanation'] = pos
+        res['detailed_examples'] = dds
+
+    def _extract_one_dd(self, dd):
+        detailed_meaning = ''.join(dd.find('h3').stripped_strings)
+        examples = []
+        for li in dd.find_all('li'):
+            examples.append('&nbsp;&nbsp;/&nbsp;&nbsp;'.join(li.stripped_strings))
+        return {'detailed_meaning': detailed_meaning, 'examples': examples}
+
+class RateException(Exception):
+    pass
+
+class RateQuery(object):
+    def __init__(self, root_url):
+        self.root_url = root_url
+        self.headers = {
+            'Host': 'data.bank.hexun.com',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+            'Accept-Encoding': 'gzip, deflate',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Pragma': 'no-cache',
+            'Cache-Control': 'no-cache'
+        }
+
+    def query(self):
+        try:
+            res = requests.get(self.root_url, headers=self.headers)
+            if res.status_code != 200:
+                raise RateException('HTTP Error [{}]'.format(res.status_code))
+        except Exception as e:
+            logger.error('请求汇率页面失败:\n{}'.format(traceback.format_exc(e)))
+            return []
+
+        try:
+            content = res.content.decode('gbk')
+        except UnicodeDecodeError as e:
+            logger.warning('用GBK解码失败。使用原文')
+            content = res.content
+
+        try:
+            raw_match = re.search('PereMoreData\(\[(.+?)\]\)$', content)
+            raw = raw_match.group(1)
+            info = [{item.split(':')[0]: item.split(':')[1][1:-1].strip() for item in s.strip('{').strip('}').split(',')}
+                    for s in raw.split('},{')]
+        except Exception as e:
+            logger.error('解析汇率数据失败。源数据是\n{}'.format(content))
+            logger.error(traceback.format_exc(e))
+            return []
+        else:
+            return info

@@ -268,6 +268,10 @@ TOOLS_CONFIG = {
     'site_dict': {
         'root_url': 'https://dict.hjenglish.com',
         'valid_lang_pair': ['jc', 'cj', 'ce', 'ec']
+    },
+    'rate_tool': {
+        'root_url': 'http://data.bank.hexun.com/other/cms/fxjhjson.ashx?callback=PereMoreData',
+        'redis_key': 'tool:rate_cache'
     }
 }
 
