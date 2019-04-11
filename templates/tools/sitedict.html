@@ -154,7 +154,7 @@
                 if (data.detailed_examples.length > 0){
                     for(var j=0;j<data.detailed_examples.length;j++){
                         var example = data.detailed_examples[j];
-                        var s = '<br>' + (j+1).toString() + '.&nbsp;&nbsp;<span class="example-detailed-meaning">' + example.detailed_meaning + '</span>';
+                        var s = '<br><span class="example-detailed-meaning">' + (j+1).toString() + '.&nbsp;&nbsp;' + example.detailed_meaning + '</span>';
                         s += '<br>' + example.examples.join('<br>');
                         node += s;
                     }

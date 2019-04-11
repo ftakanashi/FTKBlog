@@ -46,6 +46,14 @@ class IndexView(View):
         sCate = request.GET.get('category')
         sTag = request.GET.get('tag')
 
+        # 私密分类不展示
+        try:
+            private_category = Category.objects.get(name='私密')
+        except Category.DoesNotExist as e:
+            private_category = None
+        else:
+            posts = posts.exclude(category=private_category)
+
         if sCate is not None:
             posts = posts.filter(category__cate_id=sCate)
         elif sTag is not None:
@@ -62,7 +70,10 @@ class IndexView(View):
         p = Paginator(posts, 10, request=request)
         paged_posts = p.page(page)
 
-        categories = Category.objects.all()
+        if private_category is not None and not request.user.is_superuser:
+            categories = Category.objects.all().exclude(name='私密')
+        else:
+            categories = Category.objects.all()
         for category in categories:
             category.count = category.in_category_posts.count()
 
@@ -305,6 +316,9 @@ class PostView(View):
         except Post.DoesNotExist, e:
             return Http404()
         else:
+            if post.category.name == '私密' and not request.user.is_superuser:
+                return render(request, 'error.html', {'error_title': '无法查看', 'error_msg': '本文隶属于保密局管辖，无查看权限o(*￣︶￣*)o'})
+
             if post.status == '0':
                 ctx['read_count'] = redis.hincrby(settings.READ_COUNT_KEY, uuid, 1)
             else:

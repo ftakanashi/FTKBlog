@@ -42,7 +42,15 @@ $(document).ready(function(){
         },{
             field: 'category',
             title: '分类',
-            sortable: true
+            sortable: true,
+            formatter: function(value ,row, index){
+                if (value === '私密'){
+                    return '<span class="glyphicon glyphicon-lock"></span>' + value;
+                }
+                else{
+                    return value;
+                }
+            }
         },{
             field: 'tag',
             title: '标签',
