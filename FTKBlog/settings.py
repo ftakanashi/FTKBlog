@@ -238,11 +238,12 @@ SITE_MEMO_KEY = 'blog:site_memo'
 READ_COUNT_KEY = 'blog:read_count'
 ACCESS_COUNT_KEY = 'blog:access_count'
 ACCESS_IP_QUEUE = 'blog:access_ip_queue'
-CACHE_KEY = 'blog:post_cache'
+CACHE_KEY = 'blog:post_cache:{}'
 UNREAD_COMMENTS_KEY = 'blog:unread_comment_queue'
 UNREAD_MESSAGE_KEY = 'blog:unread_message_queue'
 VERI_CODE_KEY = 'blog:veri_code:%s'
 LAST_BACKUP_KEY = 'blog:last_backup'
+LATEST_NEWPOST_UUID_KEY = 'blog:latest_new_post_uuid'
 
 # post中图片上传目录
 IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload', 'post-image')

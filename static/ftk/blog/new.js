@@ -65,6 +65,47 @@ $(document).ready(function(){
     });
 
     $.extend({
+        'getUUID': function(){
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+            });
+        }
+    });
+
+    // 自动生成UUID并从后台获取newpost的latest uuid。
+    /*
+    * 说明：为了保持在提交之前所有newpost都只有一个uuid（这样缓存不会丢失）
+    * 所以每次点开new.html页面的时候检查后台是否有保存latest uuid。如果有就返回，如果没有，表明本次是全新创建
+    * 则后台保存此前端生成的uuid后并再将此返回出来，表明后台已经保存完成。
+    * */
+    var _uuid = $.getUUID();
+    $.ajax({
+        async: false,
+        url: location.pathname,
+        type: 'put',
+        dataType: 'json',
+        data: {
+            act: 'latest',
+            post_uuid: _uuid
+        },
+        success: function(data){
+            $('#uuidInput').val(data.uuid);
+        },
+        error: function(xml, err, exc){
+            var msg;
+            try{
+                msg = JSON.parse(xml.responseText).msg;
+            }
+            catch(e){
+                msg = '未知错误';
+            }
+            alert('获取最新指定newpost_uuid失败: ' + msg + '\n请检查后台日志等。');
+        }
+    });
+
+
+    $.extend({
         loadCache: function(){
             layer.msg('正在寻找自动保存内容...',{offset: 't',icon: 0});
             $.ajax({
@@ -72,10 +113,12 @@ $(document).ready(function(){
                 type: 'put',
                 dataType: 'json',
                 data: {
-                    act: 'load'
+                    act: 'load',
+                    post_uuid: $('#uuidInput').val()
                 },
                 success: function(data){
                     layer.confirm('发现最近('+moment(Date.now() - 1000 * data.time).fromNow()+')自动保存的内容，是否恢复？',{icon:3,title:'提示'},function(index){
+                        $('#titleInput').val(data.title);
                         contentEditor.insertValue(data.content);
                         $('#uuidInput').val(data.post_uuid);
                         layer.msg('恢复成功',{offset: 't',icon: 1});
@@ -99,22 +142,14 @@ $(document).ready(function(){
                 type: 'put',
                 dataType: 'json',
                 data: {
-                    act: 'clear'
+                    act: 'clear',
+                    post_uuid: $('#uuidInput').val()
                 }
-            })
-        },
-        getUUID: function(){
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-                return v.toString(16);
             });
         }
     });
     // 先验自动保存
     $.loadCache();
-
-    // 自动生成UUID
-    $('#uuidInput').val($.getUUID());
 
     // 点击重置按钮
     $('#reset').click(function(event){
@@ -187,8 +222,11 @@ $(document).ready(function(){
                 is_publish: isPublished
             },
             success: function(data){
-                $.clearCache();
-                window.clearInterval(autoSaveInterval);
+                if (isPublished){
+                    // 只有确实发布了才清空缓存
+                    $.clearCache();
+                    window.clearInterval(autoSaveInterval);
+                }
                 $('#is-edited').val('true');
                 layer.confirm('提交成功',{
                     icon: 1,
@@ -229,6 +267,7 @@ $(document).ready(function(){
 
     function autoSave(){
         var uuid = $('#uuidInput').val();
+        var title = $('#titleInput').val();
         var currentContent = contentEditor.getMarkdown();
         var showMsg = $('#showAutosaveMsg').val() === 'True';
         $.ajax({
@@ -237,6 +276,7 @@ $(document).ready(function(){
             dataType: 'json',
             data: {
                 act: 'save',
+                title: title,
                 content: currentContent,
                 post_uuid: uuid
             },
@@ -275,7 +315,7 @@ $(document).ready(function(){
     }
     var autosaveIntervalNum;
     try{
-         autosaveIntervalNum = parseInt($('#autosaveIntervalNum').val());
+         autosaveIntervalNum = parseFloat($('#autosaveIntervalNum').val());
     }
     catch(e){
         autosaveIntervalNum = 5;

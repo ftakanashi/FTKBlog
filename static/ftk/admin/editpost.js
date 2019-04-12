@@ -71,10 +71,12 @@ $(document).ready(function(){
                 type: 'put',
                 dataType: 'json',
                 data: {
-                    act: 'load'
+                    act: 'load',
+                    post_uuid: $('#uuidInput').val()
                 },
                 success: function(data){
                     layer.confirm('发现最近('+moment(Date.now() - 1000 * data.time).fromNow()+')自动保存的内容，是否恢复？',{icon:3,title:'提示'},function(index){
+                        $('#titleInput').val(data.title);
                         contentEditor.insertValue(data.content);
                         $('#uuidInput').val(data.post_uuid);
                         layer.msg('恢复成功',{offset: 't',icon: 1});
@@ -98,13 +100,15 @@ $(document).ready(function(){
                 type: 'put',
                 dataType: 'json',
                 data: {
-                    act: 'clear'
+                    act: 'clear',
+                    post_uuid: $('#uuidInput').val()
                 }
             })
         }
     });
     // 先验自动保存
-    //$.loadCache();
+    setTimeout($.loadCache, 1000);
+    layer.tips('如果要恢复自动保存的内容，请点击这里', '#restoreContent', {tips: [3]});
 
     // 点击重置按钮
     $('#reset').click(function(event){
@@ -172,8 +176,11 @@ $(document).ready(function(){
                 is_publish: isPublished
             },
             success: function(data){
-                $.clearCache();
-                window.clearInterval(autoSaveInterval);
+                if (isPublished){
+                    // 只有确实发布了才清空缓存
+                    $.clearCache();
+                    window.clearInterval(autoSaveInterval);
+                }
                 layer.confirm('提交成功',{
                     icon: 1,
                     title: '提示',
@@ -212,6 +219,7 @@ $(document).ready(function(){
 
     function autoSave(){
         var uuid = $('#uuidInput').val();
+        var title = $('#titleInput').val();
         var currentContent = contentEditor.getMarkdown();
         var showMsg = $('#showAutosaveMsg').val() === 'True';
         $.ajax({
@@ -220,6 +228,7 @@ $(document).ready(function(){
             dataType: 'json',
             data: {
                 act: 'save',
+                title: title,
                 content: currentContent,
                 post_uuid: uuid
             },
@@ -258,7 +267,7 @@ $(document).ready(function(){
     }
     var autosaveIntervalNum;
     try{
-        autosaveIntervalNum = parseInt($('#autosaveIntervalNum').val());
+        autosaveIntervalNum = parseFloat($('#autosaveIntervalNum').val());
     }
     catch(e){
         autosaveIntervalNum = 5;

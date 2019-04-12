@@ -316,8 +316,15 @@ class PostManange(View):
             return JsonResponse({'msg': '非法的操作类型'}, status='500')
         if act == 'save':
             try:
+                title = put.get('title')
                 content = put.get('content')
-                cache.set(self.CACHE_KEY, content, self.CACHE_TTL)
+                post_uuid = put.get('post_uuid')
+                if not post_uuid:
+                    return JsonResponse({'msg': '未上送uuid'}, status=500)
+                cache_key = self.CACHE_KEY.format(post_uuid)
+                redis.hset(cache_key, 'title', title)
+                redis.hset(cache_key, 'content', content)
+                redis.expire(cache_key, self.CACHE_TTL)
             except Exception, e:
                 print traceback.format_exc(e)
                 return JsonResponse({'msg': '自动保存失败'}, status=500)
@@ -325,18 +332,33 @@ class PostManange(View):
                 return JsonResponse({'msg': '自动保存成功'})
         elif act == 'load':
             try:
-                fetch = cache.get(self.CACHE_KEY)
-                if fetch is None:
+                post_uuid = put.get('post_uuid')
+                if not post_uuid:
+                    return JsonResponse({'msg': '未上送uuid'}, status=500)
+                cache_key = self.CACHE_KEY.format(post_uuid)
+                if not redis.exists(cache_key) or redis.hget(cache_key, 'content') is None:
                     return JsonResponse({'msg': '抱歉，没有找到自动保存'}, status=404)
+                fetch = {
+                    'title': redis.hget(cache_key, 'title'),
+                    'content': redis.hget(cache_key, 'content'),
+                    'post_uuid': post_uuid
+                }
             except Exception, e:
                 print traceback.format_exc(e)
                 return JsonResponse({'msg': '获取缓存内容失败'}, status=500)
             else:
                 return JsonResponse(
-                        {'msg': '获取缓存内容成功', 'content': fetch,
-                         'time': self.CACHE_TTL - cache.ttl(self.CACHE_KEY)})
+                        {'msg': '获取缓存内容成功', 'content': fetch['content'],
+                         'post_uuid': fetch['post_uuid'], 'title': fetch['title'],
+                         'time': self.CACHE_TTL - redis.ttl(cache_key)})
         elif act == 'clear':
-            cache.delete(self.CACHE_KEY)
+            post_uuid = put.get('post_uuid')
+            if not post_uuid:
+                return JsonResponse({'msg': '未上送uuid'}, status=500)
+            # redis.delete(self.CACHE_KEY)
+            cache_key = self.CACHE_KEY.format(post_uuid)
+            redis.delete(cache_key)
+        return JsonResponse({})
 
     def delete(self, request):
         DELETE = QueryDict(request.body)

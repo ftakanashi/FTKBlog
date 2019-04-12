@@ -191,6 +191,7 @@ class SiteMemoView(View):
 
 
 class NewPostView(View):
+    LATEST_KEY = settings.LATEST_NEWPOST_UUID_KEY
     CACHE_KEY = settings.CACHE_KEY
     CACHE_TTL = 3600
 
@@ -211,16 +212,19 @@ class NewPostView(View):
     def put(self, request):
         put = QueryDict(request.body)
         act = put.get('act')
-        if not act or act not in ('save', 'load', 'clear'):
+        if not act or act not in ('save', 'load', 'clear', 'latest'):
             return JsonResponse({'msg': '非法的操作类型'}, status='500')
         if act == 'save':
             try:
+                title = put.get('title')
                 content = put.get('content')
                 post_uuid = put.get('post_uuid')
-                # cache.set(self.CACHE_KEY, content, self.CACHE_TTL)
-                redis.hset(self.CACHE_KEY, 'content', content)
-                redis.hset(self.CACHE_KEY, 'post_uuid', post_uuid)
-                redis.expire(self.CACHE_KEY, self.CACHE_TTL)
+                if not post_uuid:
+                    return JsonResponse({'msg': '未上送uuid'}, status=500)
+                cache_key = self.CACHE_KEY.format(post_uuid)
+                redis.hset(cache_key, 'title', title)
+                redis.hset(cache_key, 'content', content)
+                redis.expire(cache_key, self.CACHE_TTL)
             except Exception, e:
                 print traceback.format_exc(e)
                 return JsonResponse({'msg': '自动保存失败'}, status=500)
@@ -228,22 +232,43 @@ class NewPostView(View):
                 return JsonResponse({'msg': '自动保存成功'})
         elif act == 'load':
             try:
-                # fetch = cache.get(self.CACHE_KEY)
-                fetch = {'content': redis.hget(self.CACHE_KEY, 'content'),
-                         'post_uuid': redis.hget(self.CACHE_KEY, 'post_uuid')}
-                if fetch['content'] is None and fetch['post_uuid'] is None:
+                post_uuid = put.get('post_uuid')
+                if not post_uuid:
+                    return JsonResponse({'msg': '未上送uuid'}, status=500)
+                cache_key = self.CACHE_KEY.format(post_uuid)
+                if not redis.exists(cache_key) or redis.hget(cache_key, 'content') is None:
                     return JsonResponse({'msg': '抱歉，没有找到自动保存'}, status=404)
+                fetch = {
+                    'title': redis.hget(cache_key, 'title'),
+                    'content': redis.hget(cache_key, 'content'),
+                    'post_uuid': post_uuid
+                }
             except Exception, e:
                 print traceback.format_exc(e)
                 return JsonResponse({'msg': '获取缓存内容失败'}, status=500)
             else:
                 return JsonResponse(
                         {'msg': '获取缓存内容成功', 'content': fetch['content'],
-                         'post_uuid': fetch['post_uuid'],
-                         'time': self.CACHE_TTL - redis.ttl(self.CACHE_KEY)})
+                         'post_uuid': fetch['post_uuid'], 'title': fetch['title'],
+                         'time': self.CACHE_TTL - redis.ttl(cache_key)})
         elif act == 'clear':
-            redis.delete(self.CACHE_KEY)
+            post_uuid = put.get('post_uuid')
+            if not post_uuid:
+                return JsonResponse({'msg': '未上送uuid'}, status=500)
+            # redis.delete(self.CACHE_KEY)
+            cache_key = self.CACHE_KEY.format(post_uuid)
+            redis.delete(cache_key)
+        elif act == 'latest':
+            post_uuid = put.get('post_uuid')
+            if not post_uuid:
+                return JsonResponse({'msg': '未上送uuid'}, status=500)
 
+            latest_newpost_uuid = redis.get(self.LATEST_KEY)
+            if latest_newpost_uuid is None:
+                redis.set(self.LATEST_KEY, post_uuid)
+                return JsonResponse({'uuid': post_uuid})
+            else:
+                return JsonResponse({'uuid': latest_newpost_uuid})
         return JsonResponse({})
 
     def post(self, request):
@@ -276,6 +301,10 @@ class NewPostView(View):
             else:
                 return JsonResponse({'msg': '错误的flag种类[{}]'.format(typeFlag)}, status=500)
             post.save()
+
+            # 落地到库，缓存中的latest_new_post_uuid可以删除
+            redis.delete(self.LATEST_KEY)
+
             processFlag = True
             for tag in tags:
                 if isinstance(tag, unicode):
