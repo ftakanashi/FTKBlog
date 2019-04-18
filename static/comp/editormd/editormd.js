@@ -1501,7 +1501,6 @@
             this.previewContainer.find("." + editormd.classNames.tex).each(function(){
                 var tex  = $(this);
                 editormd.$katex.render(tex.text(), tex[0]);
-                
                 tex.find(".katex").css("font-size", "1.6em");
             });   
 
@@ -3779,7 +3778,7 @@
 
                         if (firstA.children(".fa").length < 1)
                         {
-                            firstA.append( $(icon).css({ float:"right", paddingTop:"4px" }) );
+                            firstA.append( $(icon).css({ 'float':"right", paddingTop:"4px" }) );
                         }
                     }
 
@@ -4015,7 +4014,8 @@
             var katexHandle = function() {
                 div.find("." + editormd.classNames.tex).each(function(){
                     var tex  = $(this);                    
-                    katex.render(tex.html().replace(/&lt;/g, "<").replace(/&gt;/g, ">"), tex[0]);                    
+                    katex.render(tex.html().replace(/&lt;/g, "<").replace(/&gt;/g, ">").
+                        replace(/&amp;/g, "&").replace(/<br>/g, '\n'), tex[0]);
                     tex.find(".katex").css("font-size", "1.6em");
                 });
             };
@@ -4179,8 +4179,8 @@
     // 使用国外的CDN，加载速度有时会很慢，或者自定义URL
     // You can custom KaTeX load url.
     editormd.katexURL  = {
-        css : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min",
-        js  : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min"
+        css : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.1/katex.min",
+        js  : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.1/katex.min"
     };
     
     editormd.kaTeXLoaded = false;
