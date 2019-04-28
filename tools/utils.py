@@ -7,6 +7,8 @@ import requests
 import sys
 import traceback
 
+from celery.task import Task
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 

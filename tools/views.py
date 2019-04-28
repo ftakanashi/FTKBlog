@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.views import View
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse, QueryDict
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from ratelimit.decorators import ratelimit
@@ -13,9 +13,14 @@ from django_redis import get_redis_connection
 import datetime
 import json
 import logging
+import os
 import paramiko
+import requests
+import subprocess
 import traceback
+import uuid
 
+from tasks import you_get
 from utils import HJDictQuery, RateQuery
 
 logger = logging.getLogger('django')
@@ -108,6 +113,154 @@ class PNHBDownloadView(View):
         if out.strip() == '0':
             return JsonResponse({'msg': '下载命令已经顺利发出ヾ(◍°∇°◍)ﾉﾞ'})
 
+
+class YouGetDownloadView(View):
+    YOU_GET_CACHE_KEY = settings.TOOLS_CONFIG['you-get']['cache_key']
+    YOU_GET_CACHE_TTL = settings.TOOLS_CONFIG['you-get']['cache_ttl']
+    YOU_GET_DEFAULT_DOWNLOAD_PATH = settings.TOOLS_CONFIG['you-get']['default_download_path']
+    YOU_GET_MONITOR_API = settings.CELERY_FLOWER_API
+
+    @ratelimit(key='ip', rate='1/s')
+    def get(self, request):
+
+        if getattr(request, 'limited', False):
+            return render(request, 'error.html', {'error_msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ', 'error_title': ''})
+
+        ctx = {}
+        ctx['messages'] = []
+        if request.GET.get('ssp') == '1':    # support site
+            return render(request, 'tools/you-get/supportSiteTable.html', ctx)
+        elif request.GET.get('tm') == '1':    # task monitor
+            api_url = self.YOU_GET_MONITOR_API + 'tasks'
+            try:
+                task_info = json.loads(requests.get(api_url).content)
+            except Exception as e:
+                return render(request, 'error.html', {'error_msg': '获取任务信息失败'})
+            res = []
+            for task in task_info.values():
+                tmp = {}
+                if not task['name'].endswith('you_get'):
+                    continue
+                tmp['uuid'] = task['uuid']
+                kwargs_info = eval(task['kwargs'])
+                tmp.update(kwargs_info)
+                tmp['state'] = task['state']
+                tmp['started'] = task['started']
+                tmp['runtime'] = task['runtime']
+                res.append(tmp)
+
+            res = json.dumps(res, encoding='utf-8')
+            ctx['task_info'] = res
+            return render(request, 'tools/you-get/taskMonitor.html', ctx)
+
+        if request.GET.get('u') is None:
+            return render(request, 'tools/you-get/analyze.html', ctx)
+        else:
+            uuid = request.GET.get('u')
+            content = redis.get(self.YOU_GET_CACHE_KEY.format(uuid))
+            if content is None:
+                ctx['messages'].append('没有找到相关缓存。关联键：{}'.format(uuid))
+                return render(request, 'tools/you-get/analyze.html', ctx)
+            else:
+                ctx['content'] = content
+                ctx['uuid'] = uuid
+                return render(request, 'tools/you-get/download.html', ctx)
+
+
+    @ratelimit(key='ip', rate='1/1s', block=True)
+    def post(self, request):
+        method = request.POST.get('method', 'analyze')
+        if method not in ('analyze', 'download'):
+            return JsonResponse({'msg': '错误的请求类型'}, status=500)
+
+        if method == 'analyze':
+            url = request.POST.get('url')
+            if not url:
+                return JsonResponse({'msg': '错误的url'}, status=500)
+
+            cmd = 'you-get --json {}'.format(url)
+            logger.info('You-Get下载分析链接：[{}]'.format(cmd))
+            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            out, err = p.communicate()
+
+            if err:
+                logger.error('You-Get分析失败：\n{}'.format(err))
+                return JsonResponse({'msg': '分析链接失败'}, status=404)
+            else:
+                try:
+                    json.loads(out)
+                except Exception as e:
+                    logger.error('解析JSON格式失败：{}'.format(traceback.format_exc(e)))
+                    return JsonResponse({'msg': '分析内容格式有误，解析失败'}, status=500)
+                else:
+                    u = str(uuid.uuid4())
+                    key = self.YOU_GET_CACHE_KEY.format(u)
+                    redis.set(key, out)
+                    redis.expire(key, self.YOU_GET_CACHE_TTL)
+                    return JsonResponse({'uuid': u})
+        elif method == 'download':
+            form = request.POST.get('f')
+            output_filename = request.POST.get('o')
+
+            def check_safety(fn):
+                for char in '~!@#$%^&*()_+`\';:\"<>,/?{} ':
+                    if char in fn:
+                        return False
+                return True
+
+            if not check_safety(output_filename):
+                return JsonResponse({'msg': '输入的文件名有潜在危险性'},status=500)
+
+            with_caption = request.POST.get('c') == 'true'
+            save_to_baidu = request.POST.get('s') == 'true'
+            list_download = request.POST.get('l') == 'true'
+            url = request.POST.get('u')
+
+            default_path = self.YOU_GET_DEFAULT_DOWNLOAD_PATH
+            # p = {'url': url, 'form': form, 'default_path': default_path, 'output_fn': output_filename}
+            # r = you_get.apply_async(p, queue='you_get_queue')
+            r = you_get.delay(url=url,
+                              form=form,
+                              with_caption=with_caption,
+                              default_path=default_path,
+                              output_fn=output_filename)
+            return JsonResponse({'msg': '远程下载命令已成功发出(〃\'▽\'〃)'})
+            # cmd = 'you-get --format={} -o {}'.format(form, default_path)
+            #
+            # if output_filename != '':
+            #     cmd += ' -O \'{}\''.format(output_filename)
+            #
+            # cmd += ' {} > {} 2>&1'.format(url, os.path.join(default_path, 'download.log'))
+            #
+            # logger.info('运行you-get：[{}]'.format(cmd))
+            # p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            # # out, err = p.communicate()
+            # check_cmd = 'ps -ef | grep \'{}\' | grep -v grep | wc -l'.format(url)
+            # logger.info('检查命令[{}]'.format(check_cmd))
+            # check_p = subprocess.Popen(check_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            # check_out, check_err = check_p.communicate()
+            # if check_err != '' or int(check_out.strip()) == 0:
+            #     logger.error('远程调用命令失败。请查看相关download.log文件')
+            #     return JsonResponse({'msg': '远程call命令失败o(╥﹏╥)o'}, status=500)
+            # else:
+            #     return JsonResponse({'msg': '远程下载命令已成功发出(〃\'▽\'〃)'})
+
+
+    @ratelimit(key='ip', rate='1/1s', block=True)
+    def delete(self, request):
+        DELETE = QueryDict(request.body)
+        uuid = DELETE.get('u')
+        api_url = self.YOU_GET_MONITOR_API + 'task/revoke/{}'.format(uuid)
+        logger.info('发起停止任务请求:[{}]'.format(api_url))
+        try:
+            res = request.post(api_url, data={'terminate': True})
+            if res.status_code != 200:
+                raise Exception(res.content)
+        except Exception as e:
+            logger.error(traceback.format_exc(e))
+            return JsonResponse({'msg': '停止任务失败'}, status=500)
+        else:
+            return JsonResponse({'msg': json.loads(res.content)['message']})
 
 class SSRConfigView(View):
     @ratelimit(key='ip', rate='1/1s')

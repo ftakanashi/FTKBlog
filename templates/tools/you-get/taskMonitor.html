@@ -1,0 +1,107 @@
+{% extends 'original/base.html' %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}" />
+{% endblock %}
+
+{% block body %}
+    <div class="container" style="padding: 20px;">
+    <table id="taskMonitorTable"></table>
+    </div>
+    <input type="hidden" id="taskInfoInput" value="{{ task_info }}" />
+    <script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'comp/moment.js' %}"></script>
+    <script>
+    $(document).ready(function(){
+        var taskInfo = JSON.parse($('#taskInfoInput').val());
+        $('#taskMonitorTable').bootstrapTable({
+            data: taskInfo,
+            columns: [{
+                field: 'uuid',
+                title: 'UUID'
+            },{
+                field: 'state',
+                title: '状态',
+                sortable: true,
+                formatter: function(value, row, index){
+                    var color = '';
+                    switch(value){
+                        case 'SUCCESS': color = 'success'; break;
+                        case 'STARTED': color = 'primary'; break;
+                        case 'FAILURE': color = 'danger'; break;
+                        default: color = 'default'; break;
+                    }
+                    return '<span class="label label-' + color + '">' + value + '</span>';
+                }
+            },{
+                field: 'd_info',
+                title: '下载参数',
+                formatter: function(value, row, index){
+                    var res = '';
+                    res += 'URL: <a href="' + row.url + '">' + row.url + '</a><br/>';
+                    res += '格式: <span class="label label-default">' + row.form + '</span><br/>';
+                    res += '文件名: <span class="label label-default">' + (row.output_fn ? row.output_fn : '默认') + '</span><br/>';
+                    res += '字幕: <span class="glyphicon glyphicon-' + (row.with_caption ? 'ok' : 'remove') + '"></span><br/>';
+                    return res;
+                }
+            },{
+                field: 'started',
+                title: '开始时间',
+                sortable: true,
+                formatter: function(value, row, index){
+                    var m = moment(parseFloat(value) * 1000);
+                    return m.format('lll');
+                }
+            },{
+                field: 'runtime',
+                title: '运行时间',
+                sortable: true,
+                formatter: function(value, row, index){
+                    return moment.duration(value * 1000).humanize();
+                }
+            },{
+                field: 'options',
+                title: '操作',
+                formatter: function(value, row, index){
+                    var html = '<button class="btn btn-xs btn-danger revoke-btn" name="' +
+                            row.uuid +
+                            '"><span class="glyphicon glyphicon-remove-circle"></span>停止</button>';
+                    return html;
+                }
+            }],
+            showColumns: true,
+            showToggle: true,
+            search: true
+        });
+    }).on('click', '.revoke-btn', function(e){
+        e.preventDefault();
+        layer.msg('目前还不支持revoke');
+        return;
+        var uuid = $(this).attr('name');
+        var loadLayer = layer.load('1', {shade: 0.5});
+        $.ajax({
+            url: location.pathname,
+            type: 'delete',
+            dataType: 'json',
+            data: {
+                u: uuid
+            },
+            success: function(data){
+                layer.alert(data.msg);
+            },
+            error: function(xml, exc, err){
+                var msg;
+                try{
+                    msg = JSON.parse(xml.responseText).msg;
+                }
+                catch(e){
+                    msg = '未知错误';
+                }
+                layer.msg(msg);
+            },
+            complete: function(){layer.close(loadLayer);}
+        });
+    });
+    </script>
+{% endblock %}

@@ -19,3 +19,5 @@
 
     重启uwsgi
     reload 一下nginx
+
+    启动FTKBlog的Celery:[FTKBlog]: celery multi start FTKBlog -A FTKBlog -l info -Q you_get_tasks,default,celery --pidfile=../run/celery_%n.pid --logfile=../logs/celery_%n.log -c 3

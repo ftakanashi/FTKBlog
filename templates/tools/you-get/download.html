@@ -1,0 +1,203 @@
+{% extends 'original/base.html' %}
+{% load static %}
+
+{% block toolsbar %}{% endblock %}
+{% block left_page_content %}{% endblock %}
+
+{% block style %}
+    <link href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/bootstrap-switch/css/bootstrap-switch.min.css' %}" rel="stylesheet" />
+    <style>
+    .main-panel{
+        margin-top: -50px;
+        padding: 40px;
+        background: #f4f4f4;
+    }
+    </style>
+{% endblock %}
+
+{% block main_ground %}
+    <div class="main-panel">
+    <h3 style="text-align: center" id="title-text"></h3>
+    <h4 style="text-align: center" id="src-text"></h4>
+    <div class="row">
+        <div class="col-lg-2 col-md-2"></div>
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <table id="content-table"></table>
+        </div>
+    </div>
+    <br/>
+    <div class="row" style="text-align:center;">
+        <div class="col-lg-12">
+            <button class="btn btn-default btn-sm" id="submit-download">
+                <span class="glyphicon glyphicon-download"></span>
+                远端下载
+            </button>
+        </div>
+        <div class="col-lg-12">
+            <a href="javascript:void(0);" style="text-decoration: none;" id="show-more-options">更多选项</a>
+        </div>
+    </div>
+    <hr>
+    <div class="row" style="display: none; text-align:center;" id="more-options">
+        <div class="col-lg-3 col-sm-1"></div>
+        <div class="col-lg-6 col-sm-10">
+            <div class="row">
+                <div class="form-group">
+                    <input class="form-control" id="fnInput" placeholder="输出文件名" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label" for="withCaption">
+                        下载字幕/歌词/弹幕<input type="checkbox" id="withCaption" />
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label" for="saveToBaidu">
+                        同步到百度云(暂未开放)<input type="checkbox" id="saveToBaidu" checked disabled />
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label" for="listDownload">
+                        播放列表下载(暂未开放)<input type="checkbox" id="listDownload" disabled />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block hidden_inputs %}
+    <input type="hidden" value="{{ uuid }}" id="uuidInput" />
+    <input type="hidden" value="{{ content }}" id="contentInput" />
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'comp/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+<script>
+$(document).ready(function(){
+    // 构建bootstrapSwitch
+    $('input[type=checkbox]').bootstrapSwitch({
+        size: 'mini',
+        onText: '是',
+        offText: '否'
+    });
+
+    // show-more
+    $('#show-more-options').click(function(event){
+        $('#more-options').show();
+    });
+
+    // 填充缓冲内容
+    var content = $('#contentInput').val();
+    content = JSON.parse(content);
+    $('#title-text').text(content.title);
+    var link = '<a href="'+ content.url +'" style="text-decoration: none;" id="src-link">'+ content.site +'</a>';
+    $('#src-text').html('源站:' + link);
+    var rows = [];
+    for(k in content.streams){
+        var stream = content.streams[k];
+        stream.format = k;
+        rows.push(stream);
+    }
+    // 构建bootstrapTable
+    $('#content-table').bootstrapTable({
+        data: rows,
+        search: true,
+        showToggle: true,
+        showColumns: true,
+        clickToSelect: true,
+        columns: [{
+            radio: true,
+            visible: true
+        },{
+            field: 'format',
+            title: '格式',
+            visible: false,
+            sortable: true
+        },{
+            field: 'quality',
+            title: '画质'
+        },{
+            field: 'container',
+            title: '格式',
+            sortable: true
+        },{
+            field: 'src',
+            title: '源地址',
+            formatter: function(value, row, index){
+                srcs = [];
+                for(var i=0;i<value.length;i++){
+                    var src = '<a href="' + value[i] + '">源地址' + (i+1).toString() + '</a>';
+                    srcs.push(src);
+                }
+                return srcs.join('<br/>');
+            }
+        },{
+            field: 'size',
+            title: '大小',
+            sortable: true,
+            formatter: function(value, row, index){
+                var unitArray = ['B', 'KB', 'MB', 'GB'];
+                var unitCursor = 0;
+                while (value >= 1024 && unitCursor != unitArray.length - 1){
+                    value = value / 1024.0;
+                    unitCursor += 1;
+                }
+                return value.toFixed(2) + unitArray[unitCursor];
+            }
+        }]
+    });
+
+    $('#submit-download').click(function(event){
+        event.preventDefault();
+        var selections = $('#content-table').bootstrapTable('getSelections');
+        if (selections.length != 1){return;}
+        var format = selections[0].format;
+        var outputFn = $('#fnInput').val();
+        var withCaption = $('#withCaption').prop('checked');
+        var saveToBaidu = $('#saveToBaidu').prop('checked');
+        var listDownload = $('#listDownload').prop('checked');
+        var url = $('#src-link').attr('href');
+
+        var loadLayer = layer.load('1', {shade: 0.5});
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                method: 'download',
+                f: format,
+                o: outputFn,
+                c: withCaption,
+                s: saveToBaidu,
+                l: listDownload,
+                u: url
+            },
+            success: function(data){
+                layer.alert(data.msg);
+            },
+            error: function(xml, err, exc){
+                var msg;
+                try{
+                    msg = JSON.parse(xml.responseText).msg;
+                }
+                catch(e){
+                    msg = '未知错误';
+                }
+                layer.msg(msg);
+            },
+            complete: function(){layer.close(loadLayer);}
+        });
+    });
+
+});
+</script>
+{% endblock %}

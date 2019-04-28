@@ -89,7 +89,7 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '192.168.178.59:9200'
+        'hosts': '192.168.3.5:9200'
         # 'hosts': '127.0.0.1:9200'
         # 'hosts': '10.13.114.112:9200'
     },
@@ -99,7 +99,7 @@ ELASTICSEARCH_INDEX = 'ftkblog'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.178.59:6379/1',
+        'LOCATION': 'redis://192.168.3.5:6379/1',
         # 'LOCATION': 'redis://127.0.0.1:6379/1',
         # 'LOCATION': 'redis://10.13.114.112:6379/1',
         'OPTIONS': {
@@ -181,6 +181,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# CRONTAB configuration
 CRONLOG = os.path.join(BASE_DIR, 'logs', 'cron', 'cron.log')
 CRONJOBS = [
     ('0 */4 * * *', 'blog.cron.sync_read_count'),  # 每隔四小时同步redis中阅读数到库中
@@ -188,8 +189,34 @@ CRONJOBS = [
     # ('0 0 */2 * *', 'blog.cron.gc_post_image'),  # 每两天清理一次无用的图片
     ('40 9 * * *', 'FTKBlog.cron.db_backup'),  # 每天备份数据库数据
     ('0 1 * * *', 'FTKBlog.cron.upload_backup'),  # 每天备份上传（图片）数据
-    ('0 2 */3 * *', 'FTKBlog.cron.migration_backup')  # 每天备份migration记录
+    ('0 2 */3 * *', 'FTKBlog.cron.migration_backup'),  # 每天备份migration记录
+    ('*/10 * * * *', 'tools.cron.upload_to_baidu')    # you-get下载文件同步到百度云上
 ]
+
+# CELERY configuration
+BROKER_URL = 'redis://:franknihao@127.0.0.1:6379/2'
+CELERY_RESULT_BACKEND = 'redis://:franknihao@127.0.0.1:6379/2'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_TIME_EXPIRES = 60 * 60 * 24
+CELERY_ACCEPT_CONTENT = ['json', 'msgpack']
+
+from kombu import Queue
+CELERY_QUEUES = (
+    Queue('default', routing_key='task.#'),
+    Queue('you_get_tasks', routing_key='you_get.#')
+)
+CELERY_DEFAULT_EXCHANGE = 'tasks'
+CELERY_DEFAULT_EXCHANGE_TYPE = 'topic'
+CELERY_DEFAULT_ROUTING_KEY = 'task.default'
+CELERY_ROUTES = {
+    'tools.tasks.you_get': {
+        'queue': 'you_get_tasks',
+        'routing_key': 'you_get.you_get_download'
+    }
+}
+
+CELERY_FLOWER_API = 'http://127.0.0.1:5556/api/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -261,6 +288,11 @@ TOOLS_CONFIG = {
     },
     'pnhb': {
         'script_path': '/root/hook_scripts/pnhb_download/main.py'
+    },
+    'you-get': {
+        'cache_key': 'tools:you_get_cache:{}',
+        'cache_ttl': 180,
+        'default_download_path': '/home/ftkblog/bypy/you-get'
     },
     'ssr_config': {
         'show_port_path': '/root/hook_scripts/ssr_config/show_port.py',

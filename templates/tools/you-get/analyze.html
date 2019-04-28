@@ -1,0 +1,125 @@
+{% extends 'original/base.html' %}
+{% load static %}
+
+{% block title %}You-Get 代理下载{% endblock %}
+
+{% block toolsbar %}{% endblock %}
+{% block left_page_content %}{% endblock %}
+
+{% block style %}
+    <link href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}" rel="STYLESHEET" />
+    <style>
+    .main-panel{
+        padding: 20px;
+    }
+    #support-site-display,#showTaskMonitor{
+        text-decoration: none;
+        font-size: 12px;
+    }
+    </style>
+{% endblock %}
+
+{% block main_ground %}
+<div class="main-panel">
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2"></div>
+        <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+            {% for message in messages %}
+                <div class="alert alert-dismissable alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2"></div>
+        <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+            <div class="form-group">
+                <label class="control-label" for="urlInput">下载地址
+                    <a href="javascript:void(0);" id="support-site-display">支持网站一览</a>
+                </label>
+                <input placeholder="请输入要下载的视频地址..." class="form-control" id="urlInput" />
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div style="text-align:center;">
+        <button class="btn btn-primary btn-sm" id="submit-analyze">
+            <i class="fa fa-cloud"></i>
+            开始解析
+        </button>
+        <div>
+            <a href="javascript:void(0);" id="showTaskMonitor">查看运行中任务</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script>
+$(document).ready(function(){
+
+    $('#support-site-display').click(function(event){
+        event.preventDefault();
+        layer.open({
+            type: 2,
+            content: location.pathname + '?ssp=1',
+            shadeClose: true,
+            title: ['', 'height: 10px;'],
+            closeBtn: false,
+            offset: 't',
+            resize: false,
+            area: ['75%', '80%']
+        });
+    });
+
+    $('#showTaskMonitor').click(function(event){
+        event.preventDefault();
+        layer.open({
+            type: 2,
+            content: location.protocol + '//' + location.host + location.pathname + '?tm=1',
+            title: '正在运行中的任务',
+            offset: 't',
+            area: ['75%', '80%']
+        });
+    });
+
+    $('#submit-analyze').click(function(e){
+        e.preventDefault();
+        var url = $('#urlInput').val();
+        if (!url){
+            layer.tips('请正确输入地址', '#urlInput', {'tips': 3});
+            return;
+        }
+        var loadLayer = layer.load('1',{shade: 0.5});
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                url: url,
+                method: 'analyze'
+            },
+            success: function(data){
+                location.href = location.protocol + '//' + location.host + location.pathname + '?u=' + data.uuid;
+            },
+            error: function(xml, err, exc){
+                var msg;
+                try{
+                    msg = JSON.parse(xml.responseText).msg
+                }
+                catch(e){
+                    msg = '未知错误';
+                }
+                layer.msg(msg);
+            },
+            complete: function(){layer.close(loadLayer);}
+        })
+    });
+
+
+});
+</script>
+{% endblock %}
