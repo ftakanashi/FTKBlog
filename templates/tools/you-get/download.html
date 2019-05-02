@@ -54,18 +54,19 @@
                     </label>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group">
-                    <label class="control-label" for="saveToBaidu">
-                        同步到百度云(暂未开放)<input type="checkbox" id="saveToBaidu" checked disabled />
-                    </label>
+            <div style="display:{% if is_playlist %}block{% else %}none{% endif %};">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label" for="listDownload">
+                            播放列表下载<input type="checkbox" id="listDownload" />
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label class="control-label" for="listDownload">
-                        播放列表下载(暂未开放)<input type="checkbox" id="listDownload" disabled />
-                    </label>
+                <div class="row" style="display: none;">
+                    <div class="form-group">
+                        <label class="control-label" for="manualFormInput">手动输入格式</label>
+                        <input class="form-control" id="manualFormInput" placeholder="请输入上面表格中每P都有的格式" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,6 +77,7 @@
 {% block hidden_inputs %}
     <input type="hidden" value="{{ uuid }}" id="uuidInput" />
     <input type="hidden" value="{{ content }}" id="contentInput" />
+    <input type="hidden" value="{{ totalUrl }}" id="totalUrlInput" />
 {% endblock %}
 
 {% block script %}
@@ -84,10 +86,28 @@
 <script>
 $(document).ready(function(){
     // 构建bootstrapSwitch
-    $('input[type=checkbox]').bootstrapSwitch({
+    $('#withCaption').bootstrapSwitch({
         size: 'mini',
         onText: '是',
         offText: '否'
+    });
+
+    $('#listDownload').bootstrapSwitch({
+        size: 'mini',
+        onText: '是',
+        offText: '否',
+        onSwitchChange: function(e, data){
+            var tableContent = $('#content-table').parents('div.row');
+            var manualInput = $('#manualFormInput').parents('div.row');
+            if(data){
+                $(tableContent).slideUp();
+                $(manualInput).slideDown();
+            }
+            else{
+                $(tableContent).slideDown();
+                $(manualInput).slideUp();
+            }
+        }
     });
 
     // show-more
@@ -96,17 +116,28 @@ $(document).ready(function(){
     });
 
     // 填充缓冲内容
-    var content = $('#contentInput').val();
-    content = JSON.parse(content);
-    $('#title-text').text(content.title);
-    var link = '<a href="'+ content.url +'" style="text-decoration: none;" id="src-link">'+ content.site +'</a>';
+    var content_strs = $('#contentInput').val().split('###');
+    var contents = [];
+    for(var i= 0;i<content_strs.length;i++){
+        contents.push(JSON.parse(content_strs[i]));
+    }
+    $('#totalUrlInput').val(contents[0].url);
+    $('#title-text').text(contents[0].title);
+    var link = '<a href="'+ contents[0].url +'" style="text-decoration: none;" id="src-link">'+ contents[0].site +'</a>';
     $('#src-text').html('源站:' + link);
     var rows = [];
-    for(k in content.streams){
-        var stream = content.streams[k];
-        stream.format = k;
-        rows.push(stream);
+
+    for(var j=0;j<contents.length;j++){
+        var content = contents[j];
+        for (k in content.streams){
+            var stream = content.streams[k];
+            stream.format = k;
+            stream.title = content.title;
+            stream.src_url = content.url;
+            rows.push(stream);
+        }
     }
+
     // 构建bootstrapTable
     $('#content-table').bootstrapTable({
         data: rows,
@@ -117,6 +148,16 @@ $(document).ready(function(){
         columns: [{
             radio: true,
             visible: true
+        },{
+            field: 'title',
+            title: '标题',
+            visible: true,
+            sortable: true
+        },{
+            field: 'src_url',
+            title: 'URL',
+            visible: false,
+            sortable: false
         },{
             field: 'format',
             title: '格式',
@@ -132,6 +173,7 @@ $(document).ready(function(){
         },{
             field: 'src',
             title: '源地址',
+            visible: false,
             formatter: function(value, row, index){
                 srcs = [];
                 for(var i=0;i<value.length;i++){
@@ -159,28 +201,43 @@ $(document).ready(function(){
     $('#submit-download').click(function(event){
         event.preventDefault();
         var selections = $('#content-table').bootstrapTable('getSelections');
-        if (selections.length != 1){return;}
-        var format = selections[0].format;
-        var outputFn = $('#fnInput').val();
-        var withCaption = $('#withCaption').prop('checked');
-        var saveToBaidu = $('#saveToBaidu').prop('checked');
         var listDownload = $('#listDownload').prop('checked');
-        var url = $('#src-link').attr('href');
+
+        if(listDownload){
+            // 播放列表下载模式
+            var format = $('#manualFormInput').val();
+            var withCaption = $('#withCaption').prop('checked');
+            var url = $('#totalUrlInput').val();
+            var postData = {
+                f: format,
+                c: withCaption,
+                u: url,
+                l: 'true'
+            }
+        }
+        else{
+            if (selections.length != 1){ return; }
+            var format = selections[0].format;
+            var url = selections[0].src_url;
+            var outputFn = $('#fnInput').val();
+            var withCaption = $('#withCaption').prop('checked');
+            var postData = {
+                f: format,
+                c: withCaption,
+                u: url,
+                l: 'false',
+                o: outputFn
+            }
+        }
+
+        postData['method'] = 'download';
 
         var loadLayer = layer.load('1', {shade: 0.5});
         $.ajax({
             url: location.pathname,
             type: 'post',
             dataType: 'json',
-            data: {
-                method: 'download',
-                f: format,
-                o: outputFn,
-                c: withCaption,
-                s: saveToBaidu,
-                l: listDownload,
-                u: url
-            },
+            data: postData,
             success: function(data){
                 layer.alert(data.msg);
             },

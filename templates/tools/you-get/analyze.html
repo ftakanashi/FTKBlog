@@ -8,6 +8,7 @@
 
 {% block style %}
     <link href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}" rel="STYLESHEET" />
+    <link href="{% static 'comp/bootstrap-switch/css/bootstrap-switch.min.css' %}" rel="stylesheet" />
     <style>
     .main-panel{
         padding: 20px;
@@ -43,6 +44,17 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2"></div>
+        <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+            <div class="form-group">
+                <label class="control-label" for="playlistCheck">
+                    播放列表分析
+                    <input class="form-control" type="checkbox" id="playlistCheck" />
+                </label>
+            </div>
+        </div>
+    </div>
     <hr>
     <div style="text-align:center;">
         <button class="btn btn-primary btn-sm" id="submit-analyze">
@@ -58,8 +70,23 @@
 
 {% block script %}
 <script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'comp/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
 <script>
 $(document).ready(function(){
+
+    $('input[type=checkbox]').bootstrapSwitch({
+        size: 'mini',
+        onText: '是',
+        offText: '否'
+    });
+
+    var playlistCheckTip;
+    $('label[for=playlistCheck]').mouseenter(function(e){
+        playlistCheckTip = layer.tips('如果目标视频是多P的，默认只解析第一P。如果要解析全部，请打开此开关',
+                '#playlistCheck', {time: -1});
+    }).mouseleave(function(e){
+        layer.close(playlistCheckTip);
+    });
 
     $('#support-site-display').click(function(event){
         event.preventDefault();
@@ -100,6 +127,7 @@ $(document).ready(function(){
             dataType: 'json',
             data: {
                 url: url,
+                playlist: $('#playlistCheck').prop('checked') ? '1' : '0',
                 method: 'analyze'
             },
             success: function(data){

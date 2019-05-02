@@ -51,7 +51,7 @@
         <entry file="file://$PROJECT_DIR$/tools/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="262" column="76" selection-start-line="262" selection-start-column="76" selection-end-line="262" selection-end-column="76" />
+              <caret line="227" column="33" selection-start-line="227" selection-start-column="33" selection-end-line="227" selection-end-column="33" />
               <folding>
                 <element signature="e#24#63#0" expanded="true" />
                 <element signature="e#743#1402#0" expanded="false" />
@@ -62,18 +62,15 @@
                 <element signature="e#2085#3575#0" expanded="false" />
                 <element signature="e#2156#2381#0" expanded="false" />
                 <element signature="e#2470#3575#0" expanded="false" />
-                <element signature="e#3972#5858#0" expanded="false" />
-                <element signature="e#5948#9556#0" expanded="false" />
-                <element signature="e#7401#7544#0" expanded="false" />
-                <element signature="e#10270#12622#0" expanded="false" />
-                <element signature="e#10341#11323#0" expanded="false" />
-                <element signature="e#11450#12622#0" expanded="false" />
-                <element signature="e#12656#14262#0" expanded="false" />
-                <element signature="e#12688#12835#0" expanded="false" />
-                <element signature="e#12924#14262#0" expanded="false" />
-                <element signature="e#14296#17982#0" expanded="false" />
-                <element signature="e#14437#15552#0" expanded="false" />
-                <element signature="e#15641#17982#0" expanded="false" />
+                <element signature="e#9663#12015#0" expanded="false" />
+                <element signature="e#9734#10716#0" expanded="false" />
+                <element signature="e#10843#12015#0" expanded="false" />
+                <element signature="e#12049#13655#0" expanded="false" />
+                <element signature="e#12081#12228#0" expanded="false" />
+                <element signature="e#12317#13655#0" expanded="false" />
+                <element signature="e#13689#17375#0" expanded="false" />
+                <element signature="e#13830#14945#0" expanded="false" />
+                <element signature="e#15034#17375#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -82,28 +79,31 @@
       <file leaf-file-name="analyze.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/tools/you-get/analyze.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+            <state vertical-scroll-proportion="6.071429">
+              <caret line="85" column="35" selection-start-line="85" selection-start-column="35" selection-end-line="85" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="taskMonitor.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/tools/you-get/taskMonitor.html">
+      <file leaf-file-name="download.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/tools/you-get/download.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="79" column="15" selection-start-line="79" selection-start-column="15" selection-end-line="79" selection-end-column="15" />
-              <folding />
+            <state vertical-scroll-proportion="0.7116105">
+              <caret line="225" column="28" selection-start-line="225" selection-start-column="28" selection-end-line="225" selection-end-column="28" />
+              <folding>
+                <element signature="e#2018#2085#0#HTML" expanded="true" />
+                <element signature="e#2433#2455#0#HTML" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cron.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/tools/cron.py">
+      <file leaf-file-name="tasks.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tools/tasks.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8825623">
-              <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -113,29 +113,7 @@
         <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="216" column="1" selection-start-line="216" selection-start-column="1" selection-end-line="216" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tools/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="155" column="0" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
-              <folding>
-                <marker date="1556599412606" expanded="true" signature="24:122" placeholder="import ..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manual.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/manual.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="177" selection-start-line="22" selection-start-column="177" selection-end-line="22" selection-end-column="177" />
+              <caret line="192" column="68" selection-start-line="192" selection-start-column="68" selection-end-line="192" selection-end-column="68" />
               <folding />
             </state>
           </provider>
@@ -199,14 +177,14 @@
         <option value="$PROJECT_DIR$/FTKBlog/__init__.py" />
         <option value="$PROJECT_DIR$/manual.txt" />
         <option value="$PROJECT_DIR$/tools/utils.py" />
-        <option value="$PROJECT_DIR$/tools/tasks.py" />
         <option value="$PROJECT_DIR$/FTKBlog/celery.py" />
+        <option value="$PROJECT_DIR$/templates/tools/you-get/taskMonitor.html" />
+        <option value="$PROJECT_DIR$/tools/cron.py" />
         <option value="$PROJECT_DIR$/templates/tools/you-get/analyze.html" />
         <option value="$PROJECT_DIR$/FTKBlog/settings.py" />
         <option value="$PROJECT_DIR$/templates/tools/you-get/download.html" />
+        <option value="$PROJECT_DIR$/tools/tasks.py" />
         <option value="$PROJECT_DIR$/tools/views.py" />
-        <option value="$PROJECT_DIR$/templates/tools/you-get/taskMonitor.html" />
-        <option value="$PROJECT_DIR$/tools/cron.py" />
       </list>
     </option>
   </component>
@@ -246,6 +224,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -278,10 +257,77 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="you-get" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FTKBlog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -642,10 +688,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="2" width="1934" height="1036" extended-state="0" />
-    <editor active="false" />
+    <frame x="-8" y="2" width="1934" height="1036" extended-state="1" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30096567" sideWeight="0.41943735" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30472103" sideWeight="0.41943735" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3863248" sideWeight="0.5181543" order="1" side_tool="true" content_ui="tabs" />
@@ -716,14 +762,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/tools/you-get/analyze.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/tools/ssr.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4274809">
@@ -1004,13 +1042,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/tools/you-get/download.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80524343">
-          <caret line="66" column="86" selection-start-line="66" selection-start-column="86" selection-end-line="66" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/myadmin/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1025,44 +1056,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tools/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="262" column="76" selection-start-line="262" selection-start-column="76" selection-end-line="262" selection-end-column="76" />
-          <folding>
-            <element signature="e#24#63#0" expanded="true" />
-            <element signature="e#743#1402#0" expanded="false" />
-            <element signature="e#743#778#1" expanded="false" />
-            <element signature="e#1442#1544#0" expanded="false" />
-            <element signature="e#1582#2048#0" expanded="false" />
-            <element signature="e#1652#2048#0" expanded="false" />
-            <element signature="e#2085#3575#0" expanded="false" />
-            <element signature="e#2156#2381#0" expanded="false" />
-            <element signature="e#2470#3575#0" expanded="false" />
-            <element signature="e#3972#5858#0" expanded="false" />
-            <element signature="e#5948#9556#0" expanded="false" />
-            <element signature="e#7401#7544#0" expanded="false" />
-            <element signature="e#10270#12622#0" expanded="false" />
-            <element signature="e#10341#11323#0" expanded="false" />
-            <element signature="e#11450#12622#0" expanded="false" />
-            <element signature="e#12656#14262#0" expanded="false" />
-            <element signature="e#12688#12835#0" expanded="false" />
-            <element signature="e#12924#14262#0" expanded="false" />
-            <element signature="e#14296#17982#0" expanded="false" />
-            <element signature="e#14437#15552#0" expanded="false" />
-            <element signature="e#15641#17982#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/tools/you-get/analyze.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/tools/you-get/taskMonitor.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1073,16 +1066,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tools/cron.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8825623">
-          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="216" column="1" selection-start-line="216" selection-start-column="1" selection-end-line="216" selection-end-column="1" />
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1092,7 +1077,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="155" column="0" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
           <folding>
-            <marker date="1556599412606" expanded="true" signature="24:122" placeholder="import ..." />
+            <marker date="1556712595850" expanded="true" signature="24:122" placeholder="import ..." />
           </folding>
         </state>
       </provider>
@@ -1102,6 +1087,68 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="22" column="177" selection-start-line="22" selection-start-column="177" selection-end-line="22" selection-end-column="177" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tools/you-get/analyze.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="6.071429">
+          <caret line="85" column="35" selection-start-line="85" selection-start-column="35" selection-end-line="85" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="192" column="68" selection-start-line="192" selection-start-column="68" selection-end-line="192" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/tasks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="227" column="33" selection-start-line="227" selection-start-column="33" selection-end-line="227" selection-end-column="33" />
+          <folding>
+            <element signature="e#24#63#0" expanded="true" />
+            <element signature="e#743#1402#0" expanded="false" />
+            <element signature="e#743#778#1" expanded="false" />
+            <element signature="e#1442#1544#0" expanded="false" />
+            <element signature="e#1582#2048#0" expanded="false" />
+            <element signature="e#1652#2048#0" expanded="false" />
+            <element signature="e#2085#3575#0" expanded="false" />
+            <element signature="e#2156#2381#0" expanded="false" />
+            <element signature="e#2470#3575#0" expanded="false" />
+            <element signature="e#9663#12015#0" expanded="false" />
+            <element signature="e#9734#10716#0" expanded="false" />
+            <element signature="e#10843#12015#0" expanded="false" />
+            <element signature="e#12049#13655#0" expanded="false" />
+            <element signature="e#12081#12228#0" expanded="false" />
+            <element signature="e#12317#13655#0" expanded="false" />
+            <element signature="e#13689#17375#0" expanded="false" />
+            <element signature="e#13830#14945#0" expanded="false" />
+            <element signature="e#15034#17375#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tools/you-get/download.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7116105">
+          <caret line="225" column="28" selection-start-line="225" selection-start-column="28" selection-end-line="225" selection-end-column="28" />
+          <folding>
+            <element signature="e#2018#2085#0#HTML" expanded="true" />
+            <element signature="e#2433#2455#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
