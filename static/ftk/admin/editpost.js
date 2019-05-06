@@ -37,6 +37,7 @@ $(document).ready(function(){
     });
 
     var contentEditor;
+    editormd.emoji.path = emojiPluginPath + '/';
     contentEditor = editormd('post-content-editor',{
         width: '100%',
         height: 640,

@@ -9,6 +9,20 @@
     <link href="{% static 'ftk/blog/post.css' %}" rel="stylesheet" />
 {% endblock %}
 
+{% block extra_nav_left %}
+    <li class="dropdown">
+        <a href=javascript:void(0);' class="dropdown-toggle" data-toggle="dropdown" role="button">
+            <i class="fa fa-link"></i>
+            常用站点
+        </a>
+        <ul class="dropdown-menu">
+            {% for key,link in quickLinks.items %}
+                <li><a target="_blank" href="{{ link }}">{{ key }}</a></li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endblock %}
+
 {% block left_ground_display %}none{% endblock %}
 
 {% block title %}{{ post.title }} - F.Takanashi{% endblock %}
@@ -180,6 +194,7 @@
             });
 
             function markdown2Html(domId){
+                editormd.emoji.path = '{% static 'comp/editormd/plugins/emoji-dialog/emoji' %}/';
                 editormd.markdownToHTML(domId,{
                     htmlDecode: 'style,script,iframe',
                     emoji: true,

@@ -3,7 +3,7 @@
  */
 $(function(){
     $(document).ready(function(){
-
+        
         $('body').trigger('loadTheme');
 
         var slider = new SliderUnlock('.slideunlock-slider', {

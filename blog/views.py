@@ -353,6 +353,7 @@ class PostView(View):
             else:
                 ctx['read_count'] = redis.hget(settings.READ_COUNT_KEY, uuid)
             ctx['post'] = post
+            ctx['quickLinks'] = {q.key: q.value for q in Dict.objects.filter(category='quick_links')}
 
         return render(request, 'blog/post.html', ctx)
 

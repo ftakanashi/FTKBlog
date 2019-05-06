@@ -89,8 +89,8 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '192.168.3.5:9200'
-        # 'hosts': '127.0.0.1:9200'
+        # 'hosts': '192.168.3.5:9200'
+        'hosts': '127.0.0.1:9200'
         # 'hosts': '10.13.114.112:9200'
     },
 }
@@ -99,8 +99,8 @@ ELASTICSEARCH_INDEX = 'ftkblog'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.3.5:6379/1',
-        # 'LOCATION': 'redis://127.0.0.1:6379/1',
+        # 'LOCATION': 'redis://192.168.3.5:6379/1',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
         # 'LOCATION': 'redis://10.13.114.112:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
