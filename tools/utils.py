@@ -95,11 +95,14 @@ class HJDictQuery(object):
 
     def _extract_content(self, content, res):
         section = content.find(attrs={'class': 'detail-groups'})
-        pos = ''.join(section.find('dt').stripped_strings)
         dds = []
-        for dd in section.select('dd'):
-            dd_info = self._extract_one_dd(dd)
-            dds.append(dd_info)
+        if section is None:
+            pos = ''.join(content.stripped_strings)
+        else:
+            pos = ''.join(section.find('dt').stripped_strings)
+            for dd in section.select('dd'):
+                dd_info = self._extract_one_dd(dd)
+                dds.append(dd_info)
         res['detailed_explanation'] = pos
         res['detailed_examples'] = dds
 
