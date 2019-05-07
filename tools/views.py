@@ -27,6 +27,7 @@ logger = logging.getLogger('django')
 
 redis = get_redis_connection()
 
+
 # Create your views here.
 
 def get_proxy_ssh_client():
@@ -68,8 +69,8 @@ class BiologyRhythmView(View):
 
         ctx = {}
         ctx['year_opt'] = range(1970, 2031)
-        ctx['month_opt'] = range(1,13)
-        ctx['day_opt'] = range(1,32)
+        ctx['month_opt'] = range(1, 13)
+        ctx['day_opt'] = range(1, 32)
         ctx['today'] = datetime.datetime.today()
         return render(request, 'tools/biorhy.html', ctx)
 
@@ -128,9 +129,9 @@ class YouGetDownloadView(View):
 
         ctx = {}
         ctx['messages'] = []
-        if request.GET.get('ssp') == '1':    # support site
+        if request.GET.get('ssp') == '1':  # support site
             return render(request, 'tools/you-get/supportSiteTable.html', ctx)
-        elif request.GET.get('tm') == '1':    # task monitor
+        elif request.GET.get('tm') == '1':  # task monitor
             api_url = self.YOU_GET_MONITOR_API + 'tasks'
             try:
                 task_info = json.loads(requests.get(api_url).content)
@@ -171,7 +172,6 @@ class YouGetDownloadView(View):
             ctx['uuid'] = uuid
 
             return render(request, 'tools/you-get/download.html', ctx)
-
 
     @ratelimit(key='ip', rate='1/1s', block=True)
     def post(self, request):
@@ -228,7 +228,7 @@ class YouGetDownloadView(View):
             if not list_download:
                 output_filename = request.POST.get('o', '')
                 if not check_safety(output_filename):
-                    return JsonResponse({'msg': '输入的文件名有潜在危险性'},status=500)
+                    return JsonResponse({'msg': '输入的文件名有潜在危险性'}, status=500)
             else:
                 output_filename = None
 
@@ -240,7 +240,6 @@ class YouGetDownloadView(View):
                               output_fn=output_filename,
                               list_download=list_download)
             return JsonResponse({'msg': '远程下载命令已成功发出(〃\'▽\'〃)'})
-
 
     @ratelimit(key='ip', rate='1/1s', block=True)
     def delete(self, request):
@@ -257,6 +256,7 @@ class YouGetDownloadView(View):
             return JsonResponse({'msg': '停止任务失败'}, status=500)
         else:
             return JsonResponse({'msg': json.loads(res.content)['message']})
+
 
 class SSRConfigView(View):
     @ratelimit(key='ip', rate='1/1s')
@@ -281,7 +281,7 @@ class SSRConfigView(View):
         close_proxy_ssh_client(ssh)
         if err:
             logger.error('获取远程SSR端口失败:\n{}'.format(err))
-            ctx['ssr_ports'] = ['获取当前端口失败',]
+            ctx['ssr_ports'] = ['获取当前端口失败', ]
         else:
             ctx['ssr_ports'] = out.strip().split(',')
 
@@ -323,7 +323,6 @@ class SSRConfigView(View):
 
 
 class SiteDictView(View):
-
     def get(self, request):
         ctx = {}
         config = settings.TOOLS_CONFIG['site_dict']
@@ -366,7 +365,6 @@ class SiteDictView(View):
 
 
 class RateToolView(View):
-
     RATE_CACHE_KEY = settings.TOOLS_CONFIG['rate_tool']['redis_key']
 
     @ratelimit(key='ip', rate='1/1s')
@@ -406,7 +404,7 @@ class RateToolView(View):
         update_rate = request.POST.get('u') == 'true'
 
         logger.info('汇率计算请求：源币[{}]  目标币[{}]  金额[{}]  强制更新汇率[{}]'.format(
-            src_currency, trg_currency, credit_value, update_rate
+                src_currency, trg_currency, credit_value, update_rate
         ))
         cache = redis.get(self.RATE_CACHE_KEY)
         if update_rate or cache is None:
@@ -440,18 +438,18 @@ class RateToolView(View):
             return JsonResponse({'msg': '不支持该目标币种'}, status=500)
         else:
             logger.info('100外币兑换人民币汇率 = [{}:{}], [{}:{}]'.format(
-                src_currency, src_rate, trg_currency, trg_rate
+                    src_currency, src_rate, trg_currency, trg_rate
             ))
 
-        credit_value = round(float(credit_value),4)
+        credit_value = round(float(credit_value), 4)
         rmb_value = (credit_value / 100.0) * src_rate
         trg_value = (rmb_value / trg_rate) * 100.0
-        direct_rate = src_rate / trg_rate
+        direct_rate = 100 * src_rate / trg_rate
         trg_value = round(trg_value, 4)
         direct_rate = round(direct_rate, 4)
 
         logger.info('[{}] {} 兑换 [{}] {}\n中间价RMB {}\n直接汇率 {}'.format(
-            credit_value, src_alias, trg_value, trg_alias, rmb_value, direct_rate
+                credit_value, src_alias, trg_value, trg_alias, rmb_value, direct_rate
         ))
 
         return JsonResponse({'credit': trg_value, 'rate': direct_rate})

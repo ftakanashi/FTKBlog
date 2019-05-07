@@ -207,6 +207,7 @@ class NewPostView(View):
             pass
         categoryList = Category.objects.all()
         tagList = Tag.objects.all().order_by('name')
+        quickLinks = Dict.objects.filter(category='quick_links')
         return render(request, 'blog/new.html', locals())
 
     def put(self, request):

@@ -12,39 +12,40 @@ import traceback
 
 from django.conf import settings
 from django.core.cache import cache
-from django.shortcuts import render,reverse
+from django.shortcuts import render, reverse
 from django.views import View
-from django.http import QueryDict,JsonResponse,Http404, StreamingHttpResponse
+from django.http import QueryDict, JsonResponse, Http404, StreamingHttpResponse
 from django_redis import get_redis_connection
 
 from blog.models import Category, Tag, Dict, Post, Comment, Message
 from blog.views import NewPostView
 from ftkuser.models import AccessControl
+
 # Create your views here.
 redis = get_redis_connection('default')
 logger = logging.getLogger('django')
 
-class IndexView(View):
 
+class IndexView(View):
     def get(self, request):
         ctx = {}
 
         urcInfo = []
-        for cid in redis.lrange(settings.UNREAD_COMMENTS_KEY,0,-1):
+        for cid in redis.lrange(settings.UNREAD_COMMENTS_KEY, 0, -1):
             try:
                 comment = Comment.objects.get(comment_id=cid)
-            except Comment.DoesNotExist,e:
-                redis.lrem(settings.UNREAD_COMMENTS_KEY,0,cid)
+            except Comment.DoesNotExist, e:
+                redis.lrem(settings.UNREAD_COMMENTS_KEY, 0, cid)
                 continue
             else:
                 urcInfo.append(comment)
 
         urmInfo = []
-        for mid in redis.lrange(settings.UNREAD_MESSAGE_KEY,0,-1):
+        for mid in redis.lrange(settings.UNREAD_MESSAGE_KEY, 0, -1):
             try:
                 message = Message.objects.get(message_id=mid)
-            except Message.DoesNotExist,e:
-                redis.lrem(settings.UNREAD_MESSAGE_KEY,0,mid)
+            except Message.DoesNotExist, e:
+                redis.lrem(settings.UNREAD_MESSAGE_KEY, 0, mid)
                 continue
             else:
                 urmInfo.append(message)
@@ -92,15 +93,16 @@ class IndexView(View):
                 item = Dict.objects.get(key=switchName)
                 item.value = str(switchTo)
                 item.save()
-            except Dict.DoesNotExist,e:
+            except Dict.DoesNotExist, e:
                 return JsonResponse({'msg': '没有找到相关开关'}, status=404)
-            except Exception,e:
+            except Exception, e:
                 print traceback.format_exc(e)
                 return JsonResponse({'msg': '设置开关失败'}, status=500)
             else:
                 return JsonResponse({})
 
-        return JsonResponse({'msg': '无效的申请动作'},status=500)
+        return JsonResponse({'msg': '无效的申请动作'}, status=500)
+
 
 class CategoryManage(View):
     def get(self, request):
@@ -109,7 +111,7 @@ class CategoryManage(View):
             cate_id = request.GET.get('pk')
             try:
                 category = Category.objects.get(cate_id=cate_id)
-            except Category.DoesNotExist,e:
+            except Category.DoesNotExist, e:
                 return render(request, 'error.html', {'err_msg': '没有找到相关分类'})
             else:
                 ctx['category'] = category
@@ -117,7 +119,7 @@ class CategoryManage(View):
                 return render(request, 'myadmin/modulemanage/category/edit.html', ctx)
         elif request.GET.get('type') == 'add':
             ctx['type'] = 'add'
-            return render(request,'myadmin/modulemanage/category/add.html', ctx)
+            return render(request, 'myadmin/modulemanage/category/add.html', ctx)
 
         return render(request, 'myadmin/modulemanage/category/view.html', ctx)
 
@@ -125,10 +127,10 @@ class CategoryManage(View):
         try:
             name = request.POST.get('name')
             description = request.POST.get('description')
-            category = Category(name=name,description=description)
+            category = Category(name=name, description=description)
             category.save()
-        except Exception,e:
-            return JsonResponse({'msg': '新增失败\n%s' % unicode(e)},status=500)
+        except Exception, e:
+            return JsonResponse({'msg': '新增失败\n%s' % unicode(e)}, status=500)
         else:
             return JsonResponse({})
 
@@ -136,11 +138,11 @@ class CategoryManage(View):
         DELETE = QueryDict(request.body)
         try:
             category = Category.objects.get(cate_id=DELETE.get('target'))
-        except Category.DoesNotExist,e:
+        except Category.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关分类'}, status=404)
         try:
             category.delete()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '删除失败'}, status=500)
         else:
@@ -150,16 +152,17 @@ class CategoryManage(View):
         PUT = QueryDict(request.body)
         try:
             category = Category.objects.get(cate_id=PUT.get('cate_id'))
-        except Category.DoesNotExist,e:
+        except Category.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关分类'}, status=404)
         try:
-            for field in ('cate_id','name','description'):
-                setattr(category,field,PUT.get(field))
-        except Exception,e:
+            for field in ('cate_id', 'name', 'description'):
+                setattr(category, field, PUT.get(field))
+        except Exception, e:
             return JsonResponse({'msg': '更新失败'}, status=500)
         else:
             category.save()
             return JsonResponse({})
+
 
 class TagManage(View):
     def get(self, request):
@@ -168,7 +171,7 @@ class TagManage(View):
             tag_id = request.GET.get('pk')
             try:
                 tag = Tag.objects.get(tag_id=tag_id)
-            except Category.DoesNotExist,e:
+            except Category.DoesNotExist, e:
                 return render(request, 'error.html', {'err_msg': '没有找到相关分类'})
             else:
                 ctx['tag'] = tag
@@ -176,7 +179,7 @@ class TagManage(View):
                 return render(request, 'myadmin/modulemanage/tag/edit.html', ctx)
         elif request.GET.get('type') == 'add':
             ctx['type'] = 'add'
-            return render(request,'myadmin/modulemanage/tag/add.html', ctx)
+            return render(request, 'myadmin/modulemanage/tag/add.html', ctx)
 
         return render(request, 'myadmin/modulemanage/tag/view.html', ctx)
 
@@ -184,23 +187,22 @@ class TagManage(View):
         try:
             name = request.POST.get('name')
             description = request.POST.get('description')
-            tag = Tag(name=name,description=description)
+            tag = Tag(name=name, description=description)
             tag.save()
-        except Exception,e:
-            return JsonResponse({'msg': '新增失败\n%s' % unicode(e)},status=500)
+        except Exception, e:
+            return JsonResponse({'msg': '新增失败\n%s' % unicode(e)}, status=500)
         else:
             return JsonResponse({})
-
 
     def delete(self, request):
         DELETE = QueryDict(request.body)
         try:
             tag = Tag.objects.get(tag_id=DELETE.get('target'))
-        except Tag.DoesNotExist,e:
+        except Tag.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关标签'}, status=404)
         try:
             tag.delete()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '删除失败'}, status=500)
         else:
@@ -210,19 +212,19 @@ class TagManage(View):
         PUT = QueryDict(request.body)
         try:
             tag = Tag.objects.get(tag_id=PUT.get('tag_id'))
-        except Tag.DoesNotExist,e:
+        except Tag.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关标签'}, status=404)
         try:
-            for field in ('tag_id','name','description'):
-                setattr(tag,field,PUT.get(field))
-        except Exception,e:
+            for field in ('tag_id', 'name', 'description'):
+                setattr(tag, field, PUT.get(field))
+        except Exception, e:
             return JsonResponse({'msg': '更新失败'}, status=500)
         else:
             tag.save()
             return JsonResponse({})
 
-class DictManage(View):
 
+class DictManage(View):
     def get(self, request):
         ctx = {}
         if request.GET.get('type') == 'add':
@@ -233,7 +235,7 @@ class DictManage(View):
             dictInfo[item.category][item.key] = (item.value, item.comment)
 
         ctx['dictInfo'] = dict(dictInfo)
-        return render(request, 'myadmin/modulemanage/dict/dict.html',ctx)
+        return render(request, 'myadmin/modulemanage/dict/dict.html', ctx)
 
     def post(self, request):
         try:
@@ -241,10 +243,10 @@ class DictManage(View):
             value = request.POST.get('value')
             category = request.POST.get('category')
             comment = request.POST.get('comment')
-            dictItem = Dict(key=key,value=value,category=category, comment=comment)
+            dictItem = Dict(key=key, value=value, category=category, comment=comment)
             dictItem.save()
-        except Exception,e:
-            return JsonResponse({'msg': '新增失败\n%s' % unicode(e)},status=500)
+        except Exception, e:
+            return JsonResponse({'msg': '新增失败\n%s' % unicode(e)}, status=500)
         else:
             return JsonResponse({})
 
@@ -252,11 +254,11 @@ class DictManage(View):
         DELETE = QueryDict(request.body)
         try:
             dict = Dict.objects.get(key=DELETE.get('key'))
-        except Dict.DoesNotExist,e:
+        except Dict.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关标签'}, status=404)
         try:
             dict.delete()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '删除失败'}, status=500)
         else:
@@ -266,17 +268,18 @@ class DictManage(View):
         PUT = QueryDict(request.body)
         try:
             item = Dict.objects.get(key=PUT.get('key'))
-        except Dict.DoesNotExist,e:
+        except Dict.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关字典项'}, status=404)
         item.value = PUT.get('value')
         item.comment = PUT.get('comment')
         try:
             item.save()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '更改字典项值失败'}, status=500)
 
         return JsonResponse({})
+
 
 class PostManange(View):
     REDIS = redis
@@ -291,20 +294,21 @@ class PostManange(View):
 
             try:
                 ctx['autosave_interval'] = Dict.objects.get(key='autosaveInterval').value
-            except Exception,e:
+            except Exception, e:
                 pass
 
             post_uuid = request.GET.get('pk')
             try:
                 post = Post.objects.get(post_uuid=post_uuid)
-            except Post.DoesNotExist,e:
-                return render(request, 'error.html', {'error_msg':'没有找到相关文章','error_title': '发生错误'})
+            except Post.DoesNotExist, e:
+                return render(request, 'error.html', {'error_msg': '没有找到相关文章', 'error_title': '发生错误'})
 
             post.tags = ' '.join([a.name for a in post.tag.all()])
             ctx['post'] = post
             ctx['type'] = 'edit'
             ctx['categoryList'] = Category.objects.all().order_by('name')
             ctx['tagList'] = Tag.objects.all().order_by('name')
+            ctx['quickLinks'] = Dict.objects.filter(category='quick_links')
             return render(request, 'blog/new.html', ctx)
 
         return render(request, 'myadmin/modulemanage/post/view.html', ctx)
@@ -364,16 +368,16 @@ class PostManange(View):
         DELETE = QueryDict(request.body)
         try:
             post = Post.objects.get(post_uuid=DELETE.get('target'))
-        except Post.DoesNotExist,e:
+        except Post.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关文章'}, status=404)
         try:
             post.delete()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
-            return JsonResponse({'msg': '删除失败'},status=500)
-        try:    # 和Post关联但是没有反应到模型层中的数据，需要手动额外删除
+            return JsonResponse({'msg': '删除失败'}, status=500)
+        try:  # 和Post关联但是没有反应到模型层中的数据，需要手动额外删除
             # 删除redis中read_count缓存
-            back = self.REDIS.hdel(self.READ_COUNT_KEY,post.post_uuid)
+            back = self.REDIS.hdel(self.READ_COUNT_KEY, post.post_uuid)
             if back is None:
                 raise Exception('No such key in redis found: %s' % self.READ_COUNT_KEY + post.post_uuid)
 
@@ -383,7 +387,7 @@ class PostManange(View):
                 if os.path.isdir(postImgDir):
                     shutil.rmtree(postImgDir)
 
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '文章相关数据删除失败'}, status=501)
 
@@ -393,7 +397,7 @@ class PostManange(View):
 
         try:
             post = Post.objects.get(post_uuid=request.POST.get('post_uuid'))
-        except Post.DoesNotExist,e:
+        except Post.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关文章'}, status=404)
 
         try:
@@ -409,10 +413,10 @@ class PostManange(View):
             else:
                 post.status = '1'
 
-            post.abstract = NewPostView.markdown2text(post.content)[:150]    # 这个方法定义在NewPostView里了…
+            post.abstract = NewPostView.markdown2text(post.content)[:150]  # 这个方法定义在NewPostView里了…
             post.save()
 
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '保存失败'}, status=500)
 
@@ -425,19 +429,19 @@ class PostManange(View):
             for tag in tags:
                 try:
                     tag_obj = Tag.objects.get(tag_id=tag)
-                except Tag.DoesNotExist,e:
+                except Tag.DoesNotExist, e:
                     print traceback.format_exc(e)
                     continue
                 post.tag.add(tag_obj)
             post.save()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
-            return JsonResponse({'msg': '关联文章分类/标签失败'},status=500)
+            return JsonResponse({'msg': '关联文章分类/标签失败'}, status=500)
 
-        return JsonResponse({'next': reverse('detail',kwargs={'uuid': post.post_uuid})})
+        return JsonResponse({'next': reverse('detail', kwargs={'uuid': post.post_uuid})})
+
 
 class CommentManage(View):
-
     def get(self, request):
         ctx = {}
         return render(request, 'myadmin/modulemanage/comment/view.html', ctx)
@@ -446,18 +450,18 @@ class CommentManage(View):
         DELETE = QueryDict(request.body)
         try:
             comment = Comment.objects.get(comment_id=DELETE.get('target'))
-        except Comment.DoesNotExist,e:
+        except Comment.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关分类'}, status=404)
         try:
             comment.delete()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '删除失败'}, status=500)
         else:
             return JsonResponse({})
 
-class MessageManage(View):
 
+class MessageManage(View):
     def get(self, request):
         ctx = {}
         return render(request, 'myadmin/modulemanage/message/view.html', ctx)
@@ -466,29 +470,29 @@ class MessageManage(View):
         DELETE = QueryDict(request.body)
         try:
             message = Message.objects.get(message_id=DELETE.get('target'))
-        except Comment.DoesNotExist,e:
+        except Comment.DoesNotExist, e:
             return JsonResponse({'msg': '没有找到相关留言'}, status=404)
         try:
             message.delete()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
             return JsonResponse({'msg': '删除失败'}, status=500)
         else:
             return JsonResponse({})
 
-class AccessControlManage(View):
 
+class AccessControlManage(View):
     def get(self, request):
         ctx = {}
 
         if request.GET.get('type') == 'edit':
             try:
                 ac = AccessControl.objects.get(ac_id=request.GET.get('pk'))
-            except AccessControl.DoesNotExist,e:
+            except AccessControl.DoesNotExist, e:
                 raise Http404
 
             ctx['ac'] = ac
-            return render(request,'myadmin/modulemanage/accesscontrol/edit.html',ctx)
+            return render(request, 'myadmin/modulemanage/accesscontrol/edit.html', ctx)
         elif request.GET.get('type') == 'add':
             return render(request, 'myadmin/modulemanage/accesscontrol/edit.html')
 
@@ -498,13 +502,13 @@ class AccessControlManage(View):
         DELETE = QueryDict(request.body)
         try:
             ac = AccessControl.objects.get(ac_id=DELETE.get('target'))
-        except AccessControl.DoesNotExist,e:
-            return JsonResponse({'msg': '没有找到相关权限记录'},status=404)
+        except AccessControl.DoesNotExist, e:
+            return JsonResponse({'msg': '没有找到相关权限记录'}, status=404)
         try:
             ac.delete()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
-            return JsonResponse({'msg': '删除失败'},status=500)
+            return JsonResponse({'msg': '删除失败'}, status=500)
 
         return JsonResponse({})
 
@@ -515,9 +519,9 @@ class AccessControlManage(View):
             domain = request.POST.get('domain')
             ac = AccessControl(source_ip=source_ip, control_type=control_type, domain=domain)
             ac.save()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
-            return JsonResponse({'msg': '新增规则失败'},status=500)
+            return JsonResponse({'msg': '新增规则失败'}, status=500)
         else:
             return JsonResponse({})
 
@@ -526,22 +530,22 @@ class AccessControlManage(View):
         try:
             ac_id = PUT.get('ac_id')
             ac = AccessControl.objects.get(ac_id=ac_id)
-        except AccessControl.DoesNotExist,e:
-            return JsonResponse({'msg': '没有找到相关的权限控制记录'},status=404)
+        except AccessControl.DoesNotExist, e:
+            return JsonResponse({'msg': '没有找到相关的权限控制记录'}, status=404)
 
         try:
             ac.source_ip = PUT.get('source_ip')
             ac.control_type = PUT.get('control_type')
             ac.domain = PUT.get('domain')
             ac.save()
-        except Exception,e:
+        except Exception, e:
             print traceback.format_exc(e)
-            return JsonResponse({'msg': '更新权限控制记录失败'},status=500)
+            return JsonResponse({'msg': '更新权限控制记录失败'}, status=500)
 
         return JsonResponse({})
 
-class BackupDownloadManage(View):
 
+class BackupDownloadManage(View):
     def _adaptSize(self, bytes):
         k = round(bytes / 1024.0, 4)
         if k < 1:
@@ -563,8 +567,8 @@ class BackupDownloadManage(View):
         for dbback in os.listdir(dbBackupDir):
             links['db'].append({
                 'link': 'db__' + dbback,
-                 'name': dbback,
-                 'size': self._adaptSize(os.stat(os.path.join(dbBackupDir, dbback)).st_size)
+                'name': dbback,
+                'size': self._adaptSize(os.stat(os.path.join(dbBackupDir, dbback)).st_size)
             })
         for uploadBack in os.listdir(uploadBackupDir):
             links['upload'].append({
@@ -578,13 +582,13 @@ class BackupDownloadManage(View):
         ctx['links'] = links
         return render(request, 'myadmin/modulemanage/backupdownload.html', ctx)
 
-def backup_download(request, fn):
 
+def backup_download(request, fn):
     try:
-        type,filename = fn.split('__',1)
-        if not type or not filename or type not in ('db','upload'):
+        type, filename = fn.split('__', 1)
+        if not type or not filename or type not in ('db', 'upload'):
             raise Exception('Invalid request')
-    except Exception,e:
+    except Exception, e:
         return render(request, 'error.html', {'error_msg': '请求的URL似乎有错'})
 
     d = os.path.join(settings.PROJECT_ROOT, 'backup', type)
