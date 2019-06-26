@@ -269,9 +269,6 @@ class PaperView(View):
                 return JsonResponse(data)
 
 
-
-
-
 class PaperDetailView(View):
     @ratelimit(key='ip', rate='1/1s')
     def get(self, request, paper_uuid):

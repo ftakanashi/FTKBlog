@@ -221,7 +221,7 @@ $(document).ready(function(e){
         sequenceDiagram: true,
         imageUpload: true,
         imageFormats: ['jpg', 'png', 'gif', 'jpeg', 'bmp'],
-        imageUploadURL: location.pathname + 'upload/'
+        imageUploadURL: '{% url 'editormd-upload' %}'
     });
 
     // 构建datetimepicker

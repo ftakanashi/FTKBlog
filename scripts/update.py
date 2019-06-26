@@ -71,7 +71,7 @@ def _backup_old_app():
 
 def _clone_latest():
     logging.info('Cloning latest app from git...')
-    cmd = 'cd {};git clone ssh://git@127.0.0.1:12022/MyGit/FTKBlog.git'.format(PROJECT_ROOT)
+    cmd = 'cd {};git clone ssh://git@127.0.0.1:18022/MyGit/FTKBlog.git'.format(PROJECT_ROOT)
     flag = os.system(cmd)
     if flag != 0:
         raise Exception('Error encounter while git cloning latest version.')
