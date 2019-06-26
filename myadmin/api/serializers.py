@@ -4,6 +4,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SlugRelatedField,StringRelatedField
 
 from blog.models import Category, Tag, Post, Comment, Message
+from paperdb.models import Paper, ResearchTag, Author
 from ftkuser.models import AccessControl
 
 from fields import PostWithUuidField
@@ -53,4 +54,25 @@ class AccessControlSerializer(ModelSerializer):
 
     class Meta:
         model = AccessControl
+        fields = '__all__'
+
+
+class PaperdbPaperSerializer(ModelSerializer):
+
+    author = SlugRelatedField('name', read_only=True, many=True)
+
+    class Meta:
+        model = Paper
+        fields = ('paper_uuid', 'title', 'publish_time', 'publish_origin', 'self_score', 'link', 'author')
+
+class PaperdbTagSerializer(ModelSerializer):
+
+    class Meta:
+        model = ResearchTag
+        fields = '__all__'
+
+class PaperdbAuthorSerializer(ModelSerializer):
+
+    class Meta:
+        model = Author
         fields = '__all__'

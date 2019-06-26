@@ -1,0 +1,88 @@
+{% extends 'myadmin/modulemanage/base/view.html' %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}">
+<style>
+    .table-responsive{
+        padding: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content-header-title %}<i class="fa fa-user"></i>管理论文作者{% endblock %}
+{% block content-header-description %}{% endblock %}
+
+{% block script %}
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js' %}"></script>
+<script src="{% static 'comp/layer/layer.js' %}"></script>
+<script>
+$(function(){
+$(document).ready(function(){
+
+    $('#manageTable').bootstrapTable({
+        url: '{% url 'paperdb.author.api' %}',
+        columns: [{
+            checkbox: true,
+            align: 'center'
+        }, {
+            field: 'author_id',
+            title: 'ID'
+        }, {
+            field: 'name',
+            title: '姓名'
+        }, {
+            field: 'operation',
+            title: '操作',
+            formatter: function(value, row, index){
+                return [
+                        '<button class="btn btn-xs btn-primary edit-btn" name="' + row.author_id + '"><i class="fa fa-edit"></i>编辑</button>',
+                        '<button class="btn btn-xs btn-danger del-btn" name="' + row.author_id + '"><i class="fa fa-trash"></i>删除</button>'
+                ].join('&nbsp;&nbsp;');
+            }
+        }],
+        resizable: true,
+        pagination: true,
+        sidePagination: 'client',
+        pageNumber: 1,
+        pageSize: 20,
+        pageList: [10, 20, 50, 'All'],
+        search: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true,
+    }).on('click', '.edit-btn', function(e){
+    }).on('click','.del-btn',function(e){
+        e.preventDefault();
+        var target = $(this).attr('name');
+        layer.confirm('确定要删除作者吗? ',{icon:3 ,title: '提示'}, function(index){
+            var loadLayer = layer.load('1');
+            $.ajax({
+                url: location.pathname,
+                type: 'delete',
+                dataType: 'json',
+                data: {
+                    target: target
+                },
+                success: function(data){
+                    location.reload();
+                },
+                error: function(xml ,err, exc){
+                    try{
+                        layer.msg(JSON.parse(xml.responseText).msg);
+                    }
+                    catch(e){
+                        layer.msg('未知错误');
+                    }
+                },
+                complete: function(){layer.close(loadLayer)}
+            });
+        });
+    });
+
+});
+});
+</script>
+{% endblock %}

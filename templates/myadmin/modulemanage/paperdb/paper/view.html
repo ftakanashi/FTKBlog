@@ -1,0 +1,134 @@
+{% extends 'myadmin/modulemanage/base/view.html' %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}">
+<link rel="stylesheet" href="{% static 'comp/raty/jquery.raty.css' %}" />
+<style>
+    .table-responsive{
+        padding: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content-header-title %}<i class="fa fa-file-pdf-o"></i>管理论文{% endblock %}
+{% block content-header-description %}{% endblock %}
+
+{% block toolbar-btn %}{% endblock %}
+
+{% block script %}
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js' %}"></script>
+<script src="{% static 'comp/layer/layer.js' %}"></script>
+<script src="{% static 'comp/raty/jquery.raty.js' %}"></script>
+<script>
+$(function(){
+$(document).ready(function(){
+    $('#manageTable').bootstrapTable({
+        url: '{% url 'paperdb.paper.api' %}',
+        columns: [{
+            checkbox: true,
+            align: 'center'
+        },{
+            field: 'paper_uuid',
+            title: '论文UUID',
+            visible: false
+        }, {
+            field: 'title',
+            title: '标题',
+            sortable: true,
+            formatter: function(value, row, index){
+                var url = '{% url 'paperdb.detail' '111111' %}'.replace('111111', row.paper_uuid);
+                return '<a target="_blank" href="' + url + '">' + value + '</a>';
+            }
+        }, {
+            field: 'publish_time',
+            title: '发表时间',
+            sortable: true
+        }, {
+            field: 'publish_origin',
+            title: '发表于',
+            sortable: true,
+            formatter: function(value, row, index){
+                return value === 'unknown' ? '未知' : value;
+            }
+        }, {
+            field: 'self_score',
+            title: '评分',
+            sortable: true,
+            formatter: function(value, row, index){
+                return '<div class="self-score-panel">' + value + '</div>';
+            }
+        }, {
+            field: 'link',
+            title: '论文链接',
+            formatter: function(value, row, index){
+                if (!value){
+                    return ''
+                }
+                else{
+                    return '<a href="' + value + '"><i class="fa fa-link"></i></a>';
+                }
+            }
+        }, {
+            field: 'author',
+            title: '作者',
+            formatter: function(value, row, index){
+                var text = [];
+                for(var i=0;i < value.length; i++){
+                    text.push('<label class="label label-default">' + value[i] + '</label>');
+                }
+                return text.join('&nbsp;&nbsp;');
+            }
+        }, {
+            field: 'operation',
+            title: '操作',
+            formatter: function(value, row, index){
+                return [
+                        '<a class="btn btn-xs btn-primary" target="_blank" href="{% url 'paperdb.paper' %}?pk=' + row.paper_uuid + '"><i class="fa fa-edit"></i>编辑</a>',
+                        '<button class="btn btn-xs btn-danger del-btn" name="' + row.paper_uuid + '"><i class="fa fa-trash"></i>删除</button>'
+                ].join('&nbsp;&nbsp;')
+            }
+        }],
+        resizable: true,
+        pagination: true,
+        sidePagination: 'client',
+        pageNumber: 1,
+        pageSize: 20,
+        pageList: [10,20,50,'All'],
+        search: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true
+    }).on('click','.del-btn',function(event){
+        var target = $(this).attr('name');
+        layer.confirm('确定要删除论文吗? 该论文相关的所有引用、评论都会被一并删除！',{icon:3 ,title: '提示'}, function(index){
+            var loadLayer = layer.load('1');
+            $.ajax({
+                url: location.pathname,
+                type: 'delete',
+                dataType: 'json',
+                data: {
+                    target: target
+                },
+                success: function(data){
+                    location.reload();
+                },
+                error: function(xml ,err, exc){
+                    try{
+                        layer.msg(JSON.parse(xml.responseText).msg);
+                    }
+                    catch(e){
+                        layer.msg('未知错误');
+                    }
+                },
+                complete: function(){layer.close(loadLayer)}
+            });
+        });
+    });
+
+});
+});
+</script>
+{% endblock %}

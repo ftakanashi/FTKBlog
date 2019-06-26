@@ -1,0 +1,62 @@
+{% extends 'myadmin/modulemanage/base/edit.html' %}
+
+{% load static %}
+
+{% block form-content %}
+    {% if tag %}
+    <input type="hidden" value="{{ tag.research_tag_id }}" id="tagIdInput" />
+    {% endif %}
+    <div class="form-group">
+        <label class="control-label" for="nameInput">标签名称</label>
+        <input class="form-control" id="nameInput" value="{{ tag.name }}" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="descriptionInput">描述</label>
+        <textarea class="form-control" id="descriptionInput">{{ tag.description }}</textarea>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(function(){
+$(document).ready(function(){
+    $('#submit').click(function(){
+        var loadLayer = layer.load('1',{shade: 0.5});
+        var tagId;
+        if($('#tagIdInput').length > 0){
+            tagId = $('#tagIdInput').val();
+        }
+        else{
+            tagId = 'n';
+        }
+        var tagName = $('#nameInput').val();
+        var description = $('#descriptionInput').val();
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                pk: tagId,
+                name: tagName,
+                description: description
+            },
+            success: function(data){
+                var frameIndex = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(frameIndex);
+                parent.location.reload();
+            },
+            error: function(xml, err, exc){
+                try{
+                    layer.msg(JSON.parse(xml.responseText).msg);
+                }
+                catch(e){
+                    layer.msg('未知错误');
+                }
+            },
+            complete: function(){layer.close(loadLayer);}
+        });
+    });
+});
+});
+</script>
+{% endblock %}

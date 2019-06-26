@@ -150,7 +150,6 @@
         <div class="post-wrap">
             <div class="post-wrap-header">
                 <h4><a href="{% url 'detail' post.post_uuid %}" class="post-wrap-title">
-{#                    {% if post.is_top %}[置顶]{% endif %}#}
                     {{ post.title }}</a></h4>
                 {% if post.is_reprint %}
                 <span class="label label-danger"><a href="{{ post.reprint_src }}">转载</a></span>

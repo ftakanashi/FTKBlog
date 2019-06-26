@@ -52,7 +52,6 @@ class Post(models.Model):
     tag = models.ManyToManyField(
             Tag,
             blank=True,
-            null=True,
             related_name='in_tag_posts',
             verbose_name='文章标签'
     )
@@ -67,15 +66,6 @@ class Post(models.Model):
         else:
             return '[%s] <NoCategory: %s>' % (self.post_id, self.title)
 
-# class PostImage(models.Model):
-#     image = models.ImageField(upload_to='upload',verbose_name='图片')
-#     title = models.CharField(max_length=64,verbose_name='图片标题')
-#     in_post = models.ForeignKey(
-#         Post,
-#         on_delete=models.CASCADE,
-#         related_name='post_images',
-#         verbose_name='所属文章'
-#     )
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True,verbose_name='评论ID')

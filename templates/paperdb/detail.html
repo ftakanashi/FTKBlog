@@ -1,0 +1,216 @@
+{% extends 'original/base.html' %}
+{% load static %}
+
+{% block style %}
+    <link href="{% static 'comp/layer/css/layui.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/editormd/css/editormd.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/social-share/css/share.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/tocify/jquery.tocify.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/raty/jquery.raty.css' %}" rel="stylesheet" />
+    <link href="{% static 'ftk/blog/post.css' %}" rel="stylesheet" />
+    <style>
+    .paper-info-wrapper{
+        padding: 20px;
+        text-align:center;
+    }
+    .paper-info-wrapper > div{
+        margin-top: 10px;
+    }
+    a.paper-info{
+        color: #256a88;
+        text-decoration: none;
+    }
+    .paper-info-title{
+        font-size: 22px;
+    }
+    .paper-info-tag{
+        padding: 5px;
+    }
+    .paper-info-tag a{
+        text-decoration: none;
+    }
+
+    .reference-panel{
+        padding: 20px;
+    }
+    </style>
+{% endblock %}
+
+{% block extra_nav_left %}
+    <li class="dropdown">
+        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+            <i class="fa fa-link"></i>
+            常用站点
+        </a>
+        <ul class="dropdown-menu">
+            {% for key,link in quickLinks.items %}
+                <li><a target="_blank" href="{{ link }}">{{ key }}</a></li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endblock %}
+
+{% block left_ground_display %}none{% endblock %}
+
+{% block title %}{{ paper.title }} - F.Takanashi{% endblock %}
+
+{% block toolbar-items %}
+    <div class="intern-search">
+        <span class="intern-search-jump">
+            第<span style="font-weight:bold; color:red;">0</span>处
+            <i class="fa fa-arrow-up intern-search-jump-go prev"></i>
+            <i class="fa fa-arrow-down intern-search-jump-go next"></i>
+        </span>
+        <input id="intern-search-input" placeholder="请输入关键词搜索页面..." />
+    </div>
+{% endblock %}
+
+{% block main_ground %}
+    <div class="main-ground">
+        <div class="post" style="background: rgba(255,255,255,0.8);">
+            <div class="paper-info-wrapper">
+                <div>
+                    <a target="_blank" class="paper-info paper-info-title" href="{{ paper.link|default:'javascript:void(0);' }}">【{{ paper.title }}】</a>
+                </div>
+
+                <div>
+                    <div class="paper-rating" data-value="{{ paper.self_score }}"></div>
+                </div>
+
+                <div>{{ paper.publish_time.year }}年{{ paper.publish_time.month }}月&nbsp;&nbsp;
+                    {% if paper.publish_origin == 'unknown' %}未知
+                    {% else %}
+                        <a class="paper-info" href="{% url 'paperdb.index' %}?origin={{ paper.publish_origin }}">{{ paper.publish_origin }}</a>
+                    {% endif %}&nbsp;&nbsp;
+                </div>
+
+                <div>
+                    {% for author in paper.author.all %}
+                    <label class="label label-default">{{ author.name }}</label>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    {% for tag in paper.tag.all %}
+                    <span class="paper-info-tag">
+                        <a href="{% url 'paperdb.index' %}?tags={{ tag.research_tag_id }}"><i class="fa fa-tag"></i>{{ tag.name }}</a>
+                    </span>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+        <div class="post">
+            {% if paper.comment %}
+            <div class="post-header">
+                <div class="post-info-wrap">
+                    <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>创建 {{ paper.comment.create_time }}</span>
+                    <span class="post-info"><span class="glyphicon glyphicon-calendar"></span>更新 {{ paper.comment.update_time }}</span>
+                </div>
+            </div>
+            {% endif %}
+            <div id="postContent" class="post-body">
+                <textarea style="display: none;">{% if paper.comment %}{{ paper.comment.content }}{% else %}###暂无评论/笔记{% endif %}</textarea>
+            </div>
+            <div class="post-footer">
+                <div class="post-footer-toolbar">
+                    <div>
+                        {% if request.user.is_superuser %}
+{#                        <a href="javascript:void(0);" id="add-meta" class="post-footer-btn">[管理Meta]</a>#}
+                        <a href="javascript:void(0);" id="edit-post" class="post-footer-btn">[编辑]</a>
+                        {% endif %}
+                    </div>
+                    <div class="social-share"></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="post">
+            <div class="reference-panel">
+                <div style="text-align: center;">
+                    <h3>参考文献</h3>
+                    <hr>
+                </div>
+                <div class="list-group">
+                    {% for refer in paper.get_reference_by_time %}
+                    <a class="list-group-item" href="{% url 'paperdb.detail' refer.paper_uuid %}">
+                        {% for author in refer.author.all %}{{ author.name }}. {% endfor %} ({{ refer.publish_time.year }}). {{ refer.title }}. <i>{{ refer.publish_origin }}</i>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block hidden_inputs %}
+    <input type="hidden" value="{{ paper.paper_uuid }}" id="uuidInput" />
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script src="{% static 'comp/editormd/lib/marked.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/prettify.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/raphael.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/underscore.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/sequence-diagram.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/flowchart.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/lib/jquery.flowchart.min.js' %}"></script>
+    <script src="{% static 'comp/editormd/editormd.min.js' %}"></script>
+    <script src="{% static 'comp/layer/layui.js' %}"></script>
+    <script src="{% static 'comp/social-share/js/social-share.min.js' %}"></script>
+    <script src="{% static 'comp/textSearch.min.js' %}"></script>
+    <script src="{% static 'comp/tocify/jquery-ui-1.9.1.custom.min.js' %}"></script>
+    <script src="{% static 'comp/tocify/jquery.tocify.min.js' %}"></script>
+    <script src="{% static 'comp/raty/jquery.raty.js' %}"></script>
+    <script>
+        $(function() {
+
+            function markdown2Html(domId){
+                editormd.emoji.path = '{% static 'comp/editormd/plugins/emoji-dialog/emoji' %}/';
+                editormd.markdownToHTML(domId,{
+                    htmlDecode: 'style,script,iframe',
+                    emoji: true,
+                    taskList: true,
+                    tex: true,
+                    flowChart: true,
+                    sequenceDiagram: true,
+                    codeFold: true
+                });
+            }
+            markdown2Html('postContent');
+
+            $(document).ready(function(e){
+
+                // 构建评分组件
+                $('.paper-rating').each(function(i,ele){
+                    var score;
+                    try{
+                        score = parseInt($(ele).attr('data-value')) / 2;
+                    }
+                    catch(e){
+                        score = -1;
+                    }
+
+                    $(ele).raty({
+                        half: true,
+                        readOnly: true,
+                        score: score,
+                        starOn: '{% static 'image/raty/star-on.png' %}',
+                        starOff: '{% static 'image/raty/star-off.png' %}',
+                        starHalf: '{% static 'image/raty/star-half.png' %}'
+                    });
+                });
+
+                $('#edit-post').click(function(e){
+                    e.preventDefault();
+                    var uuid = $('#uuidInput').val();
+                    location.href = '{% url 'paperdb.paper' %}?pk=' + uuid;
+                });
+            });
+
+        });
+    </script>
+    <script src="{% static 'ftk/blog/post.min.js' %}"></script>
+
+{% endblock %}

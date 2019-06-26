@@ -1,0 +1,333 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block page_header %}{% endblock %}
+{% block toolsbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block style %}
+    <style>
+    .paper-panel{
+        background: #f4f4f4;
+        border-radius: 5px;
+        padding: 20px;
+        margin-top: 10px;
+    }
+    .paper-panel:hover{
+        box-shadow: 1px 1px 5px black;
+    }
+    .paper-title{
+        display: block;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .paper-title > a:hover{
+        text-decoration: none;
+        background: #256a88;
+        padding: 5px;
+        color: white;
+        border-radius: 3px;
+    }
+    .paper-link{
+        font-size: 12px;
+    }
+    .paper-publish-time{
+        display: inline-block;
+        color: grey;
+    }
+    .paper-publish-origin{
+        display: inline-block;
+        color: grey;
+    }
+    .paper-authors{
+        display: block;
+    }
+    .paper-comment-info{
+        color: grey;
+    }
+    .paper-tag{
+        font-size: 12px;
+        background: #256a88;
+        padding: 5px;
+        border-radius: 2px;
+        color: white;
+    }
+    .paper-btns{
+        display: none;
+        text-align: right;
+    }
+    .paper-panel:hover .paper-btns{
+        display: block;
+    }
+    #filterToggle{
+        padding: 5px 5% 5px 5%;
+        background: #f4f4f4;
+        border-radius: 0 0 13px 13px;
+    }
+    #filterToggle:hover{
+        background: #256a88;
+        color: white;
+        cursor: pointer;
+    }
+    .filter-panel{
+        background: #f4f4f4;
+        border-radius: 0 0 5px 5px;
+        padding: 25px;
+        display: none;
+    }
+    </style>
+    <link href="{% static 'comp/raty/jquery.raty.css' %}" rel="stylesheet" />
+    <link href="{% static 'comp/select2/css/select2.min.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div class="papers-container">
+    <div class="row">
+        <div class="col-xl-3 col-lg-2 col-md-1"></div>
+        <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12">
+            <div class="filter-panel">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="titleInput">标题</label>
+                            <input class="form-control" id="titleInput" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="yearInput">发表年份</label>
+                            <input type="number" class="form-control" id="yearInput" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="originInput">刊物/会议</label>
+                            <input class="form-control" id="originInput" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="tagSelect">研究方向</label>
+                            <select class="form-control" id="tagSelect" multiple>
+                                {% for tag in tags %}
+                                <option value="{{ tag.research_tag_id }}">{{ tag.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="authorSelect">作者</label>
+                            <select class="form-control" id="authorSelect" multiple>
+                                {% for author in authors %}
+                                <option value="{{ author.author_id }}">{{ author.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:center;">
+                    <button class="btn btn-default btn-sm" id="submitFilter">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center;">
+        <span id="filterToggle"><i class="fa fa-filter"></i></span>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-lg-2 col-md-1"></div>
+        <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12">
+            <div style="text-align: center;">
+                <h2>Paper 仓库</h2>
+                <hr>
+            </div>
+
+            <div class="papers-wrapper">
+                {% if request.user.is_superuser %}
+                <a class="btn btn-sm btn-default" target="_blank" href="{% url 'paperdb.paper' %}">
+                    <i class="fa fa-plus-circle"></i>&nbsp;新增
+                </a>
+                <a class="btn btn-sm btn-default" target="_blank" href="{% url 'paperdb.manage' %}">
+                    <i class="fa fa-gears"></i>&nbsp;管理
+                </a>
+                {% endif %}
+                {% for paper in papers.object_list %}
+                <div class="paper-panel">
+                    <span class="paper-title">
+                        <a href="{% url 'paperdb.detail' paper.paper_uuid %}">{{ paper.title }}</a>
+                        {% if paper.link %}
+                        <span class="paper-link">
+                            <a target="_blank" href="{{ paper.link }}"><i class="fa fa-external-link"></i></a>
+                        </span>
+                        {% endif %}
+                    </span>
+
+                    <div class="paper-self-score">
+                        <input type="hidden" value="{{ paper.self_score }}">
+                    </div>
+
+                    <span class="paper-publish-time">发表时间: {{ paper.publish_time }}</span>
+
+                    {% ifequal paper.publish_origin 'unknown' %}
+                    {% else %}
+                        <span class="paper-publish-origin">发表于: {{ paper.publish_origin }}</span>
+                    {% endifequal %}
+
+                    <span class="paper-authors">作者:
+                        {% for author in paper.author.all %}
+                        <span class="label label-default">{{ author.name }}</span>
+                        {% endfor %}
+                    </span>
+                    <br>
+                    <div class="paper-comment-info">
+                        <span class="paper-comment-update">评论/笔记更新:&nbsp;&nbsp;{{ paper.comment.update_time }}</span>
+                    </div>
+                    <br>
+
+                    <div class="paper-tags">
+                        {% for tag in paper.tag.all %}
+                        <span class="paper-tag" title="{{ tag.description }}"><i class="fa fa-tag"></i>{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="paper-btns">
+                        <a href="javascript:void(0);" class="btn btn-xs btn-default query-reference" data-value="{{ paper.paper_uuid }}">
+                            <i class="fa fa-search"></i>查询引用
+                        </a>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="post-pagination">
+                <ul class="pagination">
+                    {# 上一页 #}
+                    {% if posts.has_previous %}
+                        <li>
+                            <a href="?{{ posts.previous_page_number.querystring }}"><span>&laquo;</span></a>
+                        </li>
+                    {% endif %}
+                    {% for page in papers.pages %}
+                        {% if page %}
+                            {% ifequal page papers.number %}
+                                {# 当前页 #}
+                                <li class="active"><a>{{ page }}</a></li>
+                            {% else %}
+                                {# 指定页 #}
+                                <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                            {% endifequal %}
+                        {% else %}
+                            <li><a href="#">...</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {# 下一页 #}
+                    {% if papers.has_next %}
+                        <li><a href="?{{ papers.next_page_number.querystring }}">&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'comp/raty/jquery.raty.js' %}"></script>
+<script src="{% static 'comp/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'comp/select2/js/i18n/zh-CN.js' %}"></script>
+<script>
+$(document).ready(function(e){
+
+    $('body').trigger('loadTheme');
+
+    {% if flash_message %}
+    layer.alert('{{ flash_message }}',{shade: 0.2, closeBtn: false, title: false, icon: 2, btn: []});
+    setTimeout('location.href=location.pathname', 2000);
+    {% endif %}
+    // toggle过滤器
+    $('#filterToggle').click(function(e){
+        e.preventDefault();
+        $('.filter-panel').slideToggle();
+    });
+
+    // 构造rating
+    $('.paper-self-score').each(function(i, ele){
+        var score = $(ele).find('input[type=hidden]').val();
+        $(ele).raty({
+            half: true,
+            readOnly: true,
+            score: score / 2,
+            starOn: '{% static 'image/raty/star-on.png' %}',
+            starOff: '{% static 'image/raty/star-off.png' %}',
+            starHalf: '{% static 'image/raty/star-half.png' %}'
+        });
+    });
+
+    // 构造select2
+    $('#tagSelect').select2({
+        language: 'zh-CN',
+        width: '100%',
+        allowClear: true
+    });
+    $('#authorSelect').select2({
+        language: 'zh-CN',
+        width: '100%',
+        tags: true,
+        tokenSeparators: [',']
+    });
+
+    // 提交过滤器
+    $('#submitFilter').click(function(e){
+        e.preventDefault();
+
+        var title = $('#titleInput').val();
+        var year = $('#yearInput').val();
+        var origin = $('#originInput').val();
+        var tags = $('#tagSelect').val();
+        var author = $('#authorInput').val();
+        // console.log(title, year, origin, tags);
+
+        var link = location.pathname + '?';
+        var params = {};
+        if(title){params.title = title;}
+        if(year){params.year = year;}
+        if(origin){params.origin = origin;}
+        if(tags && tags.length > 0){
+            params.tags = tags.join('|');
+        }
+        if(author){params.author = author;}
+
+        var searches = [];
+        for(k in params){
+            s = k + '=' + params[k];
+            searches.push(s);
+        }
+        link += searches.join('&');
+
+        location.href = link;
+    });
+
+    // 查询引用图
+    $('.query-reference').click(function(e){
+        e.preventDefault();
+        var uuid = $(this).attr('data-value');
+        var url = '{% url 'paperdb.paper.reference' '111111' %}';
+        url = url.replace('111111', uuid);
+        layer.open({
+            type: 2,
+            content: url,
+            offset: 't',
+            area: ['75%', '100%'],
+            title: '论文引用关系'
+        });
+    })
+});
+</script>
+{% endblock %}

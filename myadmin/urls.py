@@ -17,5 +17,8 @@ urlpatterns = [
     url(r'^message/', login_required(MessageManage.as_view()), name='message.manage'),
     url(r'^accesscontrol/', login_required(AccessControlManage.as_view()), name='accesscontrol.manage'),
     url(r'^backupdownload/$', login_required(BackupDownloadManage.as_view()), name='backupdownload.manage'),
-    url(r'^backupdownload/(?P<fn>.+?)/', login_required(backup_download), name='backupdownload.download')
+    url(r'^backupdownload/(?P<fn>.+?)/', login_required(backup_download), name='backupdownload.download'),
+    url(r'^paperdb/paper/$', login_required(PaperdbPaperManage.as_view()), name='paperdb.manage'),
+    url(r'^paperdb/tag/$', login_required(PaperdbTagManage.as_view()), name='paperdb.tag.manage'),
+    url(r'^paperdb/author/$', login_required(PaperdbAuthorManage.as_view()), name='paperdb.author.manage')
 ]

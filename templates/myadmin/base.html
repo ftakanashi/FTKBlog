@@ -282,6 +282,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li><a href="{% url 'comment.manage' %}"><i class="fa fa-comment"></i><span>评论管理</span></a></li>
                 <li><a href="{% url 'message.manage' %}"><i class="fa fa-puzzle-piece"></i><span>消息管理</span></a></li>
                 <li><a href="{% url 'post.manage' %}"><i class="fa fa-file"></i><span>文章管理</span></a></li>
+                <li class="treeview">
+                    <a href="javascript:void(0);"><i class="fa fa-file-pdf-o"></i><span>论文库管理</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{% url 'paperdb.manage' %}"><i class="fa fa-file-pdf-o"></i>论文管理</a></li>
+                        <li><a href="{% url 'paperdb.tag.manage' %}"><i class="fa fa-tag"></i>论文标签管理</a></li>
+                        <li><a href="{% url 'paperdb.author.manage' %}"><i class="fa fa-user"></i>论文作者管理</a></li>
+                    </ul>
+                </li>
             </ul>
             {% endblock %}
             <!-- /.sidebar-menu -->

@@ -144,6 +144,12 @@
             <div class="search-input-wrap">
                 <div class="input-group">
                     <span class="input-group-addon">
+                        <select id="index-select">
+                            <option value="posts" selected>搜博文</option>
+                            <option value="papers">搜论文库</option>
+                        </select>
+                    </span>
+                    <span class="input-group-addon">
                         <select id="and-or-select">
                             <option value="0">AND</option>
                             <option value="1" selected>OR</option>
@@ -164,68 +170,103 @@
         </div>
         <div class="res-ground">
             {% if posts %}
-            {% for post in posts.object_list %}
-                <div class="post-wrap">
-                    <div class="post-wrap-header">
-                        <h4><a href="{% url 'detail' post.post_uuid %}" class="post-wrap-title">
-                            {% if post.status == '1' %}[草稿]{% endif %}
-                            {% if post.highlight.title %}{% autoescape off %}{{ post.highlight.title.0 }}
-                            {% endautoescape %}{% else %}{{ post.title }}{% endif %}</a></h4>
-                        {% if post.is_reprint %}
-                            <span class="label label-danger"><a href="{{ post.reprint_src }}">转载</a></span>
-                        {% else %}
-                            <span class="label label-primary">原创</span>
-                        {% endif %}
-                        <span class="post-info">更新时间：{{ post.update_time }}</span>
-                    <span class="post-info">
-                        <a href="{% url 'index' %}?category={{ post.category.cate_id }}">[{{ post.category.name }}]</a>
-                    </span>
-                    <span class="post-info">
-                        {% if post.tag %}
-                            {% for tag in post.tag.all %}<span class="label label-default">{{ tag.name }}</span>&nbsp;
-                            {% endfor %}</span>
-                        {% else %}无
-                        {% endif %}
-                    </div>
-                    <div class="post-wrap-body">
-                        {% autoescape off %}
-                            {{ post.highlight.content | join:"......<br/>" }}
-                        {% endautoescape %}
-                    </div>
-                    <div class="post-wrap-footer">
-                        <a href="{% url 'detail' post.post_uuid %}">阅读全文</a>
-                        <span class="post-info">浏览{{ post.read_count }}</span>
-                        <span class="post-info">评论{{ post.comments.count }}</span>
-                    </div>
-                </div>
-            {% endfor %}
-            <div class="post-pagination">
-                <ul class="pagination">
-                    {# 上一页 #}
-                    {% if posts.has_previous %}
-                        <li>
-                            <a href="?{{ posts.previous_page_number.querystring }}"><span>&laquo;</span></a>
-                        </li>
-                    {% endif %}
-                    {% for page in posts.pages %}
-                        {% if page %}
-                            {% ifequal page posts.number %}
-                                {# 当前页 #}
-                                <li class="active"><a>{{ page }}</a></li>
-                            {% else %}
-                                {# 指定页 #}
-                                <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
-                            {% endifequal %}
-                        {% else %}
-                            <li><a href="#">...</a></li>
-                        {% endif %}
+                {% if idx == 'posts' %}
+                    {% for post in posts.object_list %}
+                        <div class="post-wrap">
+                            <div class="post-wrap-header">
+                                <h4><a href="{% url 'detail' post.post_uuid %}" class="post-wrap-title">
+                                    {% if post.status == '1' %}[草稿]{% endif %}
+                                    {% if post.highlight.title %}{% autoescape off %}{{ post.highlight.title.0 }}
+                                    {% endautoescape %}{% else %}{{ post.title }}{% endif %}</a></h4>
+                                {% if post.is_reprint %}
+                                    <span class="label label-danger"><a href="{{ post.reprint_src }}">转载</a></span>
+                                {% else %}
+                                    <span class="label label-primary">原创</span>
+                                {% endif %}
+                                <span class="post-info">更新时间：{{ post.update_time }}</span>
+                            <span class="post-info">
+                                <a href="{% url 'index' %}?category={{ post.category.cate_id }}">[{{ post.category.name }}]</a>
+                            </span>
+                            <span class="post-info">
+                                {% if post.tag %}
+                                    {% for tag in post.tag.all %}<span class="label label-default">{{ tag.name }}</span>&nbsp;
+                                    {% endfor %}</span>
+                                {% else %}无
+                                {% endif %}
+                            </div>
+                            <div class="post-wrap-body">
+                                {% autoescape off %}
+                                    {{ post.highlight.content | join:"......<br/>" }}
+                                {% endautoescape %}
+                            </div>
+                            <div class="post-wrap-footer">
+                                <a href="{% url 'detail' post.post_uuid %}">阅读全文</a>
+                                <span class="post-info">浏览{{ post.read_count }}</span>
+                                <span class="post-info">评论{{ post.comments.count }}</span>
+                            </div>
+                        </div>
                     {% endfor %}
-                    {# 下一页 #}
-                    {% if posts.has_next %}
-                        <li><a href="?{{ posts.next_page_number.querystring }}">&raquo;</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+                {% elif idx == 'papers' %}
+                    {% for paper in posts.object_list %}
+                        <div class="post-wrap">
+                            <div class="post-wrap-header">
+                                <h4><a href="{% url 'paperdb.detail' paper.paper_uuid %}" class="post-wrap-title">
+                                    {% if paper.highlight.title %}
+                                        {% autoescape off %}{{ paper.highlight.title.0 }}{% endautoescape %}
+                                    {% else %}
+                                        {{ paper.title }}
+                                    {% endif %}
+                                </a></h4>
+                                <h5>
+                                    {% if paper.highlight.author %}
+                                        {% autoescape off %}{{ paper.highlight.author.0 }}{% endautoescape %}
+                                    {% endif %}
+                                </h5>
+                                <span class="post-info"><i class="fa fa-calendar"></i>发表时间：{{ paper.publish_time.year }}年{{ paper.publish_time.month }}月</span>
+                                {% if paper.comment %}
+                                <span class="post-info">
+                                    <i class="fa fa-clock-o"></i>评论更新时间：{{ paper.comment.update_time }}
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="post-wrap-body">
+                                {% autoescape off %}
+                                    {{ paper.highlight.content | join:"......<br/>" }}
+                                {% endautoescape %}
+                            </div>
+                            <div class="post-wrap-footer">
+                                <a href="{% url 'paperdb.detail' paper.paper_uuid %}">阅读评论/笔记</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="post-pagination">
+                    <ul class="pagination">
+                        {# 上一页 #}
+                        {% if posts.has_previous %}
+                            <li>
+                                <a href="?{{ posts.previous_page_number.querystring }}"><span>&laquo;</span></a>
+                            </li>
+                        {% endif %}
+                        {% for page in posts.pages %}
+                            {% if page %}
+                                {% ifequal page posts.number %}
+                                    {# 当前页 #}
+                                    <li class="active"><a>{{ page }}</a></li>
+                                {% else %}
+                                    {# 指定页 #}
+                                    <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                {% endifequal %}
+                            {% else %}
+                                <li><a href="#">...</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {# 下一页 #}
+                        {% if posts.has_next %}
+                            <li><a href="?{{ posts.next_page_number.querystring }}">&raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
             {% endif %}
         </div>
     </div>
@@ -253,11 +294,16 @@
                     layer.tips('{{ msg }}','#kw',{tips: [3]});
                 {% endif %}
 
-                var layerIdx;
+                var tipsLayerIdx;
                 $('#and-or-select').on('mouseenter', function () {
-                    layerIdx = layer.tips('设置关键词间的逻辑关系，默认为AND逻辑', '#and-or-select', {tips: [3], time: 0});
+                    tipsLayerIdx = layer.tips('设置关键词间的逻辑关系，默认为AND逻辑', '#and-or-select', {tips: [3], time: 0});
                 }).on('mouseleave', function () {
-                    layer.close(layerIdx);
+                    layer.close(tipsLayerIdx);
+                });
+                $('#index-select').on('mouseenter', function () {
+                    tipsLayerIdx = layer.tips('搜索范围指定', '#index-select', {tips: [3], time: 0});
+                }).on('mouseleave', function () {
+                    layer.close(tipsLayerIdx);
                 });
 
                 $('#sm').click(function (event) {
@@ -269,8 +315,9 @@
                         layer.close(loader);
                         return;
                     }
+                    var searchIdx = $('#index-select').val();
                     var logicCond = $('#and-or-select').val();
-                    location.href = location.href.replace(location.href,'') + '?kw=' + kw + '&logic=' + logicCond;
+                    location.href = location.href.replace(location.href,'') + '?idx=' + searchIdx + '&kw=' + kw + '&logic=' + logicCond;
                 });
 
                 $('#kw').keyup(function (event) {

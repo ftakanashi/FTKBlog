@@ -11,14 +11,15 @@ import time
 import traceback
 
 from django.conf import settings
-from django.core.cache import cache
 from django.shortcuts import render, reverse
 from django.views import View
 from django.http import QueryDict, JsonResponse, Http404, StreamingHttpResponse
 from django_redis import get_redis_connection
+from django.db.models import Q
 
 from blog.models import Category, Tag, Dict, Post, Comment, Message
 from blog.views import NewPostView
+from paperdb.models import Paper, ResearchTag, Reference, Author
 from ftkuser.models import AccessControl
 
 # Create your views here.
@@ -612,3 +613,125 @@ def backup_download(request, fn):
     redis.set(settings.LAST_BACKUP_KEY, time.time())
 
     return response
+
+
+class PaperdbPaperManage(View):
+
+    def get(self, request):
+        ctx = {}
+        return render(request, 'myadmin/modulemanage/paperdb/paper/view.html', ctx)
+
+    def delete(self, request):
+        param = QueryDict(request.body)
+
+        uuid = param.get('target')
+        try:
+            paper = Paper.objects.get(paper_uuid=uuid)
+        except Exception as e:
+            logger.error(traceback.format_exc(e))
+            return JsonResponse({'msg': '没有发现相关论文记录'}, status=404)
+
+        try:
+            references = Reference.objects.filter(Q(reference_src=paper)|Q(reference_trg=paper))
+            for ref in references:
+                ref.delete()
+
+            paper.comment.delete()
+            paper.delete()
+        except Exception as e:
+            logger.error(traceback.format_exc(e))
+            return JsonResponse({'msg': '删除失败'}, status=500)
+        else:
+            return JsonResponse({})
+
+
+class PaperdbTagManage(View):
+
+    def get(self, request):
+        ctx = {}
+
+        pk = request.GET.get('pk')
+        if pk is None:
+            return render(request, 'myadmin/modulemanage/paperdb/tag/view.html', ctx)
+        elif pk == 'n':
+            return render(request, 'myadmin/modulemanage/paperdb/tag/new.html', ctx)
+        else:
+            try:
+                tag = ResearchTag.objects.get(research_tag_id=pk)
+            except Exception as e:
+                logger.error(traceback.format_exc(e))
+                return render(request, 'error.html', {'error_msg': '没有发现相关记录'})
+            ctx['tag'] = tag
+            return render(request, 'myadmin/modulemanage/paperdb/tag/new.html', ctx)
+
+    def post(self, request):
+        pk = request.POST.get('pk')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        if pk == 'n':
+            new_tag = ResearchTag(name=name, description=description)
+            try:
+                new_tag.save()
+            except Exception as e:
+                logger.error(traceback.format_exc(e))
+                return JsonResponse({'msg': '保存失败'}, status=500)
+            else:
+                return JsonResponse({})
+        else:
+            try:
+                tag = ResearchTag(research_tag_id=pk)
+            except Exception as e:
+                logger.error(traceback.format_exc(e))
+                return JsonResponse({'msg': '未找到相关记录'}, status=404)
+            tag.name = name
+            tag.description = description
+            try:
+                tag.save()
+            except Exception as e:
+                logger.error(traceback.format_exc(e))
+                return  JsonResponse({'msg': '修改失败'}, status=500)
+            else:
+                return JsonResponse({})
+
+    def delete(self, request):
+        param = QueryDict(request.body)
+        pk = param.get('target')
+
+        try:
+            tag = ResearchTag.objects.get(research_tag_id=pk)
+        except Exception as e:
+            logger.error(traceback.format_exc(e))
+            return JsonResponse({'msg': '未找到相关记录'}, status=404)
+
+        try:
+            tag.delete()
+        except Exception as e:
+            logger.error(traceback.format_exc(e))
+            return JsonResponse({'msg': '删除失败'}, status=500)
+        else:
+            return JsonResponse({})
+
+
+class PaperdbAuthorManage(View):
+
+    def get(self, request):
+        ctx = {}
+        return render(request, 'myadmin/modulemanage/paperdb/author/view.html', ctx)
+
+    def delete(self, request):
+        param = QueryDict(request.body)
+        pk = param.get('target')
+
+        try:
+            author = Author.objects.get(author_id=pk)
+        except Exception as e:
+            logger.error(traceback.format_exc(e))
+            return JsonResponse({'msg': '未找到相关记录'}, status=404)
+
+        try:
+            author.delete()
+        except Exception as e:
+            logger.error(traceback.format_exc(e))
+            return JsonResponse({'msg': '删除失败'}, status=500)
+        else:
+            return JsonResponse({})

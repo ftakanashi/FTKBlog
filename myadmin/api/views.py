@@ -8,10 +8,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 from ratelimit.mixins import RatelimitMixin
 
 from blog.models import Category, Tag, Post, Comment, Message
+from paperdb.models import Paper, ResearchTag, Author
 from ftkuser.models import AccessControl
 from .serializers import CategorySerializer, TagSerializer, PostSerializer, CommentSerializer, MessageSerializer,\
-    AccessControlSerializer
-from .filters import CategoryFilter, TagFilter, PostFilter, CommentFilter, MessageFilter, AccessControlFilter
+    AccessControlSerializer, PaperdbPaperSerializer, PaperdbTagSerializer, PaperdbAuthorSerializer
+from .filters import CategoryFilter, TagFilter, PostFilter, CommentFilter, MessageFilter, AccessControlFilter, \
+    PaperdbTagFilter
 
 class RateLimitedListView(RatelimitMixin):
     ratelimit_key = 'ip'
@@ -66,3 +68,23 @@ class AccessControlListView(generics.ListCreateAPIView):
     authentication_classes = (SessionAuthentication,)
     filter_backends = (DjangoFilterBackend,)
     filter_class = AccessControlFilter
+
+class PaperdbPaperListView(generics.ListCreateAPIView):
+    queryset = Paper.objects.all().order_by('publish_time', 'title')
+    serializer_class = PaperdbPaperSerializer
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+
+class PaperdbTagListView(generics.ListCreateAPIView):
+    queryset = ResearchTag.objects.all()
+    serializer_class = PaperdbTagSerializer
+    permission_classes = (IsAuthenticated, )
+    authentication_classes = (SessionAuthentication, )
+    filter_backends = (DjangoFilterBackend, )
+    filter_class = PaperdbTagFilter
+
+class PaperdbAuthorListView(generics.ListCreateAPIView):
+    queryset = Author.objects.all()
+    serializer_class = PaperdbAuthorSerializer
+    permission_classes = (IsAuthenticated, )
+    authentication_classes = (SessionAuthentication, )

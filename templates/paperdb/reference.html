@@ -1,0 +1,114 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block page_header %}{% endblock %}
+{% block toolsbar %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block fixtool %}{% endblock %}
+{% block body_attribute %}{% endblock %}
+
+{% block content %}
+    <div style="padding: 10px; height: 720px;">
+        <div style="text-align: center;">
+            <h1>论文引用关系</h1>
+            <span style="color: red;">■</span>本文&nbsp;&nbsp;
+            <span style="color: blue">■</span>引用了&nbsp;&nbsp;
+            <span style="color: green;">■</span>被引用
+        </div>
+        <div id="main-graph" style="width: 100%; height: 100%;"></div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'comp/echarts/echarts-paper-reference.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function(e){
+    var graphData;
+    var loadLayer = layer.load('1', {shade: 0.3});
+    $.ajax({
+        async: false,
+        url: location.pathname,
+        type: 'post',
+        dataType: 'json',
+        data: {},
+        success: function(data, text, xhr){
+            graphData = data;
+        },
+        error: function(xml ,err, exc){
+            var msg;
+            try{ msg = JSON.parse(xml.responseText).msg; }
+            catch(e){ msg = '未知错误'; }
+            layer.alert(msg, {icon: 2, title: '获取数据错误', shade: 0.5});
+            graphData = {links: [], nodes: []};
+        },
+        complete: function(){layer.close(loadLayer);}
+    });
+
+
+    if(!graphData){
+        layer.alert('没有发现有效数据', {icon: 2, title: '加载图像错误', shade: 0.5});
+        return;
+    }
+    else{
+        graphData.nodes.forEach(function(node){
+
+        });
+        graphData.links.forEach(function(link){
+            link.symbol = [null, 'arrow'];
+            link.symbolSize = 8;
+        });
+    }
+
+    var myChart = echarts.init(document.getElementById('main-graph'));
+    // console.log(graphData.nodes);
+    // console.log(graphData.links);
+    var options = {
+        title: {
+            text: ''
+        },
+        textStyle: {
+            color: '#000'
+        },
+        series: [{
+            name: '论文引用关系',
+            type: 'graph',
+            layout: 'force',
+            data: graphData.nodes,
+            links: graphData.links,
+            label: {
+                fontWeight: 'bold',
+                padding: 5,
+                borderColor: '#000',
+                borderWidth: '1px',
+                borderRadius: 3,
+                backgroundColor: '#f4f4f4',
+                show: true,
+                position: 'bottom'
+            },
+            draggable: true,
+            roam: true,
+            focusNodeAdjacency: true,
+            symbol: 'image://{% static 'image/icon/paper.png' %}',
+            symbolSize: 40,
+            force: {
+                repulsion: 600,
+                edgeLength: 200
+            },
+            lineStyle: {
+                curveness: 0.25,
+                opacity: 1,
+                color: '#000'
+            }
+        }]
+    };
+    myChart.setOption(options);
+
+    myChart.on('dblclick', function(param){
+        console.log(param);
+        var url = '{% url 'paperdb.detail' '111111' %}'.replace('111111', param.data.id);
+        window.open(url);
+    });
+});
+</script>
+{% endblock %}

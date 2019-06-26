@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 
 from django.conf.urls import url
 
-from .views import CategoryListView, TagListView, PostListView, CommentListView, MessageListView, AccessControlListView
+from .views import CategoryListView, TagListView, PostListView, CommentListView, MessageListView, AccessControlListView, \
+    PaperdbPaperListView, PaperdbTagListView, PaperdbAuthorListView
 
 urlpatterns = [
     url(r'^category/',CategoryListView.as_view(), name='category.api'),
@@ -12,5 +13,8 @@ urlpatterns = [
     url(r'^post/', PostListView.as_view(), name='post.api'),
     url(r'^comment/',CommentListView.as_view(),name='comment.api'),
     url(r'^message/',MessageListView.as_view(),name='message.api'),
-    url(r'^accesscontrol', AccessControlListView.as_view(), name='accesscontrol.api')
+    url(r'^accesscontrol', AccessControlListView.as_view(), name='accesscontrol.api'),
+    url(r'^paperdb/paper/$', PaperdbPaperListView.as_view(), name='paperdb.paper.api'),
+    url(r'^paperdb/tag/$', PaperdbTagListView.as_view(), name='paperdb.tag.api'),
+    url(r'^paperdb/author/$', PaperdbAuthorListView.as_view(), name='paperdb.author.api')
 ]

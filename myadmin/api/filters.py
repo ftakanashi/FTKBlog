@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django_filters import FilterSet
 
 from blog.models import Category, Tag, Post, Comment, Message
+from paperdb.models import ResearchTag
 from ftkuser.models import AccessControl
 
 
@@ -79,4 +80,13 @@ class AccessControlFilter(FilterSet):
             'source_ip': ['exact'],
             'control_type': ['exact'],
             'domain': ['exact']
+        }
+
+class PaperdbTagFilter(FilterSet):
+    class Meta:
+        model = ResearchTag
+        fields = {
+            'research_tag_id': ['exact', ],
+            'name': ['contains'],
+            'description': ['contains']
         }

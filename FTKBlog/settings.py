@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'ftkuser.apps.FtkuserConfig',
     'search.apps.SearchConfig',
     'myadmin.apps.MyadminConfig',
-    'tools.apps.ToolsConfig'
+    'tools.apps.ToolsConfig',
+    'paperdb.apps.PaperdbConfig'
 ]
 
 MIDDLEWARE = [
@@ -89,17 +90,18 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '192.168.178.59:9200'
+        'hosts': '192.168.56.101:9200'
         # 'hosts': '127.0.0.1:9200'
         # 'hosts': '10.13.114.112:9200'
     },
 }
-ELASTICSEARCH_INDEX = 'ftkblog'
+ES_POST_INDEX = 'posts'
+ES_PAPER_INDEX = 'papers'
 
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.178.59:6379/1',
+        'LOCATION': 'redis://192.168.56.101:6379/1',
         # 'LOCATION': 'redis://127.0.0.1:6379/1',
         # 'LOCATION': 'redis://10.13.114.112:6379/1',
         'OPTIONS': {
@@ -271,6 +273,9 @@ UNREAD_MESSAGE_KEY = 'blog:unread_message_queue'
 VERI_CODE_KEY = 'blog:veri_code:%s'
 LAST_BACKUP_KEY = 'blog:last_backup'
 LATEST_NEWPOST_UUID_KEY = 'blog:latest_new_post_uuid'
+
+PAPER_CACHE_KEY = 'paperdb:paper_cache:{}'
+LATEST_NEWPAPER_UUID_KEY = 'paperdb:latest_new_paper_uuid'
 
 # post中图片上传目录
 IMG_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'upload', 'post-image')

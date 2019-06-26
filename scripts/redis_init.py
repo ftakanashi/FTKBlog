@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import re
+import uuid
 
 from redis import Redis
 from django.conf import settings
@@ -37,11 +38,15 @@ def redis_init():
     if not r.exists(settings.ACCESS_IP_QUEUE):
         r.rpush(settings.ACCESS_IP_QUEUE, '127.0.0.1|1970-01-01 00:00:00|1')
 
+    if not r.exists(settings.LATEST_NEWPAPER_UUID_KEY):
+        r.set(settings.LATEST_NEWPAPER_UUID_KEY, str(uuid.uuid4()))
+
     for key in (
         settings.SITE_MEMO_KEY,
         settings.READ_COUNT_KEY,
         settings.ACCESS_COUNT_KEY,
         settings.UNREAD_COMMENTS_KEY,
-        settings.UNREAD_MESSAGE_KEY
+        settings.UNREAD_MESSAGE_KEY,
+        settings.LATEST_NEWPAPER_UUID_KEY
     ):
         r.persist(key)

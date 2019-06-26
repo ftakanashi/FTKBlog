@@ -1,0 +1,449 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block left_page_content %}{% endblock %}
+
+{% block style %}
+<link href="{% static 'comp/editormd/css/editormd.min.css' %}" rel="stylesheet" />
+<link href="{% static 'comp/datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" />
+<link href="{% static 'comp/raty/jquery.raty.css' %}" rel="stylesheet" />
+<link href="{% static 'comp/select2/css/select2.min.css' %}" rel="stylesheet" />
+<style>
+    .main-panel{
+        margin-bottom: 5%;
+        margin-left: 5%;
+        width: 90%;
+        border: 1px solid darkgray;
+        border-radius: 10px;
+        padding: 20px;
+        background: #f4f4f4;
+    }
+    .tag-display{
+        background: lightgray;
+        color: white;
+        padding: 5px;
+        margin-right: 10px;
+        border-radius: 5px;
+    }
+    .tag-display:hover{
+        cursor: pointer;
+        background: #458aa8;
+    }
+    .tag-display i.fa-check{
+        display: none;
+    }
+    .tag-display:hover i.fa-check{
+        display: inline;
+    }
+    .tag-display.active{
+        background: #256a88;
+    }
+    .tag-display.active i.fa-check{
+        display: inline;
+    }
+    #editor{
+        z-index: 999;
+    }
+</style>
+{% endblock %}
+
+{% block main_ground %}
+    <div class="main-panel">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="uuidInput">论文UUID</label>
+                    <input class="form-control" value="{{ paper_uuid }}" id="uuidInput" disabled />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="titleInput">标题</label>
+                    <input class="form-control" id="titleInput" value="{{ paper.title }}" />
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="publishTimeInput">发表时间</label>
+                    <div class="input-group date">
+                        <input class="form-control" id="publishTimeInput"
+                               {% if paper %}
+                               value="{{ paper.publish_time.year }}-{{ paper.publish_time.month }}"
+                                {% endif %}
+                        />
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="publishOriginInput">刊物/会议</label>
+                    <input class="form-control" id="publishOriginInput" value="{{ paper.publish_origin }}" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="authorSelect">作者(用英文逗号分隔)</label>
+                    <select class="form-control" id="authorSelect" multiple>
+                        {% for a in authors %}
+                        <option value="{{ a.author_id }}" {% if a in paper.author.all %}selected{% endif %}>{{ a.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="linkInput">论文链接</label>
+                    <input class="form-control" id="linkInput" value="{{ paper.link }}" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <label class="control-label">研究方向标签</label>
+                <div class="tags-wrapper">
+                {% for tag in tags %}
+                    <span class="tag-display
+                    {% if tag in paper.tag.all %}active{% endif %}
+                    " data-value="{{ tag.research_tag_id }}" title="{{ tag.description }}">
+                        <i class="fa fa-check"></i>
+                        {{ tag.name }}
+                    </span>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-12">
+            <div class="form-group">
+                <label class="control-label">评论与笔记</label>
+                <a href="javascript:void(0);" id="restoreContent"><i class="fa fa-refresh"></i></a>
+                <button class="btn btn-xs btn-success" id="autoSaveToggle">自动保存 | 开启</button>
+                <div id="editor">
+                    <textarea id="editor-markdown-doc" name="editor-markdown-doc" style="display: none;">{{ paper.comment.content }}</textarea>
+                    <textarea id="editor-html-code" name="editor-html-code" style="display: none;"></textarea>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label class="control-label" for="referenceSelect">论文引用</label>
+                    <select class="form-control" id="referenceSelect" multiple>
+                        {% for p in papers %}
+                        {% if not paper %}
+                        <option value="{{ p.paper_uuid }}">{{ p.get_apa_format }}</option>
+                        {% elif p != paper and p.publish_time.year <= paper.publish_time.year %}
+                        <option value="{{ p.paper_uuid }}"
+                        {% if p in paper.get_reference_by_time %}selected{% endif %}
+                        >{{ p.get_apa_format }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label class="control-label">评分</label>&nbsp;&nbsp;
+                    <span class="label label-default"><span class="score-display" id="scoreDisplay"></span></span>
+                    <div id="paperRating" data-value="{{ paper.self_score }}"></div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="btn btn-primary" id="submit">
+                    <i class="fa fa-save"></i>&nbsp;保存
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block hidden_inputs %}
+    <input type="hidden" value="{{ autosave_interval|default:'5' }}" id="autosaveIntervalNum" />
+{% endblock%}
+
+{% block script %}
+<script src="{% static 'comp/editormd/editormd.min.js' %}"></script>
+<script src="{% static 'comp/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="{% static 'comp/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+<script src="{% static 'comp/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'comp/select2/js/i18n/zh-CN.js' %}"></script>
+<script src="{% static 'comp/raty/jquery.raty.js' %}"></script>
+<script src="{% static 'comp/moment.js' %}"></script>
+<script src="{% static 'ftk/base/main.min.js' %}"></script>
+<script>
+$(document).ready(function(e){
+    $('body').trigger('loadTheme');
+
+    // 点击标签
+    $('.tag-display').click(function(e){
+        e.preventDefault();
+        $(this).toggleClass('active');
+    });
+
+    // 构造主编辑区
+    var contentEditor;
+    editormd.emoji.path = '{% static 'comp/editormd/plugins/emoji-dialog/emoji' %}/';
+    contentEditor = editormd('editor', {
+        width: '100%',
+        height: 640,
+        path: '{% static 'comp/editormd' %}/lib/',
+        markdown: '',
+        codeFold: true,
+        saveHTMLToTextarea: true,
+        searchPlace: true,
+        watch: true,
+        htmlDecode: 'script,style,iframe|on*',
+        toolbar: true,
+        emoji: true,
+        taskList: true,
+        tocm: true,
+        tex: true,
+        dialogLockScreen: false,
+        dialogShowMask: true,
+        dialogMaskBgColor: '#000',
+        dialogMaskOpacity: 0.3,
+        flowChart: true,
+        sequenceDiagram: true,
+        imageUpload: true,
+        imageFormats: ['jpg', 'png', 'gif', 'jpeg', 'bmp'],
+        imageUploadURL: location.pathname + 'upload/'
+    });
+
+    // 构建datetimepicker
+    $('#publishTimeInput').parent().datetimepicker({
+        format: 'yyyy-mm',
+        language: 'zh-CN',
+        todayBtn: 'linked',
+        maxView: 4,
+        minView: 3,
+        startView: 3,
+        autoClose: true
+    });
+
+    // 构建select2
+    $('#authorSelect').select2({
+        language: 'zh-CN',
+        tags: true,
+        tokenSeparators: [',']
+    });
+    $('#referenceSelect').select2({
+        language: 'zh-CN',
+        width: '100%',
+        templateSelection: function(state){
+            if(state.text.length > 30){
+                return state.text.substr(0,30) + '...';
+            }
+            else{
+                return state.text;
+            }
+        }
+    });
+
+    // 构建raty评分插件
+    try{
+        var score = parseInt($('#paperRating').attr('data-value'));
+    }
+    catch(e){
+        score = 0;
+    }
+    $('#paperRating').raty({
+        score: score / 2,
+        half: true,
+        starOn: '{% static 'image/raty/star-on.png' %}',
+        starOff: '{% static 'image/raty/star-off.png' %}',
+        starHalf: '{% static 'image/raty/star-half.png' %}',
+        target: '#scoreDisplay',
+        targetType: 'hint',
+        targetKeep: true
+    });
+
+    // 提交
+    $('#submit').click(function(e){
+        var title = $('#titleInput').val();
+        var time = $('#publishTimeInput').val();
+        var origin = $('#publishOriginInput').val();
+        var authors = $('#authorSelect').val();
+        var link = $('#linkInput').val();
+
+        if(!title){
+            $.scrollTo('titleInput');
+            layer.tips('请输入标题', '#titleInput', {tips: [1, 'darkred']});
+            return;
+        }
+        if(!time){
+            $.scrollTo('publishTimeInput');
+            layer.tips('请输入发表时间', '#publishTimeInput', {tips: [1, 'darkred']});
+            return;
+        }
+        if(!authors){
+            $.scrollTo('authorSelect');
+            layer.tips('请输入作者', '#authorSelect', {tips: [1, 'darkred']});
+            return;
+        }
+
+        layer.confirm('确认保存吗？', {icon: 0, title: '提示', shade: 0.3}, function(){
+
+            var tags = [];
+            $('.tag-display.active').each(function(i, ele){
+                tags.push($(ele).attr('data-value'));
+            });
+
+            var content = contentEditor.getMarkdown();
+            var reference = $('#referenceSelect').val();
+            var score = $('#paperRating').raty('score') * 2;
+
+            var uuid = $('#uuidInput').val();
+
+            var loadLayer = layer.load('1', {shade: 0.25});
+            $.ajax({
+                url: location.pathname,
+                type: 'post',
+                dataType: 'json',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: {
+                    uuid: uuid,
+                    title: title,
+                    time: time,
+                    origin: origin,
+                    authors: authors ? authors : [],
+                    link: link,
+                    tags: tags ? tags : [],
+                    content: content,
+                    reference: reference ? reference : [],
+                    score: score
+                },
+                success: function(data){
+                    if(data.next){
+                        window.clearInterval(autoSaveInterval);
+                        location.href = data.next;
+                    }
+                    else{
+                        location.href = '{% url 'paperdb.index' %}';
+                    }
+                },
+                error: function(xml, err, exc){
+                    var msg;
+                    try{msg = JSON.parse(xml.responseText).msg;}
+                    catch(e){msg = '未知错误';}
+                    layer.alert(msg, {icon: 2, title: '保存失败'});
+                },
+                complete: function(){layer.close(loadLayer);}
+            });
+        });
+    });
+
+    $.extend({
+        loadCache: function () {
+            layer.msg('正在寻找自动保存内容...', {offset: 't', icon: 0});
+            $.ajax({
+                url: location.pathname,
+                type: 'put',
+                dataType: 'json',
+                data: {
+                    act: 'load',
+                    uuid: $('#uuidInput').val()
+                },
+                success: function (data) {
+                    layer.confirm('发现最近(' + moment(Date.now() - 1000 * data.time).fromNow() + ')自动保存的内容，是否恢复？', {
+                        icon: 3,
+                        title: '提示'
+                    }, function (index) {
+                        $('#titleInput').val(data.title);
+                        contentEditor.insertValue(data.content);
+                        layer.msg('恢复成功', {offset: 't', icon: 1});
+                    });
+                },
+                error: function (xml, err, exc) {
+                    var msg;
+                    try {
+                        msg = JSON.parse(xml.responseText).msg;
+                    }
+                    catch (e) {
+                        msg = '未知错误';
+                    }
+                    layer.msg(msg, {offset: 't', icon: 0});
+                }
+            });
+        }
+    });
+
+    // 先行读取缓存
+    $.loadCache();
+
+    function autoSave(){
+        var uuid = $('#uuidInput').val();
+        var title = $('#titleInput').val();
+        var content = contentEditor.getMarkdown();
+        $.ajax({
+            url: location.pathname,
+            type: 'put',
+            dataType: 'json',
+            data: {
+                act: 'save',
+                title: title,
+                content: content,
+                uuid: uuid
+            },
+            beforeSend: function(xhr, settings){
+                {% if site_switch__showAutosaveMsg %}layer.msg('自动保存中...', {offset: 'rb', icon: 0});{% endif %}
+            },
+            success: function(data){
+                {% if site_switch__showAutosaveMsg %}layer.msg(data.msg, {offset: 'rb', icon: 1});{% endif %}
+            },
+            error: function(xml, err, exc){
+                var msg;
+                try{ msg = JSON.parse(xml.responseText).msg; }
+                catch(e){ msg = '未知错误'; }
+                {% if site_switch__showAutosaveMsg %}layer.msg(msg, {offset: 'rb', icon: 2});{% endif %}
+            }
+        });
+    }
+
+    var autosaveIntervalNum;
+    try {
+        autosaveIntervalNum = parseFloat($('#autosaveIntervalNum').val());
+    }
+    catch (e) {
+        autosaveIntervalNum = 5;
+    }
+    var autoSaveInterval = setInterval(autoSave, autosaveIntervalNum * 60 * 1000);
+
+    // 开关自动保存
+    $('#autoSaveToggle').click(function (e) {
+        e.preventDefault();
+        var status = $(this).text().indexOf('开启') != -1;
+        if (status) {
+            clearInterval(autoSaveInterval);
+            $(this).text('自动保存 | 关闭');
+        }
+        else {
+            autoSaveInterval = setInterval(autoSave, autosaveIntervalNum * 60 * 1000);
+            $(this).text('自动保存 | 开启')
+        }
+        $(this).toggleClass('btn-success').toggleClass('btn-danger');
+    });
+
+    // 手动读取保存
+    $('#restoreContent').click(function(e){
+        $.loadCache();
+    });
+
+});
+</script>
+{% endblock %}

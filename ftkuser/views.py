@@ -34,7 +34,7 @@ class UserLogin(View):
     def _randomGetSlogan(self):
         return random.choice(Slogan.objects.all())
 
-    @ratelimit(key='ip', rate='1/5s')
+    @ratelimit(key='ip', rate='1/1s')
     def get(self, request):
         try:
             referer = request.META.get('HTTP_REFERER')

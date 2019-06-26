@@ -17,11 +17,11 @@ Including another URLconf
 from django.conf.urls import url, include
 # from django.contrib import admin
 from django.shortcuts import redirect, reverse, render
+from django.contrib import admin
 from django.http import JsonResponse
 
 from ratelimit.decorators import ratelimit
 
-from blog.models import Dict
 
 def index(request):
     return redirect(reverse('index'))
@@ -56,7 +56,7 @@ def handler_404(request):
 
 def handler_403(request):
     if getattr(request, 'limited', False):
-        return JsonResponse({'msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ'},status=403)
+        return JsonResponse({'msg': '你点得太急了 稍微过一会儿再试吧Σ(っ °Д °;)っ'}, status=403)
 
     ctx = {
         'error_title': '无权限',
@@ -66,12 +66,13 @@ def handler_403(request):
 
 urlpatterns = [
     url('^$', index),
-    # url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'^my-admin/', include('myadmin.urls'),name='myadmin'),
     url(r'^blog/', include('blog.urls')),
     url(r'^user/',include('ftkuser.urls')),
     url(r'^search/',include('search.urls')),
     url(r'^tools/', include('tools.urls')),
+    url(r'^paperdb/', include('paperdb.urls')),
     url(r'^about/', about, name='about'),
     url(r'^error/', error_test, name='errortest'),
     url(r'^accounts/login/', lambda x: redirect(reverse('login')))
