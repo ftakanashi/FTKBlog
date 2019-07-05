@@ -98,6 +98,14 @@ $(function () {
             });
         });
 
+        // 打印文章区域
+        $('#print-post').click(function(e){
+            e.preventDefault();
+            var htmlStr = $('#postContent').html();
+            $('.navbar,.toolbar,.post-footer,.footer,.fix-tool').remove();
+            $('.ground-row').css('padding-top', '10px');
+            window.print();
+        });
 
         // 页面内搜索
         $('#intern-search-input').focus(function (event) {
