@@ -347,7 +347,7 @@ background-attachment: fixed;
             var n = $('.navbar-inverse');
             var themeBkgColor = $(n).css('background-color');
             layer.open({
-                title: ['', 'background-color: '+themeBkgColor+';font-size: 20px;text-align: center;'],
+                title: ['站点备忘录', 'background-color: '+themeBkgColor+';font-size: 20px;text-align: center;'],
                 type: 2,
                 id: 1659,    // 1659是我随便想的… 看有没有其他好办法？
                 content: '{% url 'site-memo' %}',
@@ -380,12 +380,19 @@ background-attachment: fixed;
             var n = $('.navbar-inverse');
             var themeBkgColor = $(n).css('background-color');
             var url,id;
+            var titleText = '';
+            if($(this).attr('id') == 'openHJDict'){
+                titleText = '词典工具';
+            }
+            else if($(this).attr('id') == 'openRateTool'){
+                titleText = '汇率工具';
+            }
             switch($(this).attr('id')){
                 case 'openHJDict': url='{% url 'site-dict' %}';id=3821;break;
                 case 'openRateTool': url='{% url 'rate_tool' %}';id=3822;break;
             }
             layer.open({
-                title: ['', 'background-color: '+themeBkgColor+';font-size: 20px;text-align: center;'],
+                title: [titleText, 'background-color: '+themeBkgColor+';font-size: 20px;text-align: center;'],
                 type: 2,
                 id: id,
                 content: url,
