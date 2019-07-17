@@ -101,9 +101,10 @@ $(function () {
         // 打印文章区域
         $('#print-post').click(function(e){
             e.preventDefault();
-            var htmlStr = $('#postContent').html();
-            $('.navbar,.toolbar,.post-footer,.footer,.fix-tool').remove();
-            $('.ground-row').css('padding-top', '10px');
+            $('.navbar,.toolbar,.post-footer,.footer,.fix-tool,.post-header,.code-fold-toggle').remove();
+            $('.ground-row').css('padding-top', 0);
+            $('.main-ground').css({margin: 0, width: '100%'});
+            $('.post').css('border-radius', 0);
             window.print();
         });
 
