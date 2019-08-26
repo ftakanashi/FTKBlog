@@ -43,7 +43,7 @@
                             <label class="control-label" for="srcCurrencySelect">源币种</label>
                             <select class="form-control" id="srcCurrencySelect">
                                 {% for curr in currs %}
-                                <option value="{{ curr.0 }}" {% if curr.0 == 'CNH' %}selected{% endif %}>{{ curr.1 }}</option>
+                                <option value="{{ curr }}" {% if curr == '人民币' %}selected{% endif %}>{{ curr }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -73,7 +73,7 @@
                             <label class="control-label" for="trgCurrencySelect">目标币种</label>
                             <select class="form-control" id="trgCurrencySelect">
                                 {% for curr in currs %}
-                                <option value="{{ curr.0 }}" {% if curr.0 == 'JPY' %}selected{% endif %}>{{ curr.1 }}</option>
+                                <option value="{{ curr }}" {% if curr == '日元' %}selected{% endif %}>{{ curr }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -92,7 +92,7 @@
         </div>
         <hr>
         <div style="text-align: center;">
-            本页面汇率信息取自<a href="http://forex.hexun.com/rmbhl/?frommarket=baidurate">和讯网 - 参考价</a>
+            本页面汇率信息取自<a target="_blank" href="http://fx.cmbchina.com/hq/">招商银行 - 参考价</a>
         </div>
     </div>
 </div>

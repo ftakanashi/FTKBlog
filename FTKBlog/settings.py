@@ -113,7 +113,7 @@ CACHES = {
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_COOKIE_AGE = 43200
+SESSION_COOKIE_AGE = 3600 * 24 * 15
 SESSION_CACHE_ALIAS = 'default'
 
 # Logging Configuration
@@ -308,7 +308,8 @@ TOOLS_CONFIG = {
         'valid_lang_pair': ['jc', 'cj', 'ce', 'ec']
     },
     'rate_tool': {
-        'root_url': 'http://data.bank.hexun.com/other/cms/fxjhjson.ashx?callback=PereMoreData',
+        # 'root_url': 'http://data.bank.hexun.com/other/cms/fxjhjson.ashx?callback=PereMoreData',
+        'root_url': 'http://fx.cmbchina.com/hq/',
         'redis_key': 'tool:rate_cache'
     }
 }

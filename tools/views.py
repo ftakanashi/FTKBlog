@@ -392,7 +392,7 @@ class RateToolView(View):
             info = data['data']
             update_time = data['update_time']
 
-        ctx['currs'] = [(i['code'], i['currency']) for i in info]
+        ctx['currs'] = [i['currency'] for i in info]
         ctx['last_update'] = update_time
         return render(request, 'tools/ratetool.html', ctx)
 
@@ -423,10 +423,10 @@ class RateToolView(View):
         src_rate = trg_rate = None
         src_alias = trg_alias = ''
         for _info in info:
-            if _info['code'] == src_currency:
+            if _info['currency'] == src_currency:
                 src_rate = float(_info['refePrice'])
                 src_alias = _info['currency']
-            elif _info['code'] == trg_currency:
+            elif _info['currency'] == trg_currency:
                 trg_rate = float(_info['refePrice'])
                 trg_alias = _info['currency']
 

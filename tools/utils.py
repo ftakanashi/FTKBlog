@@ -120,7 +120,7 @@ class RateQuery(object):
     def __init__(self, root_url):
         self.root_url = root_url
         self.headers = {
-            'Host': 'data.bank.hexun.com',
+            'Host': 'fx.cmbchina.com',    # 改用招商银行汇率页面数据
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
             'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
@@ -141,19 +141,44 @@ class RateQuery(object):
             return []
 
         try:
-            content = res.content.decode('gbk')
-        except UnicodeDecodeError as e:
-            logger.warning('用GBK解码失败。使用原文')
-            content = res.content
-
-        try:
-            raw_match = re.search('PereMoreData\(\[(.+?)\]\)$', content)
-            raw = raw_match.group(1)
-            info = [{item.split(':')[0]: item.split(':')[1][1:-1].strip() for item in s.strip('{').strip('}').split(',')}
-                    for s in raw.split('},{')]
+            soup = BeautifulSoup(res.content, 'html5lib')
         except Exception as e:
-            logger.error('解析汇率数据失败。源数据是\n{}'.format(content))
-            logger.error(traceback.format_exc(e))
+            logger.error('解析汇率页面失败:\n{}'.format(traceback.format_exc(e)))
             return []
-        else:
-            return info
+
+        table = soup.select('#realRateInfo')
+        if len(table) == 0:
+            logger.error('未发现汇率表DOM')
+            return []
+        table = table[0]
+
+        rate_info = [{'currency': '人民币', 'refePrice': '100.0'}]
+        for i, row in enumerate(table.find_all(name='tr')):
+            curr_info = {}
+            if i == 0:
+                continue    # 跳过表头
+            _cells = row.find_all(name='td')
+            curr_info['currency'] = _cells[0].string.strip()
+            curr_info['refePrice'] = _cells[3].string.strip()
+
+            rate_info.append(curr_info)
+
+        return rate_info
+
+        # try:
+        #     content = res.content.decode('gbk')
+        # except UnicodeDecodeError as e:
+        #     logger.warning('用GBK解码失败。使用原文')
+        #     content = res.content
+        #
+        # try:
+        #     raw_match = re.search('PereMoreData\(\[(.+?)\]\)$', content)
+        #     raw = raw_match.group(1)
+        #     info = [{item.split(':')[0]: item.split(':')[1][1:-1].strip() for item in s.strip('{').strip('}').split(',')}
+        #             for s in raw.split('},{')]
+        # except Exception as e:
+        #     logger.error('解析汇率数据失败。源数据是\n{}'.format(content))
+        #     logger.error(traceback.format_exc(e))
+        #     return []
+        # else:
+        #     return info

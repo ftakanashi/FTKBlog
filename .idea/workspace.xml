@@ -43,11 +43,61 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="13.022839">
-              <caret line="248" column="41" selection-start-line="248" selection-start-column="41" selection-end-line="248" selection-end-column="41" />
+            <state vertical-scroll-proportion="-9.4">
+              <caret line="312" column="38" selection-start-line="312" selection-start-column="38" selection-end-line="312" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tools/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="405" column="0" selection-start-line="405" selection-start-column="0" selection-end-line="405" selection-end-column="0" />
+              <folding>
+                <element signature="e#744#1403#0" expanded="false" />
+                <element signature="e#744#779#1" expanded="false" />
+                <element signature="e#1443#1545#0" expanded="false" />
+                <element signature="e#1583#2051#0" expanded="false" />
+                <element signature="e#1653#2051#0" expanded="false" />
+                <element signature="e#2088#3578#0" expanded="false" />
+                <element signature="e#2159#2384#0" expanded="false" />
+                <element signature="e#2473#3578#0" expanded="false" />
+                <element signature="e#3617#9628#0" expanded="false" />
+                <element signature="e#3975#6069#0" expanded="false" />
+                <element signature="e#6158#8948#0" expanded="false" />
+                <element signature="e#7884#8027#0" expanded="false" />
+                <element signature="e#9039#9628#0" expanded="false" />
+                <element signature="e#9662#12015#0" expanded="false" />
+                <element signature="e#9733#10716#0" expanded="false" />
+                <element signature="e#10843#12015#0" expanded="false" />
+                <element signature="e#12048#13654#0" expanded="false" />
+                <element signature="e#12080#12227#0" expanded="false" />
+                <element signature="e#12316#13654#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ratetool.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/tools/ratetool.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.857143">
+              <caret line="94" column="38" selection-start-line="94" selection-start-column="38" selection-end-line="94" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tools/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="9.568773">
+              <caret line="163" column="39" selection-start-line="163" selection-start-column="39" selection-end-line="163" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -73,9 +123,6 @@
         <option value="$PROJECT_DIR$/static/ftk/admin/editpost.js" />
         <option value="$PROJECT_DIR$/static/ftk/index.css" />
         <option value="$PROJECT_DIR$/static/ftk/index.js" />
-        <option value="$PROJECT_DIR$/tools/utils.py" />
-        <option value="$PROJECT_DIR$/tools/views.py" />
-        <option value="$PROJECT_DIR$/templates/tools/ratetool.html" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/b2002097-ad15-4421-8f7e-e1cce473c960/console_4.sql" />
         <option value="$PROJECT_DIR$/ftkuser/views.py" />
         <option value="$PROJECT_DIR$/paperdb/admin.py" />
@@ -105,7 +152,6 @@
         <option value="$PROJECT_DIR$/myadmin/api/urls.py" />
         <option value="$PROJECT_DIR$/myadmin/api/serializers.py" />
         <option value="$PROJECT_DIR$/myadmin/api/views.py" />
-        <option value="$PROJECT_DIR$/FTKBlog/settings.py" />
         <option value="$PROJECT_DIR$/templates/search/index.html" />
         <option value="$PROJECT_DIR$/search/documents.py" />
         <option value="$PROJECT_DIR$/search/views.py" />
@@ -119,6 +165,10 @@
         <option value="$PROJECT_DIR$/static/ftk/blog/post.js" />
         <option value="$PROJECT_DIR$/templates/blog/post.html" />
         <option value="$PROJECT_DIR$/static/ftk/blog/post.min.js" />
+        <option value="$PROJECT_DIR$/FTKBlog/settings.py" />
+        <option value="$PROJECT_DIR$/tools/views.py" />
+        <option value="$PROJECT_DIR$/tools/utils.py" />
+        <option value="$PROJECT_DIR$/templates/tools/ratetool.html" />
       </list>
     </option>
   </component>
@@ -236,7 +286,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
+              <option name="myItemId" value="tools" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -250,65 +300,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="blog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
               <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ftk" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ftk" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="blog" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -678,16 +670,16 @@
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19325481" sideWeight="0.41943735" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20396146" sideWeight="0.41943735" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33596393" sideWeight="0.4969743" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="调试" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33488914" sideWeight="0.4969743" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40924466" sideWeight="0.52462524" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27944326" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3982906" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24583964" sideWeight="0.57033247" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36076662" sideWeight="0.48768738" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27282977" sideWeight="0.47537473" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27187866" sideWeight="0.47537473" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27987897" sideWeight="0.58056265" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -744,46 +736,11 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="143" />
+      <option name="time" value="152" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/comp/raty/jquery.raty.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.7773585">
-          <caret line="562" column="38" selection-start-line="562" selection-start-column="38" selection-end-line="562" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33292684">
-          <caret line="73" column="24" selection-start-line="73" selection-start-column="21" selection-end-line="73" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/ftk/base/main.min.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="654" selection-start-line="0" selection-start-column="643" selection-end-line="0" selection-end-column="654" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/paperdb/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/myadmin/dashboard.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.444898">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/FTKBlog/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4567669">
@@ -1019,19 +976,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="89" column="27" selection-start-line="89" selection-start-column="27" selection-end-line="89" selection-end-column="27" />
-          <folding>
-            <element signature="e#679#2595#0" expanded="false" />
-            <element signature="e#728#1593#0" expanded="false" />
-            <element signature="e#1670#2595#0" expanded="false" />
-            <element signature="e#3975#8134#0" expanded="false" />
-            <element signature="e#8172#9793#0" expanded="false" />
-            <element signature="e#9829#10550#0" expanded="false" />
-            <element signature="e#9911#10550#0" expanded="false" />
-            <element signature="e#10589#13181#0" expanded="false" />
-            <element signature="e#10671#11218#0" expanded="false" />
-            <element signature="e#11319#13181#0" expanded="false" />
-            <element signature="e#11598#12009#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1053,36 +997,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.038596492">
           <caret line="625" column="4" selection-start-line="625" selection-start-column="4" selection-end-line="625" selection-end-column="4" />
-          <folding>
-            <element signature="e#915#4295#0" expanded="false" />
-            <element signature="e#986#4295#0" expanded="false" />
-            <element signature="e#4328#6732#0" expanded="false" />
-            <element signature="e#4442#4967#0" expanded="false" />
-            <element signature="e#4750#4814#0" expanded="false" />
-            <element signature="e#5056#5361#0" expanded="false" />
-            <element signature="e#5452#5872#0" expanded="false" />
-            <element signature="e#5960#6732#0" expanded="false" />
-            <element signature="e#6930#7015#0" expanded="false" />
-            <element signature="e#7053#7404#0" expanded="false" />
-            <element signature="e#7442#10257#0" expanded="false" />
-            <element signature="e#10297#12672#0" expanded="false" />
-            <element signature="e#12701#15545#0" expanded="false" />
-            <element signature="e#12777#13925#0" expanded="false" />
-            <element signature="e#14020#14501#0" expanded="false" />
-            <element signature="e#14636#15545#0" expanded="false" />
-            <element signature="e#14636#14699#1" expanded="false" />
-            <element signature="e#15578#16965#0" expanded="false" />
-            <element signature="e#15648#16259#0" expanded="false" />
-            <element signature="e#16348#16965#0" expanded="false" />
-            <element signature="e#16997#20556#0" expanded="false" />
-            <element signature="e#17138#18484#0" expanded="false" />
-            <element signature="e#18573#20556#0" expanded="false" />
-            <element signature="e#20588#22685#0" expanded="false" />
-            <element signature="e#20702#20985#0" expanded="false" />
-            <element signature="e#21075#22685#0" expanded="false" />
-            <element signature="e#22718#23465#0" expanded="false" />
-            <element signature="e#22858#23465#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1100,16 +1014,61 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/base/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="20" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/category/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="42" selection-start-line="0" selection-start-column="42" selection-end-line="0" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/ftk/blog/post.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.053833604">
+          <caret line="1" column="1695" selection-start-line="1" selection-start-column="1695" selection-end-line="1" selection-end-column="1695" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/blog/post.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.53765327">
+          <caret line="217" column="46" selection-start-line="217" selection-start-column="46" selection-end-line="217" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/ftk/blog/post.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.75367045">
+          <caret line="106" column="47" selection-start-line="106" selection-start-column="47" selection-end-line="106" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/image/icon/t_icon.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tools/sitedict.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21839081">
+          <caret line="130" column="33" selection-start-line="130" selection-start-column="33" selection-end-line="130" selection-end-column="33" />
+          <folding>
+            <element signature="n#block#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/original/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18819188">
-          <caret line="398" column="29" selection-start-line="398" selection-start-column="29" selection-end-line="398" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.042145595">
+          <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
           <folding>
-            <element signature="e#111#137#0#DjangoTemplate" expanded="false" />
-            <element signature="e#142#256#0#DjangoTemplate" expanded="false" />
-            <element signature="e#261#318#0#DjangoTemplate" expanded="false" />
-            <element signature="n#block#0;n#!!top" expanded="false" />
-            <element signature="n#if#0;n#!!top" expanded="false" />
             <element signature="n#block#1;n#!!top" expanded="false" />
             <element signature="n#block#2;n#!!top" expanded="false" />
             <element signature="n#block#3;n#!!top" expanded="false" />
@@ -1145,129 +1104,59 @@
             <element signature="n#if#11;n#!!top" expanded="false" />
             <element signature="e#12388#12579#0#DjangoTemplate" expanded="false" />
             <element signature="n#block#24;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/base/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="20" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/category/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="42" selection-start-line="0" selection-start-column="42" selection-end-line="0" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/ftk/blog/post.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.053833604">
-          <caret line="1" column="1695" selection-start-line="1" selection-start-column="1695" selection-end-line="1" selection-end-column="1695" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/blog/post.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53765327">
-          <caret line="217" column="46" selection-start-line="217" selection-start-column="46" selection-end-line="217" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/ftk/blog/post.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.75367045">
-          <caret line="106" column="47" selection-start-line="106" selection-start-column="47" selection-end-line="106" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#47#0" expanded="false" />
-            <element signature="e#183#235#0" expanded="false" />
-            <element signature="e#347#1194#0" expanded="false" />
-            <element signature="e#555#588#0" expanded="false" />
-            <element signature="e#791#1182#0" expanded="false" />
-            <element signature="e#986#1066#0" expanded="false" />
-            <element signature="e#1088#1168#0" expanded="false" />
-            <element signature="e#1268#1688#0" expanded="false" />
-            <element signature="e#1363#1678#0" expanded="false" />
-            <element signature="e#1545#1664#0" expanded="false" />
-            <element signature="e#1766#2408#0" expanded="false" />
-            <element signature="e#1991#2188#0" expanded="false" />
-            <element signature="e#2206#2398#0" expanded="false" />
-            <element signature="e#2477#2859#0" expanded="false" />
-            <element signature="e#2679#2756#0" expanded="false" />
-            <element signature="e#2774#2849#0" expanded="false" />
-            <element signature="e#2928#3577#0" expanded="false" />
-            <element signature="e#2989#3332#0" expanded="false" />
-            <element signature="e#3364#3565#0" expanded="false" />
-            <element signature="e#4059#4155#0" expanded="false" />
-            <element signature="e#4180#5301#0" expanded="false" />
-            <element signature="e#4219#4527#0" expanded="false" />
-            <element signature="e#4262#4352#0" expanded="false" />
-            <element signature="e#4399#4489#0" expanded="false" />
-            <element signature="e#4621#5289#0" expanded="false" />
-            <element signature="e#4775#5275#0" expanded="false" />
-            <element signature="e#4817#5104#0" expanded="false" />
-            <element signature="e#5130#5257#0" expanded="false" />
-            <element signature="e#5364#6384#0" expanded="false" />
-            <element signature="e#5524#5911#0" expanded="false" />
-            <element signature="e#5558#5647#0" expanded="false" />
-            <element signature="e#5959#6374#0" expanded="false" />
-            <element signature="e#6046#6135#0" expanded="false" />
-            <element signature="e#6491#7674#0" expanded="false" />
-            <element signature="e#6607#7664#0" expanded="false" />
-            <element signature="e#6883#7000#0" expanded="false" />
-            <element signature="e#7021#7378#0" expanded="false" />
-            <element signature="e#7141#7256#0" expanded="false" />
-            <element signature="e#7736#8953#0" expanded="false" />
-            <element signature="e#7867#8077#0" expanded="false" />
-            <element signature="e#8095#8305#0" expanded="false" />
-            <element signature="e#8326#8941#0" expanded="false" />
-            <element signature="e#8454#8542#0" expanded="false" />
-            <element signature="e#8585#8644#0" expanded="false" />
-            <element signature="e#8694#8927#0" expanded="false" />
-            <element signature="e#8720#8812#0" expanded="false" />
-            <element signature="e#8843#8909#0" expanded="false" />
-            <element signature="e#9022#9098#0" expanded="false" />
-            <element signature="e#9170#10221#0" expanded="false" />
-            <element signature="e#9298#10209#0" expanded="false" />
-            <element signature="e#9386#10194#0" expanded="false" />
-            <element signature="e#9532#9633#0" expanded="false" />
-            <element signature="e#9677#9748#0" expanded="false" />
-            <element signature="e#9795#9861#0" expanded="false" />
-            <element signature="e#9915#10176#0" expanded="false" />
-            <element signature="e#9945#10045#0" expanded="false" />
-            <element signature="e#10080#10154#0" expanded="false" />
-            <element signature="e#10296#10780#0" expanded="false" />
-            <element signature="e#10424#10481#0" expanded="false" />
-            <element signature="e#10499#10770#0" expanded="false" />
-            <element signature="e#10563#10632#0" expanded="false" />
-            <element signature="e#10849#11097#0" expanded="false" />
-            <element signature="e#10991#11034#0" expanded="false" />
-            <element signature="e#11048#11091#0" expanded="false" />
-            <element signature="e#11155#11787#0" expanded="false" />
-            <element signature="e#11234#11500#0" expanded="false" />
-            <element signature="e#11294#11417#0" expanded="false" />
-            <element signature="e#11339#11403#0" expanded="false" />
-            <element signature="e#11514#11781#0" expanded="false" />
-            <element signature="e#11574#11698#0" expanded="false" />
-            <element signature="e#11620#11684#0" expanded="false" />
-            <element signature="e#11844#12285#0" expanded="false" />
-            <element signature="e#12012#12113#0" expanded="false" />
-            <element signature="e#12130#12232#0" expanded="false" />
+            <element signature="n#block#25;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="13.022839">
-          <caret line="248" column="41" selection-start-line="248" selection-start-column="41" selection-end-line="248" selection-end-column="41" />
+        <state vertical-scroll-proportion="-9.4">
+          <caret line="312" column="38" selection-start-line="312" selection-start-column="38" selection-end-line="312" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tools/ratetool.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.857143">
+          <caret line="94" column="38" selection-start-line="94" selection-start-column="38" selection-end-line="94" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="405" column="0" selection-start-line="405" selection-start-column="0" selection-end-line="405" selection-end-column="0" />
+          <folding>
+            <element signature="e#744#1403#0" expanded="false" />
+            <element signature="e#744#779#1" expanded="false" />
+            <element signature="e#1443#1545#0" expanded="false" />
+            <element signature="e#1583#2051#0" expanded="false" />
+            <element signature="e#1653#2051#0" expanded="false" />
+            <element signature="e#2088#3578#0" expanded="false" />
+            <element signature="e#2159#2384#0" expanded="false" />
+            <element signature="e#2473#3578#0" expanded="false" />
+            <element signature="e#3617#9628#0" expanded="false" />
+            <element signature="e#3975#6069#0" expanded="false" />
+            <element signature="e#6158#8948#0" expanded="false" />
+            <element signature="e#7884#8027#0" expanded="false" />
+            <element signature="e#9039#9628#0" expanded="false" />
+            <element signature="e#9662#12015#0" expanded="false" />
+            <element signature="e#9733#10716#0" expanded="false" />
+            <element signature="e#10843#12015#0" expanded="false" />
+            <element signature="e#12048#13654#0" expanded="false" />
+            <element signature="e#12080#12227#0" expanded="false" />
+            <element signature="e#12316#13654#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="9.568773">
+          <caret line="163" column="39" selection-start-line="163" selection-start-column="39" selection-end-line="163" selection-end-column="39" />
           <folding />
         </state>
       </provider>
