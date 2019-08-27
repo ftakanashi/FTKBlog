@@ -40,6 +40,7 @@
             <label class="control-label">正文</label>
             <a id="restoreContent" href="javascript:void(0);" title="恢复自动保存内容"><i class="fa fa-refresh"></i></a>
             <button class="btn btn-xs btn-success" id="autoSaveToggle">自动保存 | 开启</button>
+            <a id="showEditTips" href="javascript:void(0);" title="查看编辑小技巧"><i class="fa fa-question-circle"></i></a>
             <div id="post-content-editor">
                 <textarea id="post-content-editor-markdown-doc" name="post-content-editor-markdown-doc" style="display:none;">{% if type == 'edit' %}{{ post.content }}{% endif %}</textarea>
                 <textarea id="post-content-editor-html-code" name="post-content-editor-html-code" style="display: none;"></textarea>
@@ -113,6 +114,17 @@
     <script src="{% static 'comp/moment.js' %}"></script>
     <script>
     var emojiPluginPath = '{% static 'comp/editormd/plugins/emoji-dialog/emoji' %}';
+    $('#showEditTips').click(function(e){
+        layer.open({
+            type: 1,
+            title: false,
+            area: ['80%', 'auto'],
+            shadeClose: true,
+            content: '<div style="padding:20px;">' +
+            '● 零碎积累项特殊CSS的起始标志是id为"start-of-wyz-items"的span。<br/>' +
+            '</div>'
+        });
+    });
     </script>
     {% if type != 'edit' %}
     <script src="{% static 'ftk/blog/new.js' %}"></script>
