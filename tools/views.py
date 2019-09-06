@@ -280,23 +280,49 @@ class SSRConfigView(View):
         out, err = stdout.read(), stderr.read()
         close_proxy_ssh_client(ssh)
         if err:
-            logger.error('获取远程SSR端口失败:\n{}'.format(err))
-            ctx['ssr_ports'] = ['获取当前端口失败', ]
+            logger.error('执行获取端口脚本失败:\n{}'.format(err))
+            # ctx['ssr_ports'] = ['获取当前端口失败', ]
+            return render(request, 'error.html', {'error_msg': '获取当前端口失败...'})
         else:
-            ctx['ssr_ports'] = out.strip().split(',')
+            try:
+                conf_content = json.loads(out.strip())
+                ctx['ssr_confs'] = conf_content
+            except Exception as e:
+                logger.error('解析stdout输出失败，要求JSON格式:\n{}'.format(e))
+                return render(request, 'error.html', {'error_msg': '获取当前端口失败...'})
 
         return render(request, 'tools/ssr.html', ctx)
 
     @ratelimit(key='ip', rate='1/5s', block=True)
     @method_decorator(login_required)
     def post(self, request):
-        info_str = request.POST.get('info')
-        infos = info_str.split(',')
-        ports, blacklists = [], []
-        for info in infos:
-            port, blacklist = info.split(':')
-            ports.append(port)
-            blacklists.append(blacklist)
+
+        param = json.loads(request.body)
+        discard_current_ports = param.get('discard')
+        ports_info = param.get('data')
+
+        # 检查上送数据是否合法
+        std_options = ['method', 'protocol', 'obfs', 'password']
+        std_options = set(std_options)
+
+        for k in ports_info.keys():
+            try:
+                _i = int(k)
+                if _i > 65535 or _i < 9999:
+                    raise Exception
+            except Exception as e:
+                logger.error('非法的端口[{}]'.format(k))
+                return JsonResponse({'msg': '非法的端口[{}]'.format(k)}, status=500)
+
+        for v in ports_info.values():
+            if not set(v.keys()) <= std_options:
+                logger.error('监测到非法的option在[{}]中'.format(v))
+                return JsonResponse({'msg': '监测到非法的字段'}, status=500)
+            if '' in v.values():
+                logger.error('发现空值in {}'.format(v))
+                return JsonResponse({'msg': '不能上传空值'}, status=500)
+
+        # 检查完毕
 
         try:
             config = settings.TOOLS_CONFIG['ssr_config']['do_config_path']
@@ -305,8 +331,10 @@ class SSRConfigView(View):
             return JsonResponse({'msg': '获取远程工作节点脚本目录失败'}, status=500)
 
         cmd = config
-        cmd += ' -ports {}'.format(','.join(ports))
-        cmd += ' -blacklist {}'.format(''.join(blacklists))
+        cmd += ' -info \'{}\''.format(json.dumps(ports_info))
+        if discard_current_ports:
+            cmd += ' -discard'
+
         logger.info('本次执行命令 [{}]'.format(cmd))
 
         ssh = get_proxy_ssh_client()
@@ -316,7 +344,7 @@ class SSRConfigView(View):
 
         if err:
             logger.error('修改SSR远程端口失败:{}'.format(err))
-            return JsonResponse({'msg': '远程修改端口过程报错了┭┮﹏┭┮<br>详情见后台日志'})
+            return JsonResponse({'msg': '远程修改端口过程报错了┭┮﹏┭┮<br>{}'.format(err)})
         else:
             logger.info('修改SSR远程端口为{}'.format(out.strip()))
             return JsonResponse({'msg': '远程端口已经修改为<h1 style="color: red;">{}</h1>'.format(out.strip())})

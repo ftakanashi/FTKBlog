@@ -21,7 +21,7 @@
         <div class="col-lg-12">
             <div style="text-align:center;">
                 <span style="color: gray;">当前端口</span>
-                {% for port in ssr_ports %}
+                {% for port in ssr_confs %}
                 <span style="border: 1px solid lightgray;font-size: 32px;padding: 10px;color: #963634;">{{ port }}</span>
                 {% endfor %}
             </div>
@@ -30,36 +30,57 @@
     {% if request.user.is_active %}
     <hr>
     <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-2 col-xs-2"></div>
-        <div class="col-lg-4 col-md-4 col-sm-8 col-xs-8">
-{#            <div style="text-align:center;">#}
-{#                <div class="form-group">#}
-{#                    <label class="control-label" for="portInput">新端口</label>#}
-{#                    <input class="form-control" id="portInput" placeholder="输入新端口..." />#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label class="control-label" for="blacklistCheck">今后弃用{{ ssr_port }}端口</label>#}
-{#                    <input class="form-control" id="blacklistCheck" type="checkbox" />#}
-{#                </div>#}
-{#                <button class="btn btn-success" id="submit">#}
-{#                    <i class="fa fa-upload"></i>起飞！#}
-{#                </button>#}
-{#            </div>#}
-            {% for port in ssr_ports %}
-            <div class="row">
-                <form class="form-inline" name="{{ forloop.counter0 }}">
-                    <div class="form-group">
-                        <label class="control-label">端口</label>
-                        <input class="form-control port-input" value="{{ port }}" />
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            {% for port,ssr_conf in ssr_confs.items %}
+            <div class="panel panel-default port-info-panel" name="{{ forloop.counter0 }}">
+                <div class="panel-heading">
+                    <h3 class="panel-title">端口{{ forloop.counter }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">端口号
+                                <a href="javascript:void(0);" class="shuffle-port" title="随机生成端口号"><i class="fa fa-refresh"></i></a>
+                                </label>
+                                <input class="form-control port-input" value="{{ port }}" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">协议</label>
+                                <input class="form-control protocol-input" value="{{ ssr_conf.protocol }}" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">加密</label>
+                                <input class="form-control method-input" value="{{ ssr_conf.method }}" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">混淆</label>
+                                <input class="form-control obfs-input" value="{{ ssr_conf.obfs }}" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">密码</label>
+                                <input class="form-control password-input" value="{{ ssr_conf.password }}" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label">是否弃用{{ port }}</label>
-                        <input type="checkbox" class="form-control blacklist-input" checked />
-                    </div>
-                </form>
+                </div>
             </div>
             {% endfor %}
             <div style="text-align: center;">
+                <label class="control-label">
+                    是否弃用当前端口?
+                    <input type="checkbox" class="form-control" id="discard-port" />
+                </label>
+                <br>
                 <button class="btn btn-success" id="submit">
                     <i class="fa fa-upload"></i>&nbsp;&nbsp;起飞!
                 </button>
@@ -78,44 +99,90 @@
 $(document).ready(function(){
 
     $('input[type=checkbox]').bootstrapSwitch({
-        size: 'small',
+        size: 'mini',
         onText: '是',
         offText: '否'
     });
 
+    $('.shuffle-port').click(function(e){
+        var newPort = Math.random();
+        newPort = (newPort * (65535 - 10000)) + 10000;
+        newPort = Math.floor(newPort);
+        $(this).parent().next('input').val(newPort);
+    });
+
     $('#submit').click(function(event){
+        var uploadInfo = {};
+        var portInfo = {};
+        $('.port-info-panel').each(function(i, ele){
+            var portNum = $(ele).find('.port-input').val();
+            var protocol = $(ele).find('.protocol-input').val();
+            var method = $(ele).find('.method-input').val();
+            var password = $(ele).find('.password-input').val();
+            var obfs = $(ele).find('.obfs-input').val();
+            portInfo[portNum] = {
+                password: password,
+                protocol: protocol,
+                method: method,
+                obfs: obfs
+            };
+        });
+
+        uploadInfo['data'] = portInfo;
+        uploadInfo['discard'] = $('#discard-port').prop('checked');
 
         var load = layer.load(1, {shade: 0.5});
-        var upload = [];
-        $('form.form-inline').each(function(i, ele){
-            var port = $(ele).find('.port-input').val();
-            var blacklist = $(ele).find('.blacklist-input').prop('checked');
-            upload.push(port + ':' + (blacklist? '1':'0'));
-        });
-        var uploadStr = upload.join(',');
-
         $.ajax({
             url: location.pathname,
             type: 'post',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
             dataType: 'json',
-            data: {
-                info: uploadStr
-            },
+            data: JSON.stringify(uploadInfo),
             success: function(data){
                 layer.alert(data.msg);
             },
             error: function(xml, err, exc){
                 var msg;
-                try{
-                    msg = JSON.parse(xml.responseText).msg;
-                }
-                catch(e){
-                    msg = '未知错误';
-                }
-                layer.msg(msg);
+                try{ msg = JSON.parse(xml.responseText).msg; }
+                catch(e){ msg = '未知错误'; }
+                layer.alert(msg);
             },
-            complete: function(){layer.close(load);}
-        })
+            complete: function(){
+                layer.close(load);
+            }
+        });
+
+{#        var upload = [];#}
+{#        $('form.form-inline').each(function(i, ele){#}
+{#            var port = $(ele).find('.port-input').val();#}
+{#            var blacklist = $(ele).find('.blacklist-input').prop('checked');#}
+{#            upload.push(port + ':' + (blacklist? '1':'0'));#}
+{#        });#}
+{#        var uploadStr = upload.join(',');#}
+{##}
+{#        $.ajax({#}
+{#            url: location.pathname,#}
+{#            type: 'post',#}
+{#            dataType: 'json',#}
+{#            data: {#}
+{#                info: uploadStr#}
+{#            },#}
+{#            success: function(data){#}
+{#                layer.alert(data.msg);#}
+{#            },#}
+{#            error: function(xml, err, exc){#}
+{#                var msg;#}
+{#                try{#}
+{#                    msg = JSON.parse(xml.responseText).msg;#}
+{#                }#}
+{#                catch(e){#}
+{#                    msg = '未知错误';#}
+{#                }#}
+{#                layer.msg(msg);#}
+{#            },#}
+{#            complete: function(){layer.close(load);}#}
+{#        })#}
     });
 });
 </script>
