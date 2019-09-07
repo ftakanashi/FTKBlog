@@ -192,7 +192,8 @@ CRONJOBS = [
     ('40 9 * * *', 'FTKBlog.cron.db_backup'),  # 每天备份数据库数据
     ('0 1 * * *', 'FTKBlog.cron.upload_backup'),  # 每天备份上传（图片）数据
     ('0 2 */3 * *', 'FTKBlog.cron.migration_backup'),  # 每天备份migration记录
-    ('*/10 * * * *', 'tools.cron.upload_to_baidu', '> /dev/null 2>&1')    # you-get下载文件同步到百度云上
+    ('*/10 * * * *', 'tools.cron.upload_to_baidu', '> /dev/null 2>&1'),    # you-get下载文件同步到百度云上
+    ('*/1 * * * *', 'tools.cron.auto_rate_update')    # 自动更新最新汇率
 ]
 
 # CELERY configuration

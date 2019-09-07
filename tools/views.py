@@ -403,6 +403,7 @@ class RateToolView(View):
 
         ctx = {}
         cache = redis.get(self.RATE_CACHE_KEY)
+
         if cache is None:
             root_url = settings.TOOLS_CONFIG['rate_tool']['root_url']
             rate_query = RateQuery(root_url)
@@ -419,6 +420,11 @@ class RateToolView(View):
             data = json.loads(cache)
             info = data['data']
             update_time = data['update_time']
+
+        for i in info:
+            if i['currency'] == '日元':
+                ctx['jpy_rate'] = i['refePrice']
+                break
 
         ctx['currs'] = [i['currency'] for i in info]
         ctx['last_update'] = update_time

@@ -90,6 +90,7 @@ class IndexView(View):
         ctx['quickLinks'] = {q.key: q.value for q in Dict.objects.filter(category='quick_links')}
 
         if not request.user.is_superuser:
+            # 非管理员的首页访问，访问记录在后台
             redis.incr(settings.ACCESS_COUNT_KEY)
             aip = request.META.get('REMOTE_ADDR')
             found_flag = False
@@ -109,11 +110,6 @@ class IndexView(View):
                                                                     datetime.datetime.now().strftime(
                                                                         '%Y-%m-%d %H:%M:%S'),
                                                                     total_access + 1))
-
-            # redis.lrem(settings.ACCESS_IP_QUEUE, 0, aip)
-            # if redis.llen(settings.ACCESS_IP_QUEUE) >= 10:
-            #     redis.lpop(settings.ACCESS_IP_QUEUE)
-            # redis.rpush(settings.ACCESS_IP_QUEUE, aip)
 
         return render(request, 'index.html', ctx)
 

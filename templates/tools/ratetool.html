@@ -25,6 +25,9 @@
 <div class="container">
     <div class="main-panel">
         <h2 style="text-align: center;">汇率工具</h2>
+        {% if jpy_rate %}
+            <p style="text-align:center;">当前日元汇率：<b style="font-size: 22px;">{{ jpy_rate }}</b></p>
+        {% endif %}
         <span class="title-subtext">最后汇率更新时间: {{ last_update }}</span>
         <span class="title-subtext" id="rate-display"></span>
         <hr>
