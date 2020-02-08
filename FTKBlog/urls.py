@@ -73,6 +73,7 @@ urlpatterns = [
     url(r'^search/',include('search.urls')),
     url(r'^tools/', include('tools.urls')),
     url(r'^paperdb/', include('paperdb.urls')),
+    url(r'coupformysweet/', include('wyzcoup.urls')),
     url(r'^about/', about, name='about'),
     url(r'^error/', error_test, name='errortest'),
     url(r'^accounts/login/', lambda x: redirect(reverse('login')))

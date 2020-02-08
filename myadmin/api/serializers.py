@@ -6,6 +6,7 @@ from rest_framework.serializers import SlugRelatedField,StringRelatedField
 from blog.models import Category, Tag, Post, Comment, Message
 from paperdb.models import Paper, ResearchTag, Author
 from ftkuser.models import AccessControl
+from wyzcoup.models import WyzCoup
 
 from fields import PostWithUuidField
 
@@ -75,4 +76,10 @@ class PaperdbAuthorSerializer(ModelSerializer):
 
     class Meta:
         model = Author
+        fields = '__all__'
+
+class WyzCoupSerializer(ModelSerializer):
+
+    class Meta:
+        model = WyzCoup
         fields = '__all__'

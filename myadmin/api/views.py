@@ -10,10 +10,11 @@ from ratelimit.mixins import RatelimitMixin
 from blog.models import Category, Tag, Post, Comment, Message
 from paperdb.models import Paper, ResearchTag, Author
 from ftkuser.models import AccessControl
+from wyzcoup.models import WyzCoup
 from .serializers import CategorySerializer, TagSerializer, PostSerializer, CommentSerializer, MessageSerializer,\
-    AccessControlSerializer, PaperdbPaperSerializer, PaperdbTagSerializer, PaperdbAuthorSerializer
+    AccessControlSerializer, PaperdbPaperSerializer, PaperdbTagSerializer, PaperdbAuthorSerializer,WyzCoupSerializer
 from .filters import CategoryFilter, TagFilter, PostFilter, CommentFilter, MessageFilter, AccessControlFilter, \
-    PaperdbTagFilter
+    PaperdbTagFilter, WyzCoupFilter
 
 class RateLimitedListView(RatelimitMixin):
     ratelimit_key = 'ip'
@@ -88,3 +89,11 @@ class PaperdbAuthorListView(generics.ListCreateAPIView):
     serializer_class = PaperdbAuthorSerializer
     permission_classes = (IsAuthenticated, )
     authentication_classes = (SessionAuthentication, )
+
+class WyzCoupListView(generics.ListCreateAPIView):
+    queryset = WyzCoup.objects.all().order_by('-create_time')
+    serializer_class = WyzCoupSerializer
+    permission_classes = (IsAuthenticated, )
+    authentication_classes = (SessionAuthentication, )
+    filter_backends = (DjangoFilterBackend, )
+    filter_class = WyzCoupFilter

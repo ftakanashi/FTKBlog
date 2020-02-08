@@ -1,0 +1,110 @@
+{% extends 'myadmin/modulemanage/base/edit.html' %}
+
+{% load static %}
+
+{% block style %}
+    {{ block.super }}
+    <link href="{% static 'comp/datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block form-content %}
+    <input type="hidden" value="{{ coup.coup_uuid }}" id="uuidInput" />
+    <div class="form-group">
+        <label class="control-label" for="titleInput">好人卡标题</label>
+        <input class="form-control" id="titleInput" value="{{ coup.coup_title }}" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="contentInput">好人卡内容</label>
+        <textarea class="form-control" id="contentInput">{{ coup.coup_content }}</textarea>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-xs-6">
+            <div class="form-group">
+                <label class="control-label" for="expireTimeInput">过期时间</label>
+                <div class="input-group date">
+                    <input class="form-control" id="expireTimeInput" value="{{ coup.expire_time }}" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-xs-6">
+            <div class="form-group">
+                <label class="control-label" for="statusSelect">状态</label>
+                <select class="form-control" id="statusSelect">
+                    {% for opt in coup_status %}
+                    <option value="{{ opt.0 }}" {% if opt.0 == coup.coup_status %}selected{% endif %}>{{ opt.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-4 col-xs-6">
+            <div class="form-group">
+                <label class="control-label" for="consumeTimeInput">使用时间</label>
+                <div class="input-group date">
+                    <input class="form-control" id="consumeTimeInput" value="{{ coup.consume_time }}" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'comp/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="{% static 'comp/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+<script>
+$(function(){
+$(document).ready(function(){
+    $('.input-group.date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        maxView: 4,
+        minView: 2,
+        autoClose: true
+    });
+
+    $('#submit').click(function(){
+        var loadLayer = layer.load('1',{shade: 0.5});
+        var coupUuid = $('#uuidInput').val();
+        var title = $('#titleInput').val();
+        var content = $('#contentInput').val();
+        var expTime = $('#expireTimeInput').val();
+        var status = $('#statusSelect').val();
+        var consumeTime = $('#consumeTimeInput').val();
+        var d = {
+            coup_uuid: coupUuid,
+            coup_title: title,
+            coup_content: content,
+            coup_status: status
+        };
+        if (expTime != ''){
+            d.expire_time = expTime;
+        }
+        if (consumeTime != ''){
+            d.consume_time = consumeTime;
+        }
+        $.ajax({
+            url: location.pathname,
+            type: 'put',
+            dataType: 'json',
+            data: d,
+            success: function(data){
+                var frameIndex = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(frameIndex);
+                parent.location.reload();
+            },
+            error: function(xml, err, exc){
+                try{
+                    layer.msg(JSON.parse(xml.responseText).msg);
+                }
+                catch(e){
+                    layer.msg('未知错误');
+                }
+            },
+            complete: function(){layer.close(loadLayer);}
+        });
+    });
+});
+});
+</script>
+{% endblock %}

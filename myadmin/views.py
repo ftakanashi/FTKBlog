@@ -6,9 +6,12 @@ import datetime
 import json
 import logging
 import os
+import qrcode
+import random
 import shutil
 import time
 import traceback
+from PIL import Image
 
 from django.conf import settings
 from django.shortcuts import render, reverse
@@ -21,6 +24,7 @@ from blog.models import Category, Tag, Dict, Post, Comment, Message
 from blog.views import NewPostView
 from paperdb.models import Paper, ResearchTag, Reference, Author
 from ftkuser.models import AccessControl
+from wyzcoup.models import WyzCoup
 
 # Create your views here.
 redis = get_redis_connection('default')
@@ -733,5 +737,109 @@ class PaperdbAuthorManage(View):
         except Exception as e:
             logger.error(traceback.format_exc(e))
             return JsonResponse({'msg': '删除失败'}, status=500)
+        else:
+            return JsonResponse({})
+
+
+class WyzcoupCoupManage(View):
+    COUP_STATUS = [
+        ('0', '未使用'),
+        ('1', '已使用'),
+        ('2', '已过期')
+    ]
+
+    def get(self, request):
+        ctx = {}
+
+        if request.GET.get('type') == 'edit':
+            coup_uuid = request.GET.get('pk')
+            try:
+                coup = WyzCoup.objects.get(coup_uuid=coup_uuid)
+            except WyzCoup.DoesNotExist as e:
+                return render(request, 'error.html', {'err_msg': '没有找到相关分类'})
+            else:
+                coup.expire_time = coup.expire_time.strftime('%Y-%m-%d') if coup.expire_time else ''
+                coup.consume_time = coup.consume_time.strftime('%Y-%m-%d') if coup.consume_time else ''
+            ctx['coup'] = coup
+            ctx['coup_status'] = self.COUP_STATUS
+            return render(request, 'myadmin/modulemanage/wyzcoup/coup/edit.html', ctx)
+        elif request.GET.get('type') == 'add':
+            return render(request, 'myadmin/modulemanage/wyzcoup/coup/add.html', ctx)
+        elif request.GET.get('type') == 'download_qr':    # 下载好人卡二维码图示
+            bg_dir = os.path.join(settings.STATIC_IMAGE_PATH, 'wyz_coup', 'bg')
+            bg = Image.open(os.path.join(bg_dir, random.choice([fn for fn in os.listdir(bg_dir) if fn != 'qr.png'])))
+            coup_url = 'http://192.168.129.142:8000{}?coup_uuid={}'.format(reverse('wyzcoup.coup'), request.GET.get('pk'))
+            # coup_url = 'https://www.wyzypa.cn{}?coup_uuid={}'.format(reverse('wyzcoup.coup'), request.GET.get('pk'))
+            qr = qrcode.make(coup_url)
+            qr_w, qr_h = qr.size
+            bg_w, bg_h = 1080, 1440
+            margin = (bg_w - qr_w) // 2
+            bg.paste(qr, (margin, 200, margin+qr_w, 200+qr_h))
+            qr_fn = os.path.join(bg_dir, 'qr.png')
+            bg.save(qr_fn)
+
+            def file_iterator(filename, chunk_size=512):
+                with open(filename, 'rb') as f:
+                    while True:
+                        c = f.read(chunk_size)
+                        if c:
+                            yield c
+                        else:
+                            break
+
+            response = StreamingHttpResponse(file_iterator(qr_fn))
+            response['Content-Type'] = 'application/octet-stream'
+            response['Content-Disposition'] = 'attachment; filename="qr.png"'
+            return response
+        ctx['reverse_coup'] = reverse('wyzcoup.coup')
+        return render(request, 'myadmin/modulemanage/wyzcoup/coup/view.html', ctx)
+
+    def post(self, request):
+        try:
+            coup_title = request.POST.get('coup_title')
+            coup_content = request.POST.get('coup_content')
+            expire_time = request.POST.get('expire_time', None)
+            coup = WyzCoup(coup_title=coup_title, coup_content=coup_content, expire_time=expire_time)
+            coup.save()
+        except Exception as e:
+            print(traceback.format_exc(e))
+            return JsonResponse({'msg': '新增失败'}, status=500)
+        else:
+            return JsonResponse({})
+
+    def delete(self, request):
+        DELETE = QueryDict(request.body)
+        try:
+            coup = WyzCoup.objects.get(coup_uuid=DELETE.get('target'))
+        except WyzCoup.DoesNotExist, e:
+            return JsonResponse({'msg': '没有找到相关好人卡'}, status=404)
+        try:
+            coup.delete()
+        except Exception, e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '删除失败'}, status=500)
+        else:
+            return JsonResponse({})
+
+    def put(self, request):
+        PUT = QueryDict(request.body)
+        try:
+            coup = WyzCoup.objects.get(coup_uuid=PUT.get('coup_uuid'))
+        except WyzCoup.DoesNotExist, e:
+            return JsonResponse({'msg': '没有找到相关好人卡'}, status=404)
+        try:
+            coup.coup_status = PUT.get('coup_status')
+            coup.consume_time = PUT.get('consume_time')
+            coup.expire_time = PUT.get('expire_time')
+            coup.coup_title = PUT.get('coup_title')
+            coup.coup_content = PUT.get('coup_content')
+            if coup.consume_time is not None and coup.coup_status != '1':
+                return JsonResponse({'msg': '有使用时间的券必须置状态为已使用'}, status=500)
+            if coup.consume_time is None and coup.coup_status == '1':
+                return JsonResponse({'msg': '需要明确使用时间'}, status=500)
+            coup.save()
+        except Exception, e:
+            print traceback.format_exc(e)
+            return JsonResponse({'msg': '更新失败'}, status=500)
         else:
             return JsonResponse({})

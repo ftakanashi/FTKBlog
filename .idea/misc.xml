@@ -13,7 +13,7 @@
     <ConfirmationsSetting value="0" id="添加" />
     <ConfirmationsSetting value="0" id="移除" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 2.7.5 (ssh://root@192.168.3.5:22/home/ftkblog/FrankTakanashiKazuyaBlog/FTKEnv/bin/python)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 2.7.15 virtualenv at D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKEnv" project-jdk-type="Python SDK" />
   <component name="SvnBranchConfigurationManager">
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>

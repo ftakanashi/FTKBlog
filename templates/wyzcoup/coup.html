@@ -1,0 +1,127 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block style %}
+{{ block.super }}
+<style>
+    .main-panel{
+        background: rgba(241,241,241,0.8);
+        margin-top: 35%;
+        word-wrap: break-word;
+        padding: 0 20px 20px 20px;
+        text-align: center;
+        display: none;
+        border: 2px solid darkgrey;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px grey;
+    }
+    .main-panel-title{
+        font-size: 36px;
+        background: #f4f293;
+        display: block;
+    }
+    .shadow-panel{
+        background: #f4f293;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .hidden-info-panel{
+        display: none;
+    }
+    .hidden-info-toggle{
+        text-decoration: none;
+        font-size: 36px;
+    }
+    button{
+        opacity: 0.75;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<body style="background-image: url('{% static 'image/wyz_coup/coup_bg.png' %}');background-size: cover;
+        background-repeat: no-repeat; background-color: #f4f293;">
+    <div class="shadow-panel"></div>
+    <div class="row">
+        <div class="col-lg-1 col-xs-1"></div>
+        <div class="col-lg-10 col-xs-10">
+            <div class="main-panel">
+                <div class="main-panel-title">【反向好人卡】</div>
+                <h1 style="font-size: 72px;">{{ coup.coup_title }}</h1>
+                <h3 style="font-size: 48px;">{{ coup.coup_content }}</h3>
+                <a href="javascript:void(0);" class="hidden-info-toggle">more info</a>
+                <div class="hidden-info-panel">
+                    <span class="text-muted">発券日 {{ coup.format_create_time }}</span>
+                    <br>
+                    <span class="text-muted">賞味期限 {{ coup.format_expire_time|default:"永遠" }}</span>
+                    {% if coup.consume_time %}
+                    <br>
+                    <span class="text-muted">使用日 {{ coup.format_consume_time }}</span>
+                    {% endif %}
+                </div>
+                <br>
+                <div>
+                    <input type="hidden" id="uuidInput" value="{{ coup.coup_uuid }}" />
+                    {% if coup.coup_status == '0' %}
+                    <button class="btn btn-sm btn-default" id="submit" style="font-size: 36px;">✧٩(ˊωˋ*)و✧<br>使おう</button>
+                    {% elif coup.coup_status == '1' %}
+                    <button class="btn btn-sm btn-default" id="submit" style="font-size: 36px;">o(╥﹏╥)o<br>使用済み</button>
+                    {% elif coup.coup_status == '2' %}
+                    <button class="btn btn-sm btn-default" id="submit" style="font-size: 36px;">o(╥﹏╥)o<br>期限切れ</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+$(document).ready(function(){
+    $.ajaxSetup({
+            headers: {'X-CSRFTOKEN': $.cookie('csrftoken')},
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}
+    });
+
+    $('.shadow-panel').slideUp(2500);
+    $('.main-panel').delay(2500).fadeIn(1000);
+
+    $('.hidden-info-toggle').click(function(event){
+        event.preventDefault();
+        $(this).hide().next('.hidden-info-panel').slideDown();
+    });
+
+    $('#submit').click(function(event){
+        var loadLayer = layer.load('1');
+        var uuid = $('#uuidInput').val();
+        $.ajax({
+            url: location.pathname,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                uuid: uuid
+            },
+            success: function(data){
+                alert('好的！我听方方的话！☆(￣▽￣)/$:*');
+            },
+            error: function(xml, exc, err){
+                var msg = '未知技术错误，快找我来解决吧';
+                try{
+                    msg = JSON.parse(xml.responseText).msg;
+                }
+                catch(e){}
+                alert(msg);
+            },
+            complete: function(data){
+                layer.close(loadLayer);
+            }
+        });
+    });
+});
+//todo 解决IPAD下适应性问题，给btn加上函数，到虚拟机上跑然后用自己手机看下情况
+</script>
+
+</body>
+{% endblock %}

@@ -294,6 +294,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <li><a href="{% url 'paperdb.author.manage' %}"><i class="fa fa-user"></i>论文作者管理</a></li>
                     </ul>
                 </li>
+                <li class="treeview">
+                    <a href="javascript:void(0);"><i class="fa fa-heart"></i><span>好人卡管理</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{% url 'wyzcoup.coup.manage' %}"><i class="fa fa-heart"></i>综合好人卡管理</a></li>
+                    </ul>
+                </li>
             </ul>
             {% endblock %}
             <!-- /.sidebar-menu -->

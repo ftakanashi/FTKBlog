@@ -12,7 +12,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Remote Python 2.7.5 (ssh://root@192.168.3.5:22/home/ftkblog/FrankTakanashiKazuyaBlog/FTKEnv/bin/python)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 2.7.15 virtualenv at D:\PythonProjects\FrankTakanashiKazuyaBlog\FTKEnv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

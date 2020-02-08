@@ -1,0 +1,42 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block style %}
+{{ block.super }}
+<style>
+    .main-panel{
+        background: rgba(241,241,241,0.8);
+        margin-top: 35%;
+        word-wrap: break-word;
+        padding: 20px;
+        text-align: center;
+        border: 2px solid darkgrey;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px grey;
+    }
+    .shadow-panel{
+        background: #f4f293;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<body style="background-image: url('{% static 'image/wyz_coup/coup_bg.png' %}');background-size: cover;
+        background-repeat: no-repeat; background-color: #f4f293;">
+    <div class="row">
+        <div class="col-lg-1 col-xs-1"></div>
+        <div class="col-lg-10 col-xs-10">
+            <div class="main-panel">
+                <h1 style="font-size: 72px;">伝説の404エラー</h1>
+                <span style="font-weight: bold; font-size: 36px;">没有找到这张好人卡的信息呢…确定二维码没扫错？</span>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

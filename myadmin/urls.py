@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^backupdownload/(?P<fn>.+?)/', login_required(backup_download), name='backupdownload.download'),
     url(r'^paperdb/paper/$', login_required(PaperdbPaperManage.as_view()), name='paperdb.manage'),
     url(r'^paperdb/tag/$', login_required(PaperdbTagManage.as_view()), name='paperdb.tag.manage'),
-    url(r'^paperdb/author/$', login_required(PaperdbAuthorManage.as_view()), name='paperdb.author.manage')
+    url(r'^paperdb/author/$', login_required(PaperdbAuthorManage.as_view()), name='paperdb.author.manage'),
+    url(r'^wyzcoup/coup/$', login_required(WyzcoupCoupManage.as_view()), name='wyzcoup.coup.manage')
 ]

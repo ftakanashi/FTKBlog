@@ -10,9 +10,12 @@ from ratelimit.decorators import ratelimit
 
 from .models import Slogan, AccessControl
 
+import logging
 import random
 import re
+import traceback
 
+logger = logging.getLogger('django')
 
 # Create your views here.
 class UserLogout(View):
@@ -99,6 +102,7 @@ class UserLogin(View):
             try:
                 login(request, user)
             except Exception, e:
+                logger.error(traceback.format_exc(e))
                 return JsonResponse({'msg': '登录失败'}, status=500)
             else:
                 if user.is_staff:

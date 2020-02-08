@@ -7,6 +7,7 @@ from django_filters import FilterSet
 from blog.models import Category, Tag, Post, Comment, Message
 from paperdb.models import ResearchTag
 from ftkuser.models import AccessControl
+from wyzcoup.models import WyzCoup
 
 
 class CategoryFilter(FilterSet):
@@ -89,4 +90,17 @@ class PaperdbTagFilter(FilterSet):
             'research_tag_id': ['exact', ],
             'name': ['contains'],
             'description': ['contains']
+        }
+
+class WyzCoupFilter(FilterSet):
+    class Meta:
+        model = WyzCoup
+        fields = {
+            'coup_uuid': ['exact'],
+            'create_time': ['lt', 'gt'],
+            'coup_status': ['exact'],
+            'consume_time': ['lt', 'gt'],
+            'expire_time': ['lt', 'gt'],
+            'coup_title': ['exact', 'contains'],
+            'coup_content': ['exact', 'contains']
         }

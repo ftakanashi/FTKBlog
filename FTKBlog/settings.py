@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'search.apps.SearchConfig',
     'myadmin.apps.MyadminConfig',
     'tools.apps.ToolsConfig',
-    'paperdb.apps.PaperdbConfig'
+    'paperdb.apps.PaperdbConfig',
+    'wyzcoup.apps.WyzcoupConfig'
 ]
 
 MIDDLEWARE = [
@@ -90,7 +91,7 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '192.168.3.5:9200'
+        'hosts': '192.168.56.101:9200'
         # 'hosts': '127.0.0.1:9200'
         # 'hosts': '10.13.114.112:9200'
     },
@@ -101,7 +102,7 @@ ES_PAPER_INDEX = 'papers'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.3.5:6379/1',
+        'LOCATION': 'redis://192.168.56.101:6379/1',
         # 'LOCATION': 'redis://127.0.0.1:6379/1',
         # 'LOCATION': 'redis://10.13.114.112:6379/1',
         'OPTIONS': {
@@ -193,7 +194,8 @@ CRONJOBS = [
     ('0 1 * * *', 'FTKBlog.cron.upload_backup'),  # 每天备份上传（图片）数据
     ('0 2 */3 * *', 'FTKBlog.cron.migration_backup'),  # 每天备份migration记录
     ('*/10 * * * *', 'tools.cron.upload_to_baidu', '> /dev/null 2>&1'),    # you-get下载文件同步到百度云上
-    ('*/1 * * * *', 'tools.cron.auto_rate_update')    # 自动更新最新汇率
+    ('*/1 * * * *', 'tools.cron.auto_rate_update'),    # 自动更新最新汇率
+    ('1 0 * * *', 'wyzcoup.cron.expire_coups')    # 自动更新好人卡状态
 ]
 
 # CELERY configuration
@@ -243,6 +245,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'run')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+STATIC_IMAGE_PATH = os.path.join(BASE_DIR, 'static', 'image')
 
 # File upload setting
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 5
