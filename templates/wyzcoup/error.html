@@ -2,6 +2,14 @@
 
 {% load static %}
 
+{% block title %}
+    好人卡报错o(*￣︶￣*)o
+{% endblock %}
+
+{% block page_icon %}
+    <link href="{% static 'image/wyz_coup/fang_icon.png' %}" rel="SHORTCUT ICON" />
+{% endblock %}
+
 {% block style %}
 {{ block.super }}
 <style>
@@ -33,7 +41,7 @@
         <div class="col-lg-1 col-xs-1"></div>
         <div class="col-lg-10 col-xs-10">
             <div class="main-panel">
-                <h1 style="font-size: 72px;">伝説の404エラー</h1>
+                <h1 style="font-size: 60px;">伝説の404エラー</h1>
                 <span style="font-weight: bold; font-size: 36px;">没有找到这张好人卡的信息呢…确定二维码没扫错？</span>
             </div>
         </div>

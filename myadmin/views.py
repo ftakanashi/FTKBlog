@@ -768,8 +768,7 @@ class WyzcoupCoupManage(View):
         elif request.GET.get('type') == 'download_qr':    # 下载好人卡二维码图示
             bg_dir = os.path.join(settings.STATIC_IMAGE_PATH, 'wyz_coup', 'bg')
             bg = Image.open(os.path.join(bg_dir, random.choice([fn for fn in os.listdir(bg_dir) if fn != 'qr.png'])))
-            coup_url = 'http://192.168.129.142:8000{}?coup_uuid={}'.format(reverse('wyzcoup.coup'), request.GET.get('pk'))
-            # coup_url = 'https://www.wyzypa.cn{}?coup_uuid={}'.format(reverse('wyzcoup.coup'), request.GET.get('pk'))
+            coup_url = '{}{}?coup_uuid={}'.format(request.GET.get('dh'), reverse('wyzcoup.coup'), request.GET.get('pk'))
             qr = qrcode.make(coup_url)
             qr_w, qr_h = qr.size
             bg_w, bg_h = 1080, 1440
@@ -833,6 +832,7 @@ class WyzcoupCoupManage(View):
             coup.expire_time = PUT.get('expire_time')
             coup.coup_title = PUT.get('coup_title')
             coup.coup_content = PUT.get('coup_content')
+            coup.coup_note = PUT.get('coup_note')
             if coup.consume_time is not None and coup.coup_status != '1':
                 return JsonResponse({'msg': '有使用时间的券必须置状态为已使用'}, status=500)
             if coup.consume_time is None and coup.coup_status == '1':

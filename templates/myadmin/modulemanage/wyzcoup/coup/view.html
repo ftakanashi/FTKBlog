@@ -54,6 +54,10 @@ $(document).ready(function(){
             title: '好人卡内容',
             visible: false
         },{
+            field: 'coup_note',
+            title: '使用笔记',
+            visible: false
+        },{
             field: 'coup_status',
             title: '好人卡状态',
             formatter: function(value, row, index){
@@ -67,10 +71,11 @@ $(document).ready(function(){
             field: 'operations',
             title: '操作',
             formatter: function(value, row, index){
+                var dynamicHost = location.protocol + '//' + location.host;
                 return [
                     '<button class="btn btn-xs btn-danger del-btn" name="'+ row.coup_uuid +'"><i class="fa fa-trash"></i>删除</button>',
                     '<button class="btn btn-xs btn-primary edit-btn" name="'+ row.coup_uuid +'"><i class="fa fa-edit"></i>编辑</button>',
-                    '<a class="btn btn-xs btn-success" href="?type=download_qr&pk=' + row.coup_uuid + '"><i class="fa fa-download"></i>下载QR</a>'
+                    '<a class="btn btn-xs btn-success" href="?type=download_qr&pk=' + row.coup_uuid + '&dh=' + dynamicHost + '"><i class="fa fa-download"></i>下载QR</a>'
                 ].join('&nbsp;');
             }
         }],

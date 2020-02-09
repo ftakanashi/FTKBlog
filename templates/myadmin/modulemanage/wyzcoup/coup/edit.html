@@ -46,6 +46,12 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-4 col-xs-6">
+            <div class="form-group">
+                <label class="control-label" for="noteInput">使用笔记</label>
+                <input class="form-control" id="noteInput" value="{{ coup.coup_note }}" />
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -68,6 +74,7 @@ $(document).ready(function(){
         var coupUuid = $('#uuidInput').val();
         var title = $('#titleInput').val();
         var content = $('#contentInput').val();
+        var note = $('#noteInput').val();
         var expTime = $('#expireTimeInput').val();
         var status = $('#statusSelect').val();
         var consumeTime = $('#consumeTimeInput').val();
@@ -75,7 +82,8 @@ $(document).ready(function(){
             coup_uuid: coupUuid,
             coup_title: title,
             coup_content: content,
-            coup_status: status
+            coup_status: status,
+            coup_note: note
         };
         if (expTime != ''){
             d.expire_time = expTime;

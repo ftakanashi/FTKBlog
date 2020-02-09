@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import datetime
 import traceback
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.http import JsonResponse
 from django.views import View
 
@@ -54,12 +54,30 @@ class WyzCoupView(View):
         elif coup.coup_status == '2':
             return JsonResponse({'msg': '这张好人卡已经过期了呀，亲我一下给你延期⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄'}, status=500)
         else:
+            note = request.POST.get('note')
             coup.coup_status = '1'
             coup.consume_time = datetime.datetime.now()
+            coup.coup_note = note
             try:
                 coup.save()
             except Exception as e:
                 print traceback.format_exc(e)
                 return JsonResponse({'msg': '修改卡状态失败'}, status=500)
 
-        return JsonResponse({})
+        return JsonResponse({'next': reverse('wyzcoup.coup.receipt') + '?pk={}'.format(coup_uuid)})
+
+class WyzCoupRepView(View):
+
+    def get(self, request):
+        ctx = {}
+        coup_uuid = request.GET.get('pk')
+        try:
+            coup = WyzCoup.objects.get(coup_uuid=coup_uuid)
+        except WyzCoup.DoesNotExist as e:
+            return render(request, 'wyzcoup/error.html', ctx)
+        if coup.coup_status != '1':
+            return redirect(reverse('wyzcoup.coup') + '?pk={}'.format(coup_uuid))
+
+        coup.format_consume_time = coup.consume_time.strftime('%Y-%m-%d')
+        ctx['coup'] = coup
+        return render(request, 'wyzcoup/receipt.html', ctx)

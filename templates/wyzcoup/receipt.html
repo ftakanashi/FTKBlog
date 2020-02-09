@@ -1,0 +1,93 @@
+{% extends 'original/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    【確認】{{ coup.coup_title }}
+{% endblock %}
+
+{% block page_icon %}
+    <link href="{% static 'image/wyz_coup/fang_icon.png' %}" rel="SHORTCUT ICON" />
+{% endblock %}
+
+{% block style %}
+{{ block.super }}
+<style>
+    .main-panel{
+        background: rgba(241,241,241,0.8);
+        margin-top: 35%;
+        word-wrap: break-word;
+        padding: 0 20px 20px 20px;
+        text-align: center;
+        display: none;
+        border: 2px solid darkgrey;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px grey;
+    }
+    .main-panel-title{
+        font-size: 36px;
+        background: #f4f293;
+        display: block;
+    }
+    .main-panel-title a{
+        text-decoration: none;
+        color: black;
+    }
+    .main-panel-title a:hover{
+        text-decoration: none;
+        color: darkgrey;
+    }
+    .shadow-panel{
+        background: #f4f293;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .rep-item-title{
+        font-weight: bold;
+        font-size: 36px;
+    }
+    .rep-item-content{
+        font-size: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<body style="background-image: url('{% static 'image/wyz_coup/rep_bg.png' %}');background-size: cover;
+        background-repeat: no-repeat; background-color: #f4f293;">
+    <div class="shadow-panel"></div>
+    <div class="row">
+        <div class="col-lg-1 col-xs-1"></div>
+        <div class="col-lg-10 col-xs-10">
+            <div class="main-panel">
+                <div class="main-panel-title"><a href="javascript:void(0);" id="titleToggle">
+                    <img src="{% static 'image/wyz_coup/star.png' %}" style="width: 48px;" />
+                    【好人卡確認】
+                    <img src="{% static 'image/wyz_coup/star.png' %}" style="width: 48px;" />
+                </a></div>
+                <div class="main-panel-content">
+                    <span style="font-size: 60px;">{{ coup.coup_title }}</span>
+                    <br>
+                    <span class="rep-item-title">方方说:</span><span class="rep-item-content">{{ coup.coup_note|default:"没有具体指示..." }}</span>
+                    <br>
+                    <span class="rep-item-title">使用日:</span><span class="rep-item-content">{{ coup.format_consume_time }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(e){
+            $('.shadow-panel').slideUp(2500);
+            $('.main-panel').delay(2500).fadeIn(1000);
+        });
+        $('.main-panel-title a').click(function(event){
+            event.preventDefault();
+            $(this).parent().next('.main-panel-content').slideToggle(500);
+        });
+    </script>
+</body>
+{% endblock %}

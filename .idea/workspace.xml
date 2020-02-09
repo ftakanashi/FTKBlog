@@ -42,112 +42,21 @@
     <favorites_list name="FTKBlog" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/wyzcoup/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="62" column="48" selection-start-line="62" selection-start-column="48" selection-end-line="62" selection-end-column="48" />
-              <folding>
-                <element signature="e#24#63#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/wyzcoup/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="76" selection-start-line="22" selection-start-column="76" selection-end-line="22" selection-end-column="76" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/myadmin/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="828" column="47" selection-start-line="828" selection-start-column="47" selection-end-line="828" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/myadmin/base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.9761906">
-              <caret line="303" column="99" selection-start-line="303" selection-start-column="99" selection-end-line="303" selection-end-column="99" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="add.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/add.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.9761906">
-              <caret line="15" column="56" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="edit.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/edit.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.9761906">
-              <caret line="16" column="56" selection-start-line="16" selection-start-column="56" selection-end-line="16" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="view.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/view.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.9761906">
-              <caret line="128" column="22" selection-start-line="128" selection-start-column="22" selection-end-line="128" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="coup.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/wyzcoup/coup.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.45210728">
-              <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
-              <folding>
-                <element signature="e#900#1063#0#HTML" expanded="true" />
-                <element signature="e#1329#1353#0#HTML" expanded="true" />
-                <element signature="e#1401#1425#0#HTML" expanded="true" />
-                <element signature="e#2270#2294#0#HTML" expanded="true" />
-                <element signature="e#2448#2472#0#HTML" expanded="true" />
-                <element signature="e#2624#2648#0#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
         <option value="JavaScript File" />
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/myadmin/modulemanage/paperdb/tag/view.html" />
         <option value="$PROJECT_DIR$/scripts/redis_init.py" />
         <option value="$PROJECT_DIR$/templates/paperdb/index.html" />
         <option value="$PROJECT_DIR$/paperdb/models.py" />
@@ -170,7 +79,6 @@
         <option value="$PROJECT_DIR$/tools/cron.py" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/b2002097-ad15-4421-8f7e-e1cce473c960/console_6.sql" />
         <option value="$PROJECT_DIR$/templates/index.html" />
-        <option value="$PROJECT_DIR$/templates/original/base.html" />
         <option value="$PROJECT_DIR$/blog/views.py" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/b2002097-ad15-4421-8f7e-e1cce473c960/console_7.sql" />
         <option value="$PROJECT_DIR$/tools/views.py" />
@@ -180,7 +88,6 @@
         <option value="$PROJECT_DIR$/myadmin/api/serializers.py" />
         <option value="$PROJECT_DIR$/myadmin/api/filters.py" />
         <option value="$PROJECT_DIR$/myadmin/api/urls.py" />
-        <option value="$PROJECT_DIR$/wyzcoup/urls.py" />
         <option value="$PROJECT_DIR$/myadmin/urls.py" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/b2002097-ad15-4421-8f7e-e1cce473c960/console.sql" />
         <option value="$PROJECT_DIR$/myadmin/api/views.py" />
@@ -189,15 +96,18 @@
         <option value="$PROJECT_DIR$/ftkuser/views.py" />
         <option value="$PROJECT_DIR$/wyzcoup/cron.py" />
         <option value="$PROJECT_DIR$/FTKBlog/settings.py" />
-        <option value="$PROJECT_DIR$/myadmin/views.py" />
         <option value="$PROJECT_DIR$/templates/myadmin/base.html" />
         <option value="$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/add.html" />
-        <option value="$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/edit.html" />
-        <option value="$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/view.html" />
         <option value="$PROJECT_DIR$/wyzcoup/models.py" />
+        <option value="$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/view.html" />
+        <option value="$PROJECT_DIR$/wyzcoup/urls.py" />
         <option value="$PROJECT_DIR$/wyzcoup/views.py" />
-        <option value="$PROJECT_DIR$/templates/wyzcoup/error.html" />
+        <option value="$PROJECT_DIR$/templates/original/base.html" />
         <option value="$PROJECT_DIR$/templates/wyzcoup/coup.html" />
+        <option value="$PROJECT_DIR$/templates/wyzcoup/receipt.html" />
+        <option value="$PROJECT_DIR$/templates/wyzcoup/error.html" />
+        <option value="$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/edit.html" />
+        <option value="$PROJECT_DIR$/myadmin/views.py" />
       </list>
     </option>
   </component>
@@ -286,7 +196,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -294,15 +203,9 @@
               <option name="myItemId" value="FTKBlog" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="外部库" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -312,79 +215,12 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wyzcoup" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wyzcoup" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="migrations" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wyzcoup" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FTKBlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="blog" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -760,8 +596,8 @@
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20396146" sideWeight="0.41943735" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20931478" sideWeight="0.41943735" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32905483" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991454" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33488914" sideWeight="0.4969743" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40924466" sideWeight="0.52462524" order="2" side_tool="true" content_ui="tabs" />
@@ -769,7 +605,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39789966" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24583964" sideWeight="0.57033247" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3605601" sideWeight="0.48768738" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40606767" sideWeight="0.47537473" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40606767" sideWeight="0.47537473" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27987897" sideWeight="0.58056265" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="找到" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32672113" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -801,18 +637,11 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="167" />
+      <option name="time" value="168" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tools/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9539394">
-          <caret line="163" column="39" selection-start-line="163" selection-start-column="39" selection-end-line="163" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33271375">
@@ -866,13 +695,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.66283524">
           <caret line="183" column="9" selection-start-line="183" selection-start-column="9" selection-end-line="183" selection-end-column="9" />
-          <folding>
-            <element signature="n#if#0;n#!!top" expanded="false" />
-            <element signature="n#for#0;n#!!top" expanded="false" />
-            <element signature="n#if#1;n#!!top" expanded="false" />
-            <element signature="n#for#1;n#!!top" expanded="false" />
-            <element signature="n#if#2;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -923,9 +745,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding>
-            <element signature="e#24#63#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -941,9 +760,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="e#24#56#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -990,7 +806,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -998,9 +813,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="3.08">
           <caret line="84" column="26" selection-start-line="84" selection-start-column="26" selection-end-line="84" selection-end-column="26" />
-          <folding>
-            <element signature="e#23#62#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1008,9 +820,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="19" column="77" selection-start-line="19" selection-start-column="77" selection-end-line="19" selection-end-column="77" />
-          <folding>
-            <element signature="e#24#63#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1025,7 +834,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1047,9 +855,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.245283">
           <caret line="104" column="49" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="49" />
-          <folding>
-            <element signature="e#24#63#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1065,9 +870,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4465409">
           <caret line="93" column="48" selection-start-line="93" selection-start-column="48" selection-end-line="93" selection-end-column="48" />
-          <folding>
-            <element signature="e#23#62#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1093,14 +895,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wyzcoup/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="54" selection-start-line="7" selection-start-column="54" selection-end-line="7" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/myadmin/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1113,7 +907,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.8206897">
           <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1128,7 +921,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33271375">
           <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1136,57 +928,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.9586207">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/original/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8344827">
-          <caret line="332" column="0" selection-start-line="332" selection-start-column="0" selection-end-line="332" selection-end-column="0" />
-          <folding>
-            <element signature="e#111#137#0#DjangoTemplate" expanded="false" />
-            <element signature="e#142#256#0#DjangoTemplate" expanded="false" />
-            <element signature="e#261#318#0#DjangoTemplate" expanded="false" />
-            <element signature="n#block#0;n#!!top" expanded="false" />
-            <element signature="n#if#0;n#!!top" expanded="false" />
-            <element signature="n#block#1;n#!!top" expanded="false" />
-            <element signature="n#block#2;n#!!top" expanded="false" />
-            <element signature="n#block#3;n#!!top" expanded="false" />
-            <element signature="n#block#5;n#!!top" expanded="false" />
-            <element signature="n#block#6;n#!!top" expanded="false" />
-            <element signature="n#block#7;n#!!top" expanded="false" />
-            <element signature="n#if#1;n#!!top" expanded="false" />
-            <element signature="n#if#2;n#!!top" expanded="false" />
-            <element signature="n#if#3;n#!!top" expanded="false" />
-            <element signature="n#if#4;n#!!top" expanded="false" />
-            <element signature="n#if#5;n#!!top" expanded="false" />
-            <element signature="n#if#6;n#!!top" expanded="false" />
-            <element signature="n#if#7;n#!!top" expanded="false" />
-            <element signature="n#block#8;n#!!top" expanded="false" />
-            <element signature="n#block#9;n#!!top" expanded="false" />
-            <element signature="n#if#8;n#!!top" expanded="false" />
-            <element signature="n#if#9;n#!!top" expanded="false" />
-            <element signature="n#block#10;n#!!top" expanded="false" />
-            <element signature="n#block#11;n#!!top" expanded="false" />
-            <element signature="n#block#12;n#!!top" expanded="false" />
-            <element signature="n#block#13;n#!!top" expanded="false" />
-            <element signature="n#block#14;n#!!top" expanded="false" />
-            <element signature="n#block#15;n#!!top" expanded="false" />
-            <element signature="n#block#16;n#!!top" expanded="false" />
-            <element signature="n#block#17;n#!!top" expanded="false" />
-            <element signature="n#block#18;n#!!top" expanded="false" />
-            <element signature="n#block#19;n#!!top" expanded="false" />
-            <element signature="n#block#20;n#!!top" expanded="false" />
-            <element signature="n#block#21;n#!!top" expanded="false" />
-            <element signature="n#block#22;n#!!top" expanded="false" />
-            <element signature="n#if#10;n#!!top" expanded="false" />
-            <element signature="n#block#23;n#!!top" expanded="false" />
-            <element signature="n#if#11;n#!!top" expanded="false" />
-            <element signature="e#12388#12579#0#DjangoTemplate" expanded="false" />
-            <element signature="n#block#24;n#!!top" expanded="false" />
-            <element signature="n#block#25;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1194,7 +935,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1203,7 +943,7 @@
         <state vertical-scroll-proportion="-2.756962">
           <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
           <folding>
-            <element signature="e#24#63#0" expanded="true" />
+            <element signature="e#24#63#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1212,31 +952,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6918239">
           <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
-          <folding>
-            <element signature="e#24#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8616352">
-          <caret line="197" column="61" selection-start-line="197" selection-start-column="61" selection-end-line="197" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/myadmin/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="828" column="47" selection-start-line="828" selection-start-column="47" selection-end-line="828" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/myadmin/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9761906">
+        <state vertical-scroll-proportion="0.0">
           <caret line="303" column="99" selection-start-line="303" selection-start-column="99" selection-end-line="303" selection-end-column="99" />
           <folding />
         </state>
@@ -1244,24 +965,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/add.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9761906">
+        <state vertical-scroll-proportion="0.0">
           <caret line="15" column="56" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/edit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9761906">
-          <caret line="16" column="56" selection-start-line="16" selection-start-column="56" selection-end-line="16" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9761906">
-          <caret line="128" column="22" selection-start-line="128" selection-start-column="22" selection-end-line="128" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -1274,39 +979,142 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wyzcoup/views.py">
+    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/view.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="62" column="48" selection-start-line="62" selection-start-column="48" selection-end-line="62" selection-end-column="48" />
+        <state vertical-scroll-proportion="-7.071429">
+          <caret line="58" column="26" selection-start-line="58" selection-start-column="26" selection-end-line="58" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wyzcoup/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2972973">
+          <caret line="4" column="46" selection-start-line="4" selection-start-column="46" selection-end-line="4" selection-end-column="46" />
           <folding>
-            <element signature="e#24#63#0" expanded="true" />
+            <element signature="e#24#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/original/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.5844157">
+          <caret line="24" column="15" selection-start-line="24" selection-start-column="15" selection-end-line="24" selection-end-column="15" />
+          <folding>
+            <element signature="e#111#137#0#DjangoTemplate" expanded="false" />
+            <element signature="e#142#256#0#DjangoTemplate" expanded="false" />
+            <element signature="e#261#318#0#DjangoTemplate" expanded="false" />
+            <element signature="n#if#0;n#!!top" expanded="false" />
+            <element signature="n#block#1;n#!!top" expanded="false" />
+            <element signature="n#block#2;n#!!top" expanded="false" />
+            <element signature="n#block#4;n#!!top" expanded="false" />
+            <element signature="n#block#6;n#!!top" expanded="false" />
+            <element signature="n#block#7;n#!!top" expanded="false" />
+            <element signature="n#block#8;n#!!top" expanded="false" />
+            <element signature="n#if#1;n#!!top" expanded="false" />
+            <element signature="n#if#2;n#!!top" expanded="false" />
+            <element signature="n#if#3;n#!!top" expanded="false" />
+            <element signature="n#if#4;n#!!top" expanded="false" />
+            <element signature="n#if#5;n#!!top" expanded="false" />
+            <element signature="n#if#6;n#!!top" expanded="false" />
+            <element signature="n#if#7;n#!!top" expanded="false" />
+            <element signature="n#block#9;n#!!top" expanded="false" />
+            <element signature="n#block#10;n#!!top" expanded="false" />
+            <element signature="n#if#8;n#!!top" expanded="false" />
+            <element signature="n#if#9;n#!!top" expanded="false" />
+            <element signature="n#block#11;n#!!top" expanded="false" />
+            <element signature="n#block#12;n#!!top" expanded="false" />
+            <element signature="n#block#13;n#!!top" expanded="false" />
+            <element signature="n#block#14;n#!!top" expanded="false" />
+            <element signature="n#block#15;n#!!top" expanded="false" />
+            <element signature="n#block#16;n#!!top" expanded="false" />
+            <element signature="n#block#17;n#!!top" expanded="false" />
+            <element signature="n#block#18;n#!!top" expanded="false" />
+            <element signature="n#block#19;n#!!top" expanded="false" />
+            <element signature="n#block#20;n#!!top" expanded="false" />
+            <element signature="n#block#21;n#!!top" expanded="false" />
+            <element signature="n#block#22;n#!!top" expanded="false" />
+            <element signature="n#block#23;n#!!top" expanded="false" />
+            <element signature="n#if#10;n#!!top" expanded="false" />
+            <element signature="n#block#24;n#!!top" expanded="false" />
+            <element signature="n#if#11;n#!!top" expanded="false" />
+            <element signature="e#12433#12624#0#DjangoTemplate" expanded="false" />
+            <element signature="n#block#25;n#!!top" expanded="false" />
+            <element signature="n#block#26;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/wyzcoup/receipt.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3034483">
+          <caret line="70" column="48" selection-start-line="70" selection-start-column="48" selection-end-line="70" selection-end-column="48" />
+          <folding>
+            <element signature="e#1215#1377#0#HTML" expanded="true" />
+            <element signature="e#1727#1747#0#HTML" expanded="true" />
+            <element signature="e#1849#1869#0#HTML" expanded="true" />
+            <element signature="e#1975#1999#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/wyzcoup/error.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.74712646">
-          <caret line="41" column="14" selection-start-line="41" selection-start-column="14" selection-end-line="41" selection-end-column="14" />
+        <state vertical-scroll-proportion="-0.3034483">
+          <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
           <folding>
-            <element signature="e#909#933#0#HTML" expanded="true" />
-            <element signature="e#971#1014#0#HTML" expanded="true" />
+            <element signature="e#1084#1108#0#HTML" expanded="true" />
+            <element signature="e#1146#1189#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/wyzcoup/coup.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45210728">
-          <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
+        <state vertical-scroll-proportion="1.9724138">
+          <caret line="69" column="66" selection-start-line="69" selection-start-column="66" selection-end-line="69" selection-end-column="66" />
           <folding>
-            <element signature="e#900#1063#0#HTML" expanded="true" />
-            <element signature="e#1329#1353#0#HTML" expanded="true" />
-            <element signature="e#1401#1425#0#HTML" expanded="true" />
-            <element signature="e#2270#2294#0#HTML" expanded="true" />
-            <element signature="e#2448#2472#0#HTML" expanded="true" />
-            <element signature="e#2624#2648#0#HTML" expanded="true" />
+            <element signature="e#1903#1923#0#HTML" expanded="true" />
+            <element signature="e#2025#2045#0#HTML" expanded="true" />
+            <element signature="e#2149#2173#0#HTML" expanded="true" />
+            <element signature="e#2225#2249#0#HTML" expanded="true" />
+            <element signature="e#2463#2487#0#HTML" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wyzcoup/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5849057">
+          <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+          <folding>
+            <element signature="e#24#63#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/myadmin/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.2096436">
+          <caret line="834" column="49" selection-start-line="834" selection-start-column="49" selection-end-line="834" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/myadmin/modulemanage/wyzcoup/coup/edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.075862">
+          <caret line="85" column="27" selection-start-line="85" selection-start-column="27" selection-end-line="85" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FTKBlog/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="16.033543">
+          <caret line="324" column="2" selection-start-line="324" selection-start-column="2" selection-end-line="324" selection-end-column="2" />
+          <folding />
         </state>
       </provider>
     </entry>

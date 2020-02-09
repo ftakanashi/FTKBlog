@@ -2,6 +2,14 @@
 
 {% load static %}
 
+{% block title %}
+    {{ coup.coup_title }}
+{% endblock %}
+
+{% block page_icon %}
+    <link href="{% static 'image/wyz_coup/fang_icon.png' %}" rel="SHORTCUT ICON" />
+{% endblock %}
+
 {% block style %}
 {{ block.super }}
 <style>
@@ -21,6 +29,14 @@
         background: #f4f293;
         display: block;
     }
+    .main-panel-title a{
+        text-decoration: none;
+        color: black;
+    }
+    .main-panel-title a:hover{
+        text-decoration: none;
+        color: darkgrey;
+    }
     .shadow-panel{
         background: #f4f293;
         position: fixed;
@@ -31,13 +47,20 @@
     }
     .hidden-info-panel{
         display: none;
+        font-size: 24px;
     }
     .hidden-info-toggle{
         text-decoration: none;
-        font-size: 36px;
+        font-size: 30px;
     }
-    button{
+    textarea{
         opacity: 0.75;
+    }
+    textarea:focus{
+        opacity: 1;
+    }
+    textarea::placeholder{
+        font-size: 32px;
     }
 </style>
 {% endblock %}
@@ -50,29 +73,41 @@
         <div class="col-lg-1 col-xs-1"></div>
         <div class="col-lg-10 col-xs-10">
             <div class="main-panel">
-                <div class="main-panel-title">【反向好人卡】</div>
-                <h1 style="font-size: 72px;">{{ coup.coup_title }}</h1>
-                <h3 style="font-size: 48px;">{{ coup.coup_content }}</h3>
-                <a href="javascript:void(0);" class="hidden-info-toggle">more info</a>
-                <div class="hidden-info-panel">
-                    <span class="text-muted">発券日 {{ coup.format_create_time }}</span>
-                    <br>
-                    <span class="text-muted">賞味期限 {{ coup.format_expire_time|default:"永遠" }}</span>
-                    {% if coup.consume_time %}
-                    <br>
-                    <span class="text-muted">使用日 {{ coup.format_consume_time }}</span>
-                    {% endif %}
-                </div>
-                <br>
-                <div>
-                    <input type="hidden" id="uuidInput" value="{{ coup.coup_uuid }}" />
+                <div class="main-panel-title"><a href="javascript:void(0);" id="titleToggle">
+                    <img src="{% static 'image/wyz_coup/star.png' %}" style="width: 48px;" />
+                    【专属好人卡】
+                    <img src="{% static 'image/wyz_coup/star.png' %}" style="width: 48px;" />
+                </a></div>
+                <div class="main-panel-content">
+                    <h1 style="font-size: 60px;">{{ coup.coup_title }}</h1>
+                    <h3 style="font-size: 36px;">{{ coup.coup_content }}</h3>
                     {% if coup.coup_status == '0' %}
-                    <button class="btn btn-sm btn-default" id="submit" style="font-size: 36px;">✧٩(ˊωˋ*)و✧<br>使おう</button>
-                    {% elif coup.coup_status == '1' %}
-                    <button class="btn btn-sm btn-default" id="submit" style="font-size: 36px;">o(╥﹏╥)o<br>使用済み</button>
-                    {% elif coup.coup_status == '2' %}
-                    <button class="btn btn-sm btn-default" id="submit" style="font-size: 36px;">o(╥﹏╥)o<br>期限切れ</button>
+                        <textarea class="form-control" id="noteInput" placeholder="宝贝如果有吩咐 写在这里~"
+                        rows="2" style="font-size: 32px;"></textarea>
+                        <br>
                     {% endif %}
+                    <a href="javascript:void(0);" class="hidden-info-toggle">more info</a>
+                    <div class="hidden-info-panel">
+                        <span class="text-muted">発券日 {{ coup.format_create_time }}</span>
+                        <br>
+                        <span class="text-muted">賞味期限 {{ coup.format_expire_time|default:"永遠" }}</span>
+                        {% if coup.consume_time %}
+                        <br>
+                        <span class="text-muted">使用日 {{ coup.format_consume_time }}</span>
+                        {% if coup.coup_note %}<br><span class="text-muted">ご用命 {{ coup.coup_note }}</span>{% endif %}
+                        {% endif %}
+                    </div>
+                    <br>
+                    <div>
+                        <input type="hidden" id="uuidInput" value="{{ coup.coup_uuid }}" />
+                        {% if coup.coup_status == '0' %}
+                        <button class="btn btn-sm btn-default" id="submit" style="font-size: 36px;">✧٩(ˊωˋ*)و✧<br>使おう</button>
+                        {% elif coup.coup_status == '1' %}
+                        <button class="btn btn-sm btn-default" id="submit" style="font-size: 36px;">o(╥﹏╥)o<br>使用済み</button>
+                        {% elif coup.coup_status == '2' %}
+                        <button class="btn btn-sm btn-default" id="submit" style="font-size: 36px;">o(╥﹏╥)o<br>期限切れ</button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -88,6 +123,17 @@ $(document).ready(function(){
     $('.shadow-panel').slideUp(2500);
     $('.main-panel').delay(2500).fadeIn(1000);
 
+    $('.main-panel-title a').click(function(event){
+        event.preventDefault();
+        $(this).parent().next('.main-panel-content').slideToggle(500);
+    });
+{#    var titleTipsLayer;#}
+{#    $('#titleToggle').mouseenter(function(e){#}
+{#        titleTipsLayer = layer.tips('点我可欣赏背景(*￣︶￣*)', '#titleToggle', {tips: [2, '#f4d44f']});#}
+{#    }).mouseleave(function(e){#}
+{#        layer.close(titleTipsLayer);#}
+{#    });#}
+
     $('.hidden-info-toggle').click(function(event){
         event.preventDefault();
         $(this).hide().next('.hidden-info-panel').slideDown();
@@ -96,15 +142,23 @@ $(document).ready(function(){
     $('#submit').click(function(event){
         var loadLayer = layer.load('1');
         var uuid = $('#uuidInput').val();
+        var note = $('#noteInput').val();
         $.ajax({
             url: location.pathname,
             type: 'post',
             dataType: 'json',
             data: {
-                uuid: uuid
+                uuid: uuid,
+                note: note
             },
             success: function(data){
                 alert('好的！我听方方的话！☆(￣▽￣)/$:*');
+                if(data.next){
+                    location.href = data.next;
+                }
+                else{
+                    location.reload();
+                }
             },
             error: function(xml, exc, err){
                 var msg = '未知技术错误，快找我来解决吧';
@@ -120,7 +174,6 @@ $(document).ready(function(){
         });
     });
 });
-//todo 解决IPAD下适应性问题，给btn加上函数，到虚拟机上跑然后用自己手机看下情况
 </script>
 
 </body>
