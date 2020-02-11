@@ -18,7 +18,7 @@
         <textarea class="form-control" id="contentInput">{{ coup.coup_content }}</textarea>
     </div>
     <div class="row">
-        <div class="col-lg-4 col-xs-6">
+        <div class="col-lg-4 col-xs-12">
             <div class="form-group">
                 <label class="control-label" for="expireTimeInput">过期时间</label>
                 <div class="input-group date">
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-xs-6">
+        <div class="col-lg-4 col-xs-12">
             <div class="form-group">
                 <label class="control-label" for="statusSelect">状态</label>
                 <select class="form-control" id="statusSelect">
@@ -37,7 +37,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-lg-4 col-xs-6">
+        <div class="col-lg-4 col-xs-12">
             <div class="form-group">
                 <label class="control-label" for="consumeTimeInput">使用时间</label>
                 <div class="input-group date">
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-xs-6">
+        <div class="col-lg-4 col-xs-12">
             <div class="form-group">
                 <label class="control-label" for="noteInput">使用笔记</label>
                 <input class="form-control" id="noteInput" value="{{ coup.coup_note }}" />
@@ -86,7 +86,7 @@ $(document).ready(function(){
             coup_note: note
         };
         if (expTime != ''){
-            d.expire_time = expTime;
+            d.expire_time = expTime + ' 23:59:59';
         }
         if (consumeTime != ''){
             d.consume_time = consumeTime;

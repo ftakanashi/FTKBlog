@@ -11,7 +11,7 @@ import random
 import shutil
 import time
 import traceback
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 
 from django.conf import settings
 from django.shortcuts import render, reverse
@@ -748,6 +748,9 @@ class WyzcoupCoupManage(View):
         ('2', '已过期')
     ]
 
+    BG_WIDTH = 1080
+    BG_HEIGHT = 1440
+
     def get(self, request):
         ctx = {}
 
@@ -766,14 +769,19 @@ class WyzcoupCoupManage(View):
         elif request.GET.get('type') == 'add':
             return render(request, 'myadmin/modulemanage/wyzcoup/coup/add.html', ctx)
         elif request.GET.get('type') == 'download_qr':    # 下载好人卡二维码图示
+            dynamic_host = request.GET.get('dh')
+            coup_uuid = request.GET.get('pk')
             bg_dir = os.path.join(settings.STATIC_IMAGE_PATH, 'wyz_coup', 'bg')
             bg = Image.open(os.path.join(bg_dir, random.choice([fn for fn in os.listdir(bg_dir) if fn != 'qr.png'])))
-            coup_url = '{}{}?coup_uuid={}'.format(request.GET.get('dh'), reverse('wyzcoup.coup'), request.GET.get('pk'))
+            coup_url = '{}{}?coup_uuid={}'.format(dynamic_host, reverse('wyzcoup.coup'), coup_uuid)
             qr = qrcode.make(coup_url)
             qr_w, qr_h = qr.size
-            bg_w, bg_h = 1080, 1440
+            bg_w, bg_h = self.BG_WIDTH, self.BG_HEIGHT
             margin = (bg_w - qr_w) // 2
             bg.paste(qr, (margin, 200, margin+qr_w, 200+qr_h))
+
+            self._draw_text(bg, coup_uuid, qr.size)
+
             qr_fn = os.path.join(bg_dir, 'qr.png')
             bg.save(qr_fn)
 
@@ -843,3 +851,41 @@ class WyzcoupCoupManage(View):
             return JsonResponse({'msg': '更新失败'}, status=500)
         else:
             return JsonResponse({})
+
+    def _draw_text(self, bg, coup_uuid, qr_size):
+        '''
+        给二维码页面添加文字
+        :param bg:
+        :param coup_uuid:
+        :param qr_size:
+        :return:
+        '''
+        draw = ImageDraw.Draw(bg)
+        font_path = os.path.join(settings.BASE_DIR, 'fonts', 'xinyou.ttf')
+        appendix_font_path = os.path.join(settings.BASE_DIR, 'fonts', 'xinyou2.ttf')
+        static_font = ImageFont.truetype(font_path, 60)
+        title_font = ImageFont.truetype(font_path, 54)
+        appendix_font = ImageFont.truetype(appendix_font_path, 48)
+        try:
+            coup = WyzCoup.objects.get(coup_uuid=coup_uuid)
+        except WyzCoup.DoesNotExist as e:
+            return JsonResponse({'msg': '未发现相关UUID好人卡'}, status=500)
+
+        static_text = '快【长按】图片【保存】到手机'
+        title_text = '{}'.format(coup.coup_title)
+        expire_time = '永远' if coup.expire_time is None else coup.expire_time.strftime('%Y-%m-%d')
+        expire_time = '有效期至【{}】'.format(expire_time)
+        appendix_text = '亲我一下可以延期o(*￣︶￣*)o'
+
+        bg_w = self.BG_WIDTH
+        bg_h = self.BG_HEIGHT
+        qr_w, qr_h = qr_size
+        static_text_w, static_text_h = static_font.getsize(static_text)
+        draw.text(((bg_w - static_text_w) // 2, (200 - static_text_h) // 2), static_text, font=static_font, fill=(0,0,0))
+        title_text_w, title_text_h = title_font.getsize(title_text)
+        draw.text(((bg_w - title_text_w) // 2, qr_h+220), title_text, font=title_font, fill=(0,0,0))
+        expire_time_w, expire_time_h = title_font.getsize(expire_time)
+        draw.text(((bg_w - expire_time_w) // 2, qr_h + 220 + title_text_h + 20), expire_time, font=title_font, fill=(0,0,0))
+        if coup.expire_time is not None:
+            appendix_text_w, appendix_text_h = appendix_font.getsize(appendix_text)
+            draw.text(((bg_w - appendix_text_w) // 2, qr_h + 240 + title_text_h + expire_time_h + 10), appendix_text, font=appendix_font, fill=(0,0,0))

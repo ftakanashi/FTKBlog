@@ -55,7 +55,7 @@ $(document).ready(function(){
             coup_content: content
         };
         if (expTime != ''){
-            d.expire_time = expTime;
+            d.expire_time = expTime + ' 23:59:59';
         }
         $.ajax({
             url: location.pathname,
