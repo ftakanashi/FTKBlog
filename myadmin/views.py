@@ -804,6 +804,8 @@ class WyzcoupCoupManage(View):
     def post(self, request):
         try:
             coup_title = request.POST.get('coup_title')
+            if coup_title == '':
+                return JsonResponse({'msg': '标题不能为空'}, status=500)
             coup_content = request.POST.get('coup_content')
             expire_time = request.POST.get('expire_time', None)
             coup = WyzCoup(coup_title=coup_title, coup_content=coup_content, expire_time=expire_time)
