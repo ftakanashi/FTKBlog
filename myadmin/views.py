@@ -843,6 +843,8 @@ class WyzcoupCoupManage(View):
             coup.coup_title = PUT.get('coup_title')
             coup.coup_content = PUT.get('coup_content')
             coup.coup_note = PUT.get('coup_note')
+            if coup.coup_title == '':
+                return JsonResponse({'msg': '标题不能为空'}, status=500)
             if coup.consume_time is not None and coup.coup_status != '1':
                 return JsonResponse({'msg': '有使用时间的券必须置状态为已使用'}, status=500)
             if coup.consume_time is None and coup.coup_status == '1':

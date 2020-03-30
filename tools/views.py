@@ -198,7 +198,8 @@ class YouGetDownloadView(View):
                 return JsonResponse({'msg': '分析链接失败'}, status=404)
 
             out = '}\n' + out + '{'
-            out_strs = ['{' + f + '}' for f in out.strip('}\n{').split('}\n{')]
+            # out_strs = ['{' + f + '}' for f in out.strip('}\n{').split('}\n{')]
+            out_strs = ['{' + f + '}' for f in out[3:-3].split('}\n{')]    # 去除额外增加在头尾的}\n{  话说能不能改下you-get源码彻底解决这个问题…
 
             try:
                 for out_str in out_strs:
