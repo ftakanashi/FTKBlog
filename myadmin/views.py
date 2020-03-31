@@ -9,6 +9,7 @@ import os
 import qrcode
 import random
 import shutil
+import subprocess
 import time
 import traceback
 from PIL import Image, ImageFont, ImageDraw
@@ -71,6 +72,13 @@ class IndexView(View):
             lastBackupTime = datetime.datetime.fromtimestamp(float(lastBackupTime))
             lastBackupGap = (datetime.datetime.now() - lastBackupTime).total_seconds()
             lastBackupTime = lastBackupTime.strftime('%Y年%m月%d日 %H:%M:%S'.encode('utf-8'))
+
+        p = subprocess.Popen('ps -ef | grep elasticsearch | grep -v grep', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if out.strip() == '':
+            ctx['found_elastic'] = False
+        else:
+            ctx['found_elastic'] = True
 
         ctx['access_count'] = redis.get(settings.ACCESS_COUNT_KEY)
         ctx['last_backup'] = lastBackupTime

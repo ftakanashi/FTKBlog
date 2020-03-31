@@ -26,6 +26,13 @@
             已经三天以上未下载备份了。不要吝啬本地磁盘，下载个备份吧！！<br>(另，酸酸乳的端口是不是可以换一换了？)
         </div>
     {% endif %}
+    <h4>elasticsearch状态：
+    {% if found_elastic %}
+        <span class="label label-success">正常</span>
+    {% else %}
+        <span class="label label-danger">未发现进程</span>
+    {% endif %}
+    </h4>
     <h4>最近来访:
     {% for access_data in access_ip %}
     <div class="btn-group" role="group">
