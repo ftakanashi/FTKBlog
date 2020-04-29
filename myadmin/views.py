@@ -657,6 +657,12 @@ class PaperdbPaperManage(View):
             return JsonResponse({})
 
 
+class PaperdbCommentManage(View):
+
+    def get(self, request):
+        ctx = {}
+        return render(request, 'myadmin/modulemanage/paperdb/comment/view.html', ctx)
+
 class PaperdbTagManage(View):
 
     def get(self, request):

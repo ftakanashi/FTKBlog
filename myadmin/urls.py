@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^backupdownload/$', login_required(BackupDownloadManage.as_view()), name='backupdownload.manage'),
     url(r'^backupdownload/(?P<fn>.+?)/', login_required(backup_download), name='backupdownload.download'),
     url(r'^paperdb/paper/$', login_required(PaperdbPaperManage.as_view()), name='paperdb.manage'),
+    url(r'^paperdb/comment/$', login_required(PaperdbCommentManage.as_view()), name='paperdb.comment.manage'),
     url(r'^paperdb/tag/$', login_required(PaperdbTagManage.as_view()), name='paperdb.tag.manage'),
     url(r'^paperdb/author/$', login_required(PaperdbAuthorManage.as_view()), name='paperdb.author.manage'),
     url(r'^wyzcoup/coup/$', login_required(WyzcoupCoupManage.as_view()), name='wyzcoup.coup.manage')

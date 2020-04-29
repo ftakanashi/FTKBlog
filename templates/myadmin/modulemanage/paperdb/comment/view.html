@@ -1,0 +1,68 @@
+{% extends 'myadmin/modulemanage/base/view.html' %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.css' %}">
+<style>
+    .table-responsive{
+        padding: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content-header-title %}
+    <i class="fa fa-sticky-note"></i>论文笔记展示
+    <div style="color: darkgray;font-size: 14px;">(此处只是部分信息的展示 具体管理请通过论文管理接口进行)</div>
+{% endblock %}
+{% block content-header-description %}{% endblock %}
+
+{% block toolbar-btn %}{% endblock %}
+
+{% block script %}
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'AdminLTE/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js' %}"></script>
+<script src="{% static 'comp/layer/layer.js' %}"></script>
+<script>
+$(function(){
+$(document).ready(function(){
+    $('#manageTable').bootstrapTable({
+        url: '{% url 'paperdb.comment.api' %}',
+        columns: [{
+            field: 'comment_id',
+            title: '笔记ID',
+            sortable: true,
+            visible: false
+        },{
+            field: 'paper',
+            title: '论文',
+            sortable: true,
+            formatter: function(value, row, index){
+                value = JSON.parse(value);
+                var url = '{% url 'paperdb.detail' '111111' %}'.replace('111111', value.uuid);
+                return '<a target="_blank" href="' + url + '">' + value.title + '</a>';
+            }
+        },{
+            field: 'update_time',
+            title: '更新时间',
+            sortable: true
+        },{
+            field: 'create_time',
+            title: '创建时间',
+            sortable: true
+        }],
+        resizable: true,
+        pagination: true,
+        sidePagination: 'client',
+        pageNumber: 1,
+        pageSize: 20,
+        pageList: [10,20,50,'All'],
+        search: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true
+    });
+});
+});
+</script>
+{% endblock %}

@@ -8,11 +8,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 from ratelimit.mixins import RatelimitMixin
 
 from blog.models import Category, Tag, Post, Comment, Message
-from paperdb.models import Paper, ResearchTag, Author
+from paperdb.models import Paper, PaperComment, ResearchTag, Author
 from ftkuser.models import AccessControl
 from wyzcoup.models import WyzCoup
 from .serializers import CategorySerializer, TagSerializer, PostSerializer, CommentSerializer, MessageSerializer,\
-    AccessControlSerializer, PaperdbPaperSerializer, PaperdbTagSerializer, PaperdbAuthorSerializer,WyzCoupSerializer
+    AccessControlSerializer, PaperdbPaperSerializer, PaperdbCommentSerializer,  PaperdbTagSerializer, PaperdbAuthorSerializer,\
+    WyzCoupSerializer
 from .filters import CategoryFilter, TagFilter, PostFilter, CommentFilter, MessageFilter, AccessControlFilter, \
     PaperdbTagFilter, WyzCoupFilter
 
@@ -75,6 +76,12 @@ class PaperdbPaperListView(generics.ListCreateAPIView):
     serializer_class = PaperdbPaperSerializer
     permission_classes = (IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
+
+class PaperdbCommentListView(generics.ListCreateAPIView):
+    queryset = PaperComment.objects.all().order_by('-update_time')
+    serializer_class = PaperdbCommentSerializer
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (SessionAuthentication, )
 
 class PaperdbTagListView(generics.ListCreateAPIView):
     queryset = ResearchTag.objects.all()

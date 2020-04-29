@@ -8,3 +8,8 @@ class PostWithUuidField(RelatedField):
 
     def to_representation(self, value):
         return json.dumps({'title': value.title, 'uuid': str(value.post_uuid)})
+
+class PaperTitleAndUuidField(RelatedField):
+
+    def to_representation(self, value):
+        return json.dumps({'title': value.title, 'uuid': str(value.paper_uuid)})

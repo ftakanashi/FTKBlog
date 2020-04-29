@@ -4,11 +4,11 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SlugRelatedField,StringRelatedField
 
 from blog.models import Category, Tag, Post, Comment, Message
-from paperdb.models import Paper, ResearchTag, Author
+from paperdb.models import Paper, ResearchTag, Author, PaperComment
 from ftkuser.models import AccessControl
 from wyzcoup.models import WyzCoup
 
-from fields import PostWithUuidField
+from fields import PostWithUuidField, PaperTitleAndUuidField
 
 class CategorySerializer(ModelSerializer):
     in_category_posts = SlugRelatedField(slug_field='post_uuid', read_only=True, many=True)
@@ -65,6 +65,14 @@ class PaperdbPaperSerializer(ModelSerializer):
     class Meta:
         model = Paper
         fields = ('paper_uuid', 'title', 'publish_time', 'publish_origin', 'self_score', 'link', 'author')
+
+class PaperdbCommentSerializer(ModelSerializer):
+
+    paper = PaperTitleAndUuidField(read_only=True)
+
+    class Meta:
+        model = PaperComment
+        fields = ('comment_id', 'create_time', 'update_time', 'paper')
 
 class PaperdbTagSerializer(ModelSerializer):
 
